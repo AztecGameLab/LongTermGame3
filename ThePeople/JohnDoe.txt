@@ -1,0 +1,5 @@
+Name: John Doe
+Slack: JohnnyCoolguy
+GitHub: JohnnyC00lguy5
+Interests: input programming, AI
+Goal: Learn Unity and use my AI experence to develop enemies
