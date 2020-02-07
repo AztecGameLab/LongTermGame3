@@ -1,0 +1,5 @@
+Name: Alexander Miller
+Slack: alexmiller183
+GitHub: alexmiller79
+Interests: Programming gameplay mechanics, features, upgrades, etc.
+Goal: Gain experience for game development.
