@@ -1,3 +1,4 @@
 Slack: Kyle Knight
 Github: zm123bro
 Interests: programming
+Goals: Learn how to apply stuff learned in CS classes to develop a game
