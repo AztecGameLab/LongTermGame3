@@ -3,4 +3,4 @@ Slack: Daniel Kenton
 GitHub: daniel-CoolGuy
 Interests: Programming(somewhat basic), 3d art(low poly or realistic). I like
 animating as well.
-Goal: Learn more about Unity and apply my 3d skills posibly
+Goal: Learn more about Unity and apply my 3d skills.y
