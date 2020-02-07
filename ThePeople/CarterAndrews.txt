@@ -1,0 +1,4 @@
+Name: Carter Andrews
+Slack username: Carter
+Github Username: CarterAndrews
+Interests: Procedurally generated content, AI, tools programming, UI
