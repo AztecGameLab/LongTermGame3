@@ -1,0 +1,5 @@
+Name: Archer Hovey
+Slack: Archer Hovey
+GitHub: Fallium
+Interests: programming, game design, maybe 3D art
+Goal: Learn more unity, get into Blender, learn how to export a game

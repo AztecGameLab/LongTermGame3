@@ -1,0 +1,5 @@
+Name: Jacob Barger
+Slack: jbarger25
+Githib: jbarger25
+Interests: procedural generation, enemy AI, combat mechanics, art/UI
+Goal: Learn new techniques and create more complex things than I have before
