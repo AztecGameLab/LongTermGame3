@@ -1,0 +1,5 @@
+Name: Logan Wang
+Slack: Logan Wang
+GitHub: Lwdaolong
+Interests: Enemy AI, Physics, (maybe) Procedural Generation
+Goal: To join an awesome community and actually finish a game! I would like to get more experienced with Unity and working with a team.
