@@ -1,0 +1,5 @@
+Name: Husam Saleem
+Slack: HusamS
+Github: HusamSaleem
+Interest: Programming, AI (Not sure)
+Goal: Create a game and finish it
