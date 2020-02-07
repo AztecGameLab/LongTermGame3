@@ -1,0 +1,5 @@
+Name: Kyle Molina Sanchez O'Dell
+Slack: Kyle Molina Sanchez O'Dell
+GitHub: ODellKyle
+Interests: programming, enemy AI, procedural Gen.
+Goal: Learn Unity, build a portfolio, and project myself into the gaming industry
