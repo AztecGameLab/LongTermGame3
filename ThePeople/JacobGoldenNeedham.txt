@@ -1,0 +1,5 @@
+Name: Jacob Golden-Needham
+Slack: BUNN1E5
+Githib: BUNN1E5
+Interests: programming, procedural generation, UX (Gamefeel), 3D Modeling, Code Architexture
+Goal: Have fun making a game
