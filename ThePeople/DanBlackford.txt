@@ -1,0 +1,5 @@
+Name: Dan Blackford
+Slack: Dan Blackford
+GitHub: dblackford1974
+Interests: Code, shaders, ai, procedural content, whatever needed.
+Goals: Gain XP with Unity and working with game dev. team.  Long term to have an early access indy game on Steam.
