@@ -7,15 +7,15 @@ public class Aiming : MonoBehaviour
     // Represent mouse position, modified by sensitivity.
     private float mouseX, mouseY;
 
-    // Mouse sensitivity. 100 = 100%.
+    // Mouse sensitivity: 100 = 100%.
     [SerializeField]
     public float sensitivity = 100f;
 
     // The transform of the parent player gameObject, NOT THE CAMERA'S.
     private Transform playerTransform;
 
-    // Value to keep track of up and down camera rotation.
-    float xRotation = 0f;
+    // Value to keep track of up and down camera rotation for the purpose of clamping.
+    float verticalRotation = 0f;
 
     private void Awake()
     {
@@ -24,6 +24,7 @@ public class Aiming : MonoBehaviour
 
     private void Start()
     {
+        // Hides mouse cursor while playing.
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -33,15 +34,33 @@ public class Aiming : MonoBehaviour
         mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
         mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
 
-        // Rotating camera left and right (cannot move parent player gameObject this way, as it will just keep spinning). 
-        transform.Rotate(Vector3.up * mouseX);
+        // Clamping vertical camera rotation.
+        verticalRotation += mouseY;
+        ClampRotation();
 
-        // Setting player rotation equal to camera rotation so that the player gameObject moves and not just the camera.
-        playerTransform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
+        // Rotating camera vertically, and player body horizontally.
+        transform.Rotate(Vector3.left * mouseY);
+        playerTransform.Rotate(Vector3.up * mouseX);
+    }
 
-        // Rotating camera up and down. Making sure that camera's Y axis localRotation is 0 (parent player gameObject should now have the rotation).
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+    // Clamps camera rotation to hard coded values so you can't look past straight up or down.
+    private void ClampRotation()
+    { 
+        if (verticalRotation > 90f)
+        {
+            verticalRotation = 90f;
+            mouseY = 0f;
+            Vector3 eulerRotation = transform.eulerAngles;
+            eulerRotation.x = 270f;
+            transform.eulerAngles = eulerRotation;
+        }
+        else if (verticalRotation < -90f)
+        {
+            verticalRotation = -90f;
+            mouseY = 0f;
+            Vector3 eulerRotation = transform.eulerAngles;
+            eulerRotation.x = 90f;
+            transform.eulerAngles = eulerRotation;
+        }
     }
 }
