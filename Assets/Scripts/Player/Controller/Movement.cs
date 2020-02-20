@@ -27,10 +27,6 @@ public class Movement : MonoBehaviour
     {
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
-        Vector3 move = transform.right * x + transform.forward * z;
-
-        // Could normalize move vector to regulate speed at diagonals, but has side effect of wonky deceleration.
-
-        controller.Move(move * speed * modifier * Time.deltaTime);
+        controller.SimpleMove(Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1f) * speed * modifier);
     }
 }
