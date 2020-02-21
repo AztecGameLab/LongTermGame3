@@ -240,8 +240,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe8a97a5b42dc5544a1979573e2ecf71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSize: 0
+  maxSize: 30
   numAttempts: 4
+  isValidPlacementTest: 0
+  startSize: 0
 --- !u!4 &1670693425
 Transform:
   m_ObjectHideFlags: 0
