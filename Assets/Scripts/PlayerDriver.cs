@@ -83,7 +83,7 @@ public class PlayerDriver : Driver
         mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
 
         // Returning rotation Quaternion.
-        return Quaternion.Euler(transform.eulerAngles + Vector3.up * mouseX);
+        return transform.rotation * Quaternion.Euler(Vector3.up * mouseX);
     }
 
     public override Quaternion GetVerticalLook()
@@ -96,7 +96,7 @@ public class PlayerDriver : Driver
         ClampRotation();
 
         // Returning rotation Quaternion.
-        return Quaternion.Euler(cameraTransform.localRotation.eulerAngles + Vector3.left * mouseY);
+        return cameraTransform.localRotation * Quaternion.Euler(Vector3.left * mouseY);
     }
 
     // Clamps camera rotation to hard coded values so you can't look past straight up or down.
