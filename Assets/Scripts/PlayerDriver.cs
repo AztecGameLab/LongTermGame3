@@ -47,26 +47,33 @@ public class PlayerDriver : Driver
 
     public override Vector3 GetMovement()
     {
-        // Calculating horizontal velocity by combining x and z inputs to a single vector of magnitude 1, then multiplying by base speed and modifier.
+        // Getting Horizontal and Vertical inputs.
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
-        horizontalVelocity = Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1f) * speed * modifier;
 
         // Applying force due to gravity.
         verticalVelocity.y -= gravity * Time.deltaTime;
 
-        // Checking if grounded and verticalVelocity is negative. We check for negative velocity to prevent player from being stuck to the ground when trying to jump.
+        // If touching ground and not jumping up.
         if (GroundCheck() && verticalVelocity.y < 0)
         {
-            // Player is grounded, can press space to jump.
+            // Regular ground movement.
+            horizontalVelocity = Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1f) * speed * modifier;
+
+            // Space key to jump, adds vertical velocity.
             if (Input.GetKeyDown(KeyCode.Space))
                 verticalVelocity.y = Mathf.Sqrt(jumpHeight * 2f * gravity);
-            // Player is not jumping, apply negative vertical velocity. Helps keep player attached to ground, especially slopes. Think of it as being magnetized to the ground. 
+
+            // If not jumping, apply constant downward velocity to keep player attatched to ground when walking down slopes.
             else
                 verticalVelocity = 5f * Vector3.down;
         }
 
-        // Combine our vertical and horizontal velocities and multipy by deltaTime and have the controller move.
+        // Modified air movement, maintains velocity but accepts small influence from input. Cannot go faster than on the ground. 
+        else
+            horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity / speed / modifier + transform.right * x * 0.025f + transform.forward * z * 0.025f, 1f) * speed * modifier;
+
+        // Combine our vertical and horizontal velocities.
         return verticalVelocity + horizontalVelocity;
     }
 
