@@ -8,7 +8,7 @@ public struct RoomData
     public string name;
     public Vector3 size;
     public string type; //defines roomType e.g. Start, Boss, Key, Goal, etc.
-    public List<DoorData> doors;
+    //public List<DoorData> doors;
     //public Enemy[] enemy
 
 }

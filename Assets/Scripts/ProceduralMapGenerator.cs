@@ -4,54 +4,66 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class ProceduralMapGenerator : MonoBehaviour
 {
+    private List<RoomData> rooms;
+    public LayerMask m_LayerMask;
     public int maxSize;
     public int numAttempts;
     public bool isValidPlacementTest;
-    public int startSize;
+
+    public int xRange;
+    public int yRange;
+    public int zRange;
+
 
     //A new map is generated on play
     private void Awake()
     {
+        rooms = new List<RoomData>();
+        xRange = 1;
+        yRange = 1;
+        zRange = 1;
+        maxSize = 2;
+        isValidPlacementTest = false;
         Initialize();
     }
 
     //clears the map and generates a new map
     public void Initialize()
     {
-        startSize = 0;
-        isValidPlacementTest = false;
-        maxSize = 5;
         if (transform.childCount != 0)
             ClearMap();
-        PlaceRooms(GenerateRoomData(startSize, new List<RoomData>(), new RoomData()));
+        GenerateRoomData(0, rooms, new RoomData(), -1);
     }
     //edit this function to change the room generation algorithm
-    private List<RoomData> GenerateRoomData(int startSize, List<RoomData> rooms, RoomData room)
+    private void GenerateRoomData(int startSize, List<RoomData> rooms, RoomData room, int direction)
     {
+        //print("GRD" + startSize + ", " + direction);
         if (startSize == 0)
         {
             rooms = new List<RoomData>();
             generateStartRoom(rooms);
             room = rooms[rooms.Count - 1];
             startSize++;
-            foreach (DoorData door1 in room.doors)
+            for(int i=0; i < 4; i++)
             {
-                if (attemptCreateRoom(rooms, door1, room))
-                    GenerateRoomData(startSize+1, rooms, rooms[rooms.Count - 1]); 
+                    GenerateRoomData(startSize, rooms, room, i);
             }
         }
         else if (startSize < maxSize)
         {
-
-
-            //testing attemptRoom DELETE THIS TO SEE DOORS ACTUALLY SPAWN 
-            foreach (DoorData door1 in room.doors)
+            RoomData dumbRoom = CreateNewRoom(rooms, room, direction);
+            if (true) //TODO make separate collision method and numTries and everything
             {
-                if (attemptCreateRoom(rooms, door1, room))
-                    GenerateRoomData(startSize + 1, rooms, rooms[rooms.Count - 1]);
+                int opposite = oppositeDirection(direction);
+                for (int i = 0; i < 4; i++)
+                {
+                    if(i != opposite)
+                    {
+                        GenerateRoomData(startSize + 1, rooms, dumbRoom, i);
+                    }
+                }
             }
         }
-        return rooms;
     }
 
     private void generateStartRoom(List<RoomData> rooms)
@@ -60,13 +72,11 @@ public class ProceduralMapGenerator : MonoBehaviour
         testRoom.position = Random.insideUnitSphere;
         testRoom.name = "testRoom1";
         testRoom.type = "Start";
-        int width = Random.Range(1, 5);
-        int height = Random.Range(1, 5);
-        int length = Random.Range(1, 5);
+        int width = Random.Range(1, xRange);
+        int height = Random.Range(1, yRange);
+        int length = Random.Range(1, zRange);
         testRoom.size = new Vector3(width, height, length);
-        int numDoors = Random.Range(1, 5); //finds random door number
-        testRoom.doors = new List<DoorData>();
-        fillDoors(numDoors, testRoom);
+        PlaceRoom(testRoom);
 
         rooms.Add(testRoom);
     }
@@ -78,7 +88,7 @@ public class ProceduralMapGenerator : MonoBehaviour
         foreach (Transform child in children)
         {
             if(child.gameObject!=gameObject )
-                Destroy(child.gameObject);
+                DestroyImmediate(child.gameObject);
         }
     }
     //creates a new object as a child of this script's transform according to the roomData provided
@@ -89,17 +99,16 @@ public class ProceduralMapGenerator : MonoBehaviour
         roomObj.name = room.name;
         roomObj.transform.localScale = room.size;
         roomObj.transform.parent = transform;
-        createDoors(room, roomObj);
 
     }
-    //creates a new object as a child of this scripts transform with less roomData than normal e.g. no doors, name, etc.
+    //creates a new object as a child of this scripts transform while returning the gameObject
     private GameObject tempPlaceRoom(RoomData room)
     {
         GameObject roomObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
         roomObj.transform.position = room.position;
+        roomObj.name = room.name;
         roomObj.transform.localScale = room.size;
         roomObj.transform.parent = transform;
-        roomObj.name = room.name;
         return roomObj;
     }
     //iterates through each room and places them one at a time, 
@@ -112,118 +121,75 @@ public class ProceduralMapGenerator : MonoBehaviour
         }
     }
 
-    //instiates all doors for respective room
-    private void createDoors(RoomData room, GameObject roomObj)
+ /*   private bool attemptCreateRoom()
     {
-        foreach (DoorData door in room.doors)
-        {
-            GameObject doorObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            doorObj.transform.position = door.position;
-            doorObj.transform.parent = roomObj.transform;
-            doorObj.name = door.name;
-        }
+
     }
+    */
 
-    private void fillDoors(int numDoors, RoomData testRoom)
+    private RoomData CreateNewRoom(List<RoomData> roomList, RoomData room, int direction)
     {
-        //creates doors and checks for door collision
-        for (int i = 0; i < numDoors; i++)
-        {
-            testRoom.doors.Add(new DoorData(testRoom));
-            for (int t = 0; t < i; t++)
-            {
-                if (testRoom.doors[i].position.Equals(testRoom.doors[t].position))
-                    testRoom.doors.RemoveAt(i);
-            }
-        }
-    }
-
-    //fillDoors, assumes that one door is already placed
-    private void fillNewRoomDoors(int numDoors, RoomData testRoom)
-    {
-        //creates doors and checks for door collision
-        for (int i = 1; i < numDoors; i++)
-        {
-            testRoom.doors.Add(new DoorData(testRoom));
-            for (int t = 0; t < i; t++)
-            {
-                if (testRoom.doors[i].position.Equals(testRoom.doors[t].position))
-                    testRoom.doors.RemoveAt(i);
-            }
-        }
-    }
-
-    //attemps to create room at given door with a certain number of trials (each trial checks if colliding with existing room)
-    //if exceeds number of trials, deletes door and results in dead end
-    private bool attemptCreateRoom(List<RoomData> roomList, DoorData door, RoomData room)
-    {
-        for(int i = 0; i< numAttempts; i++)
-        {
-
-            bool passedAlltests = true;
+        //for(int i = 0; i< numAttempts; i++)
+        //{
             RoomData testRoom = new RoomData();
-            int width = Random.Range(1, 5);
-            int height = Random.Range(1, 5);
-            int length = Random.Range(1, 5);
+            int width = Random.Range(1, xRange);
+            int height = Random.Range(1, yRange);
+            int length = Random.Range(1, zRange);
             testRoom.size = new Vector3(width, height, length);
-            testRoom.position = posNearDoor(door, testRoom.size);
+            testRoom.position = roomSpawnPosition(room, testRoom, direction); //TODO method that determines direction based off of int
             testRoom.name = "testRoom";
             GameObject tempObj2 = tempPlaceRoom(testRoom);
-            tempObj2.GetComponent<BoxCollider>().isTrigger = true;
-            foreach (RoomData existRoom in roomList)
-            {
-                //kinda jank IDK how to do this efficiently yet
-                GameObject tempObj1 = tempPlaceRoom(existRoom);
-
-                if (isValidPlacementTest)// check if DOES NOT collide with other rooms
+            roomList.Add(testRoom);//RMEOVEVEVEVE
+            Collider[] hitColliders = Physics.OverlapBox(testRoom.position, testRoom.size / 2, Quaternion.identity, m_LayerMask);
+                if (hitColliders.Length >0)// check if DOES NOT collide with other rooms
                 {
                     print("fail");
-                    //!validPlacement(tempObj1,tempObj2)
-                    passedAlltests = false;
                 }
-                Destroy(tempObj1);
-            }
-            if (passedAlltests)
+            if (hitColliders.Length <= 0)
             {
                 testRoom.name = "roomFits";
+                tempObj2.name = "roomFits";
                 testRoom.type = "Standard";
-                door.room2 = testRoom;
-                int numDoors = Random.Range(2, 4); //finds random door number
-                testRoom.doors = new List<DoorData>();
-                testRoom.doors.Add(door);
-                fillNewRoomDoors(numDoors, testRoom);
-                roomList.Add(testRoom);
-                Destroy(tempObj2);
-                return true;
+               // roomList.Add(testRoom);
+                //return true;
             }
-            Destroy(tempObj2);
-        }
-        
-        room.doors.Remove(door);
-        return false;
+        return testRoom;
+           // DestroyImmediate(tempObj2);
+        //}
+        //return false;
+       // return true;
     }
 
-    //randomly tries to place rooms next to doors
-    private Vector3 posNearDoor(DoorData door, Vector3 size)
+    private int oppositeDirection(int direction)
     {
-        int rand = Random.Range(0, 101);
-        if(rand < 25)
+        int opposite = direction % 2;
+        if (opposite == 0)
         {
-            return new Vector3(door.position.x + size.x / 2, door.position.y + size.y / 2, door.position.z + size.z / 2);
-        }
-        else if (rand < 50)
-        {
-            return new Vector3(door.position.x - size.x / 2, door.position.y + size.y / 2, door.position.z + size.z / 2);
-        }
-        else if (rand < 75)
-        {
-            return new Vector3(door.position.x + size.x / 2, door.position.y + size.y / 2, door.position.z - size.z / 2);
+            return direction + 1;
         }
         else
         {
-            return new Vector3(door.position.x - size.x / 2, door.position.y + size.y / 2, door.position.z - size.z / 2);
+            return direction - 1;
         }
+    }
 
+    private Vector3 roomSpawnPosition(RoomData room,RoomData testRoom,int dir)
+    {
+        if(dir == 0)
+        {
+            return room.position + new Vector3(0, 0, (room.size.z / 2) + (testRoom.size.z/2));
+        }else if (dir == 1)
+        {
+            return room.position + new Vector3(0, 0, -(room.size.z / 2) - (testRoom.size.z / 2));
+        }
+        else if (dir == 2)
+        {
+            return room.position + new Vector3((room.size.x / 2) + (testRoom.size.x / 2), 0, 0);
+        }
+        else
+        {
+            return room.position + new Vector3(-(room.size.x / 2) - (testRoom.size.x / 2), 0, 0);
+        }
     }
 
     //finds largest vector within a given Vector3
@@ -316,7 +282,9 @@ public class ProceduralMapGenerator : MonoBehaviour
 
 
 
-    *      if (startSize == 0)
+    *         private List<RoomData> GenerateRoomData(int startSize, List<RoomData> rooms, RoomData room)
+    {
+        if (startSize == 0)
         {
             rooms = new List<RoomData>();
             generateStartRoom(rooms);
@@ -324,21 +292,166 @@ public class ProceduralMapGenerator : MonoBehaviour
             startSize++;
             foreach (DoorData door1 in room.doors)
             {
-                if(attemptCreateRoom(rooms, door1, room))
-                    GenerateRoomData(...); increment startSize, use roomData of end of list, 
+                if (attemptCreateRoom(rooms, door1, room))
+                    GenerateRoomData(startSize+1, rooms, rooms[rooms.Count - 1]); 
             }
-            GenerateRoomData(startSize, rooms);
         }
         else if (startSize < maxSize)
         {
-          
+
 
             //testing attemptRoom DELETE THIS TO SEE DOORS ACTUALLY SPAWN 
             foreach (DoorData door1 in room.doors)
             {
-                if(attemptCreateRoom(rooms, door1, room))
-                    GenerateRoomData(...);
+                if (attemptCreateRoom(rooms, door1, room))
+                    GenerateRoomData(startSize + 1, rooms, rooms[rooms.Count - 1]);
             }
-     }
-            return rooms;
+        }
+        return rooms;
+    }
+
+
+
+
+
+        private Vector3 posNearDoor(DoorData door, Vector3 size)
+    {
+        int rand = Random.Range(0, 101);
+        if(rand < 25)
+        {
+            return new Vector3(door.position.x + size.x / 2, door.position.y + size.y / 2, door.position.z + size.z / 2);
+        }
+        else if (rand < 50)
+        {
+            return new Vector3(door.position.x - size.x / 2, door.position.y + size.y / 2, door.position.z + size.z / 2);
+        }
+        else if (rand < 75)
+        {
+            return new Vector3(door.position.x + size.x / 2, door.position.y + size.y / 2, door.position.z - size.z / 2);
+        }
+        else
+        {
+            return new Vector3(door.position.x - size.x / 2, door.position.y + size.y / 2, door.position.z - size.z / 2);
+        }
+
+    }
+
+        private Vector3 posNearDoor(DoorData door, Vector3 size)
+    {
+        int rand = Random.Range(0, 4);
+        if(rand < 1)
+        {
+            return new Vector3(door.position.x + size.x / 2, door.position.y + size.y / 2, door.position.z);
+        }
+        else if (rand < 2)
+        {
+            return new Vector3(door.position.x - size.x / 2, door.position.y + size.y / 2, door.position.z);
+        }
+        else if (rand < 3)
+        {
+            return new Vector3(door.position.x, door.position.y + size.y / 2, door.position.z + size.z / 2);
+        }
+        else
+        {
+            return new Vector3(door.position.x, door.position.y + size.y / 2, door.position.z - size.z / 2);
+        }
+
+    }
+
             */
+//instiates all doors for respective room
+/* private void createDoors(RoomData room, GameObject roomObj)
+ {
+     foreach (DoorData door in room.doors)
+     {
+         GameObject doorObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+         doorObj.transform.position = door.position;
+         doorObj.transform.parent = roomObj.transform;
+         doorObj.name = door.name;
+     }
+ }
+
+
+ private void fillDoors(int numDoors, RoomData testRoom)
+ {
+     //creates doors and checks for door collision
+     for (int i = 0; i < numDoors; i++)
+     {
+         testRoom.doors.Add(new DoorData(testRoom));
+         for (int t = 0; t < i; t++)
+         {
+             if (testRoom.doors[i].position.Equals(testRoom.doors[t].position))
+                 testRoom.doors.RemoveAt(i);
+         }
+     }
+ }
+
+ //fillDoors, assumes that one door is already placed
+ private void fillNewRoomDoors(int numDoors, RoomData testRoom)
+ {
+     //creates doors and checks for door collision
+     for (int i = 1; i < numDoors; i++)
+     {
+         testRoom.doors.Add(new DoorData(testRoom));
+         for (int t = 0; t < i; t++)
+         {
+             if (testRoom.doors[i].position.Equals(testRoom.doors[t].position))
+                 testRoom.doors.RemoveAt(i);
+         }
+     }
+ }
+
+        //randomly tries to place rooms next to doors
+    private Vector3 posNearDoor(DoorData door, Vector3 size)
+    {
+        int rand = Random.Range(0, 101);
+        if (rand < 25)
+        {
+            return new Vector3(door.position.x + size.x / 2, door.position.y + size.y / 2, door.position.z + size.z / 2);
+        }
+        else if (rand < 50)
+        {
+            return new Vector3(door.position.x - size.x / 2, door.position.y + size.y / 2, door.position.z + size.z / 2);
+        }
+        else if (rand < 75)
+        {
+            return new Vector3(door.position.x + size.x / 2, door.position.y + size.y / 2, door.position.z - size.z / 2);
+        }
+        else
+        {
+            return new Vector3(door.position.x - size.x / 2, door.position.y + size.y / 2, door.position.z - size.z / 2);
+        }
+
+    }
+
+ */
+
+/*
+ *     private void GenerateRoomData(int startSize, List<RoomData> rooms, RoomData room, int direction)
+{
+    if (startSize == 0)
+    {
+        rooms = new List<RoomData>();
+        generateStartRoom(rooms);
+        room = rooms[rooms.Count - 1];
+        startSize++;
+        for(int i=0; i < 4; i++)
+        {
+                GenerateRoomData(startSize, rooms, room, i);
+        }
+    }
+    else if (startSize < maxSize)
+    {
+            //if (attemptCreateRoom(rooms, room, direction))
+            if (CreateNewRoom(rooms, room, direction))
+            {
+            for (int i = 0; i < 4; i++)
+            {
+               // if (i != direction) to make more efficient, make it so it doesn't try to spawn in direction room just came from
+                    GenerateRoomData(startSize+1, rooms, rooms[rooms.Count - 1], i);
+
+            }
+        }
+    }
+}
+*/
