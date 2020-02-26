@@ -13,74 +13,71 @@ public class ProceduralMapGenerator : MonoBehaviour
     public int xRange;
     public int yRange;
     public int zRange;
-
+    [Range(0,1)]
+    public float branchChance = 1;
+    Vector3[] directions =
+    {
+        Vector3.left,
+        Vector3.right,
+        Vector3.forward,
+        Vector3.back,
+        //add up and down     
+    };
 
     //A new map is generated on play
     private void Awake()
-    {
-        rooms = new List<RoomData>();
-        xRange = 1;
-        yRange = 1;
-        zRange = 1;
-        maxSize = 2;
-        isValidPlacementTest = false;
+    {      
         Initialize();
     }
 
     //clears the map and generates a new map
     public void Initialize()
     {
+        rooms = new List<RoomData>();
         if (transform.childCount != 0)
             ClearMap();
-        GenerateRoomData(0, rooms, new RoomData(), -1);
+        GenerateRoomData(Vector3.zero,Vector3.zero);
     }
     //edit this function to change the room generation algorithm
-    private void GenerateRoomData(int startSize, List<RoomData> rooms, RoomData room, int direction)
+    private void GenerateRoomData(Vector3 entrancePos, Vector3 direction)
     {
-        //print("GRD" + startSize + ", " + direction);
-        if (startSize == 0)
+        if (rooms.Count < maxSize)
         {
-            rooms = new List<RoomData>();
-            generateStartRoom(rooms);
-            room = rooms[rooms.Count - 1];
-            startSize++;
-            for(int i=0; i < 4; i++)
+            RoomData dumbRoom = new RoomData();
+            dumbRoom.size = GetRandomSize();
+            dumbRoom.position = entrancePos + Vector3.Scale(dumbRoom.size/2, direction);
+            if (CheckRoom(dumbRoom))
             {
-                    GenerateRoomData(startSize, rooms, room, i);
-            }
-        }
-        else if (startSize < maxSize)
-        {
-            RoomData dumbRoom = CreateNewRoom(rooms, room, direction);
-            if (true) //TODO make separate collision method and numTries and everything
-            {
-                int opposite = oppositeDirection(direction);
-                for (int i = 0; i < 4; i++)
+                rooms.Add(dumbRoom);
+                PlaceRoom(dumbRoom);
+                RandomizeArray(directions);
+                foreach (Vector3 dir in directions)
                 {
-                    if(i != opposite)
-                    {
-                        GenerateRoomData(startSize + 1, rooms, dumbRoom, i);
-                    }
+                    if (Random.Range(0f,1f)>branchChance)
+                        GenerateRoomData(dumbRoom.position + Vector3.Scale(dir, dumbRoom.size/2), dir);
                 }
             }
         }
     }
-
-    private void generateStartRoom(List<RoomData> rooms)
+    private bool CheckRoom(RoomData room)
     {
-        RoomData testRoom = new RoomData();
-        testRoom.position = Random.insideUnitSphere;
-        testRoom.name = "testRoom1";
-        testRoom.type = "Start";
-        int width = Random.Range(1, xRange);
-        int height = Random.Range(1, yRange);
-        int length = Random.Range(1, zRange);
-        testRoom.size = new Vector3(width, height, length);
-        PlaceRoom(testRoom);
-
-        rooms.Add(testRoom);
+        if(Physics.OverlapBox(room.position, room.size/2*0.999f, Quaternion.identity, m_LayerMask).Length!=0)
+        {
+            return false;
+            //return true;
+        }
+        return true;     
     }
-
+    private void RandomizeArray(Vector3[] arr)
+    {
+        for (var i = arr.Length - 1; i > 0; i--)
+        {
+            var r = Random.Range(0, i);
+            var tmp = arr[i];
+            arr[i] = arr[r];
+            arr[r] = tmp;
+        }
+    }
     //removes all children from this gameobject
     private void ClearMap()
     {
@@ -126,16 +123,19 @@ public class ProceduralMapGenerator : MonoBehaviour
 
     }
     */
-
+    private Vector3 GetRandomSize()
+    {
+        int width = Random.Range(1, xRange);
+        int height = Random.Range(1, yRange);
+        int length = Random.Range(1, zRange);
+        return  new Vector3(width, height, length);
+    }
     private RoomData CreateNewRoom(List<RoomData> roomList, RoomData room, int direction)
     {
         //for(int i = 0; i< numAttempts; i++)
         //{
             RoomData testRoom = new RoomData();
-            int width = Random.Range(1, xRange);
-            int height = Random.Range(1, yRange);
-            int length = Random.Range(1, zRange);
-            testRoom.size = new Vector3(width, height, length);
+            GetRandomSize();
             testRoom.position = roomSpawnPosition(room, testRoom, direction); //TODO method that determines direction based off of int
             testRoom.name = "testRoom";
             GameObject tempObj2 = tempPlaceRoom(testRoom);
