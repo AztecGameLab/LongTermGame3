@@ -4,9 +4,9 @@ using UnityEngine;
 
 public struct RoomData 
 {
-    public Vector3 position;
+    public Bounds bounds;
     public string name;
-    public Vector3 size;
+    public List<RoomData> connections;
     public string type; //defines roomType e.g. Start, Boss, Key, Goal, etc.
     //public List<DoorData> doors;
     //public Enemy[] enemy

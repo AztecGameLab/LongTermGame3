@@ -4,6 +4,7 @@ using UnityEngine;
 
 public struct DoorData
 {
+    /*
     public Vector3 position;
     public RoomData room1;
     public RoomData room2;
@@ -45,4 +46,5 @@ public struct DoorData
             return room1.position.z + (room1.size.z)/2;
         return room1.position.z - (room1.size.z)/2;
     }
+    */
 }

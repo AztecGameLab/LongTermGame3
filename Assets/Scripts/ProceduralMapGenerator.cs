@@ -13,20 +13,23 @@ public class ProceduralMapGenerator : MonoBehaviour
     public int xRange;
     public int yRange;
     public int zRange;
-    [Range(0,1)]
+    [Range(0, 1)]
     public float branchChance = 1;
+    public GameObject roomTemplate;
     Vector3[] directions =
     {
         Vector3.left,
         Vector3.right,
         Vector3.forward,
         Vector3.back,
+        Vector3.up,
+        Vector3.down
         //add up and down     
     };
 
     //A new map is generated on play
     private void Awake()
-    {      
+    {
         Initialize();
     }
 
@@ -36,47 +39,41 @@ public class ProceduralMapGenerator : MonoBehaviour
         rooms = new List<RoomData>();
         if (transform.childCount != 0)
             ClearMap();
-        GenerateRoomData(Vector3.zero,Vector3.zero);
+        GenerateRoomData(Vector3.zero, Vector3.zero);
     }
     //edit this function to change the room generation algorithm
     private void GenerateRoomData(Vector3 entrancePos, Vector3 direction)
     {
-        if (rooms.Count < maxSize)
+        if (rooms.Count >= maxSize)
+            return;
+        RoomData dumbRoom = new RoomData();
+        Bounds b = new Bounds();
+        b.size = GetRandomSize();
+        b.center = entrancePos + Vector3.Scale(b.size / 2, direction);
+        dumbRoom.bounds = b;
+        dumbRoom.name = "room " + rooms.Count.ToString();
+        if (CheckRoom(dumbRoom))
         {
-            RoomData dumbRoom = new RoomData();
-            dumbRoom.size = GetRandomSize();
-            dumbRoom.position = entrancePos + Vector3.Scale(dumbRoom.size/2, direction);
-            if (CheckRoom(dumbRoom))
-            {
-                rooms.Add(dumbRoom);
-                PlaceRoom(dumbRoom);
-                RandomizeArray(directions);
-                foreach (Vector3 dir in directions)
-                {
-                    if (Random.Range(0f,1f)>branchChance)
-                        GenerateRoomData(dumbRoom.position + Vector3.Scale(dir, dumbRoom.size/2), dir);
-                }
-            }
+            rooms.Add(dumbRoom);
+            PlaceRoom(dumbRoom);
+            var dir = directions[Random.Range(0, directions.Length)];
+            GenerateRoomData(dumbRoom.bounds.center + Vector3.Scale(dir, dumbRoom.bounds.size / 2), dir);
         }
     }
     private bool CheckRoom(RoomData room)
     {
-        if(Physics.OverlapBox(room.position, room.size/2*0.999f, Quaternion.identity, m_LayerMask).Length!=0)
+        room.bounds.Expand(-0.001f);
+        foreach (RoomData placedRoom in rooms)
         {
-            return false;
-            //return true;
+            
+            if (room.bounds.Intersects(placedRoom.bounds))
+            {
+                return false;
+            }
+           
         }
-        return true;     
-    }
-    private void RandomizeArray(Vector3[] arr)
-    {
-        for (var i = arr.Length - 1; i > 0; i--)
-        {
-            var r = Random.Range(0, i);
-            var tmp = arr[i];
-            arr[i] = arr[r];
-            arr[r] = tmp;
-        }
+        room.bounds.Expand(0.001f);
+        return true;
     }
     //removes all children from this gameobject
     private void ClearMap()
@@ -84,20 +81,30 @@ public class ProceduralMapGenerator : MonoBehaviour
         Transform[] children = transform.GetComponentsInChildren<Transform>();
         foreach (Transform child in children)
         {
-            if(child.gameObject!=gameObject )
+            if (child.gameObject != gameObject)
                 DestroyImmediate(child.gameObject);
         }
     }
     //creates a new object as a child of this script's transform according to the roomData provided
     private void PlaceRoom(RoomData room)
     {
-        GameObject roomObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        roomObj.transform.position = room.position;
+        GameObject roomObj = Instantiate(roomTemplate);
+        roomObj.GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
+        roomObj.transform.position = room.bounds.center;
         roomObj.name = room.name;
-        roomObj.transform.localScale = room.size;
+        roomObj.transform.localScale = room.bounds.size;
         roomObj.transform.parent = transform;
 
     }
+    private Vector3 GetRandomSize()
+    {
+        int width = Random.Range(1, xRange);
+        int height = Random.Range(1, yRange);
+        int length = Random.Range(1, zRange);
+        return new Vector3(width, height, length);
+    }
+}
+    /*
     //creates a new object as a child of this scripts transform while returning the gameObject
     private GameObject tempPlaceRoom(RoomData room)
     {
@@ -122,7 +129,7 @@ public class ProceduralMapGenerator : MonoBehaviour
     {
 
     }
-    */
+    
     private Vector3 GetRandomSize()
     {
         int width = Random.Range(1, xRange);
@@ -236,7 +243,7 @@ public class ProceduralMapGenerator : MonoBehaviour
         }
     }
 }
-
+*/
 
 /*
  * 
