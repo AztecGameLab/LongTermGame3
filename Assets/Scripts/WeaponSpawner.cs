@@ -6,6 +6,8 @@ public class WeaponSpawner : MonoBehaviour
 {
     public GameObject newReciever;
     public GameObject newBarrel;
+    public GameObject newStock;
+    public GameObject newMagazine;
     private int weaponCount;//keep track of weapons spawned
     [SerializeField]//Can be used to set range of the initial values based on player progress
     private float testProgressModifier = 10.0f;
@@ -32,11 +34,18 @@ public class WeaponSpawner : MonoBehaviour
         //GameObject newWeapon = (GameObject)Instantiate(Resources.Load("TestReciever"));
         GameObject reciever = Instantiate(newReciever, new Vector3(0, 0, 0), Quaternion.identity);
         GameObject barrel = Instantiate(newBarrel, reciever.transform.GetChild(0).transform.position, Quaternion.identity);
+        GameObject magazine = Instantiate(newMagazine, reciever.transform.GetChild(1).transform.position, Quaternion.identity);
+        GameObject stock = Instantiate(newStock, reciever.transform.GetChild(2).transform.position, Quaternion.identity);
         newWeapon.AddComponent<WeaponInfo>();
         newWeapon.name = "Weapon" + weaponCount;
         newWeapon.GetComponent<WeaponInfo>().weaponName = newWeapon.name;
         newWeapon.GetComponent<WeaponInfo>().SetInitialValues(testProgressModifier);
         reciever.transform.SetParent(newWeapon.transform);
+        barrel.transform.parent = reciever.transform.GetChild(0);
+        magazine.transform.parent = reciever.transform.GetChild(1);
+        stock.transform.parent = reciever.transform.GetChild(2);
+        newWeapon.AddComponent<MeshCollider>();
+        newWeapon.AddComponent<Rigidbody>();
         //barrel.transform.SetParent(reciever.transform.GetChild(0).transform);
         //Instantiate(newBarrel, new Vector3(0, 0, 0), Quaternion.identity);
         //GameObject barrelSlot = newWeapon.transform.GetChild(0).gameObject;

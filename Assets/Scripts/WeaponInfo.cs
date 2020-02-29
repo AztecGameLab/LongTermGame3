@@ -68,6 +68,7 @@ public class WeaponInfo : MonoBehaviour
 
     void WeaponAttack()
     {
+
         Debug.Log(weaponName + ": Bang!");
     }
 }
