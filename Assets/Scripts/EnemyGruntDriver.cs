@@ -6,31 +6,31 @@ using UnityEngine.AI;
 public class EnemyGruntDriver : Driver
 {
     [SerializeField]
-    float moveSpeed = 5f;
+    private float moveSpeed = 5f;
 
     [SerializeField]
-    float fireRate = 2f;
+    private float fireRate = 2f;
 
     [SerializeField]
-    float alertRadius = 30f;
+    private float alertRadius = 30f;
 
     //distance at which the ai will stop moving towards the player and only shoot
     [SerializeField]
-    float stopRadius = 10f;
+    private float stopRadius = 10f;
 
     //need a way to get the player position
-    Transform player;
+    private Transform player;
 
     //where the enemy is going
-    Vector3 move;
+    private Vector3 move;
 
     //where the enemy is looking
-    Vector3 look;
+    private Vector3 look;
 
-    bool isAlerted;
-    bool shouldShoot;
+    private bool isAlerted;
+    private bool shouldShoot;
 
-    float timeLastShot;
+    private float timeLastShot;
 
 
     // Start is called before the first frame update
@@ -70,10 +70,9 @@ public class EnemyGruntDriver : Driver
                 shouldShoot = false;
         }
     }
-    public override Quaternion GetHorizontalLook()
+    public override float GetHorizontalLook()
     {
-        //I'm not sure how to separate look into a horizontal and vertical quaternion. Maybe just using this for both works
-        return Quaternion.LookRotation(look, Vector3.up);
+        return look.y;
     }
 
     public override bool GetMeleeWeapon()
@@ -96,10 +95,9 @@ public class EnemyGruntDriver : Driver
         return false;
     }
 
-    public override Quaternion GetVerticalLook()
+    public override float GetVerticalLook()
     {
-        //not sure if this would work
-        return Quaternion.LookRotation(look, Vector3.up);
+        return look.x;
     }
 
     public override bool interact()

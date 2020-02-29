@@ -28,8 +28,8 @@ public class EntityController : MonoBehaviour
     private void Aim()
     {
         Transform childTransform = transform.GetChild(0).transform;
-        childTransform.localRotation = driver.GetVerticalLook();
-        transform.rotation = driver.GetHorizontalLook();
+        childTransform.localRotation = Quaternion.Euler(new Vector3(driver.GetVerticalLook(), 0, 0));
+        transform.rotation = Quaternion.Euler(new Vector3(0, driver.GetHorizontalLook(), 0));
     }
 
     private void Movement()

@@ -5,8 +5,8 @@ using UnityEngine;
 public abstract class Driver : MonoBehaviour
 {
     public abstract Vector3 GetMovement();
-    public abstract Quaternion GetVerticalLook();
-    public abstract Quaternion GetHorizontalLook();
+    public abstract float GetVerticalLook();
+    public abstract float GetHorizontalLook();
     public abstract bool GetPrimaryWeapon();
     public abstract bool GetSecondaryWeapon();
     public abstract bool GetMeleeWeapon();

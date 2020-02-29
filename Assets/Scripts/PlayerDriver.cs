@@ -29,20 +29,18 @@ public class PlayerDriver : Driver
     // Represent mouse position, modified by sensitivity.
     private float mouseX, mouseY;
 
+    // Represent the current rotation along the y and x axes in degrees.
+    private float horizontalLook, verticalLook;
+
     // Mouse sensitivity: 100 = 100%.
     [SerializeField]
-    public float sensitivity = 100f;
-
-    // The transform of the child gameObject (camera).
-    private Transform cameraTransform;
-
-    // Value to keep track of up and down camera rotation for the purpose of clamping.
-    private float verticalRotation = 0f;
+    private float sensitivity = 100f;
 
     private void Awake()
     {
         verticalVelocity = new Vector3();
-        cameraTransform = transform.GetChild(0).transform;
+        horizontalLook = transform.eulerAngles.y;
+        verticalLook = transform.eulerAngles.x;
     }
 
     public override Vector3 GetMovement()
@@ -84,47 +82,30 @@ public class PlayerDriver : Driver
         return Physics.CheckSphere(transform.position + Vector3.down, .4f, LayerMask.GetMask("Ground"));
     }
 
-    public override Quaternion GetHorizontalLook()
+    public override float GetHorizontalLook()
     {
         // Modifying mouse position based on sensitivity and accounting for framerate.
         mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
 
-        // Returning rotation Quaternion.
-        return transform.rotation * Quaternion.Euler(Vector3.up * mouseX);
+        horizontalLook += mouseX;
+        if (horizontalLook > 360)
+            horizontalLook -= 360;
+        else if (horizontalLook < -360)
+            horizontalLook += 360;
+        return horizontalLook;
     }
 
-    public override Quaternion GetVerticalLook()
+    public override float GetVerticalLook()
     {
         // Modifying mouse position based on sensitivity and accounting for framerate.
         mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
 
-        // Clamping vertical camera rotation.
-        verticalRotation += mouseY;
-        ClampRotation();
-
-        // Returning rotation Quaternion.
-        return cameraTransform.localRotation * Quaternion.Euler(Vector3.left * mouseY);
-    }
-
-    // Clamps camera rotation to hard coded values so you can't look past straight up or down.
-    private void ClampRotation()
-    {
-        if (verticalRotation > 90f)
-        {
-            verticalRotation = 90f;
-            mouseY = 0f;
-            Vector3 eulerRotation = transform.eulerAngles;
-            eulerRotation.x = 270f;
-            cameraTransform.eulerAngles = eulerRotation;
-        }
-        else if (verticalRotation < -90f)
-        {
-            verticalRotation = -90f;
-            mouseY = 0f;
-            Vector3 eulerRotation = transform.eulerAngles;
-            eulerRotation.x = 90f;
-            cameraTransform.eulerAngles = eulerRotation;
-        }
+        verticalLook -= mouseY;
+        if (verticalLook > 90)
+            verticalLook = 90;
+        else if (verticalLook < -90)
+            verticalLook = -90;
+        return verticalLook;
     }
 
     public override bool GetPrimaryWeapon()
