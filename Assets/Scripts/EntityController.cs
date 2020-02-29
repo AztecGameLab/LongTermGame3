@@ -6,11 +6,13 @@ public class EntityController : MonoBehaviour
 {
     private Driver driver;
     private CharacterController characterController;
+    private Transform childTransform;
 
     private void Awake()
     {
         driver = GetComponent<Driver>();
         characterController = GetComponent<CharacterController>();
+        childTransform = transform.GetChild(0).transform;
     }
 
     private void Start()
@@ -27,9 +29,8 @@ public class EntityController : MonoBehaviour
 
     private void Aim()
     {
-        Transform childTransform = transform.GetChild(0).transform;
-        childTransform.localRotation = Quaternion.Euler(new Vector3(driver.GetVerticalLook(), 0, 0));
-        transform.rotation = Quaternion.Euler(new Vector3(0, driver.GetHorizontalLook(), 0));
+        childTransform.localRotation = Quaternion.Euler(driver.GetVerticalLook() * Vector3.right);
+        transform.rotation = Quaternion.Euler(driver.GetHorizontalLook() * Vector3.up);
     }
 
     private void Movement()
