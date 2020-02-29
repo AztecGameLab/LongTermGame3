@@ -246,8 +246,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 041a5de6f00e292498ed87fab515910a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponToSpawn: {fileID: 0}
-  weaponInfo: {fileID: 0}
+  newReciever: {fileID: 5755156039758427924, guid: 6e5a95e9c8b541f40ab12c6b523fe19c,
+    type: 3}
+  newBarrel: {fileID: 1287703027292005933, guid: bd2ad322a96d98248a6192af7e1abf73,
+    type: 3}
   testProgressModifier: 2.64
 --- !u!1 &1466875051
 GameObject:
