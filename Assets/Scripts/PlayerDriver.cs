@@ -7,6 +7,11 @@ public class PlayerDriver : Driver
     // Represent movement values for horizontal and vertical axes.
     private float x, z;
 
+    [SerializeField]
+    private AnimationCurve curve;
+
+    private bool coroutineRunning;
+
     private Vector3 horizontalVelocity;
     private Vector3 verticalVelocity;
 
@@ -38,6 +43,7 @@ public class PlayerDriver : Driver
 
     private void Awake()
     {
+        horizontalVelocity = new Vector3();
         verticalVelocity = new Vector3();
         horizontalLook = transform.eulerAngles.y;
         verticalLook = transform.eulerAngles.x;
@@ -56,7 +62,19 @@ public class PlayerDriver : Driver
         if (GroundCheck() && verticalVelocity.y < 0)
         {
             // Regular ground movement.
-            horizontalVelocity = Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1f) * speed * modifier;
+            //horizontalVelocity = Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1f) * speed * modifier;
+            
+            if (!coroutineRunning && z > -0.01f && z < 0.01f && x > -0.01f && x < 0.01f)
+            {
+                StartCoroutine(Decelerate());
+            }
+            else
+            {
+                StopAllCoroutines();
+                horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity / speed / modifier + transform.right * x * 0.35f + transform.forward * z * 0.35f, 1f) * speed * modifier;
+            }
+                
+
 
             // Space key to jump, adds vertical velocity.
             if (Input.GetKeyDown(KeyCode.Space))
@@ -73,6 +91,17 @@ public class PlayerDriver : Driver
 
         // Combine our vertical and horizontal velocities.
         return verticalVelocity + horizontalVelocity;
+    }
+
+    private IEnumerator Decelerate()
+    {
+        float time = 0f;
+        for (; ;)
+        {
+            time += Time.deltaTime;
+            horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity / speed / modifier, curve.Evaluate(time)) * speed * modifier;
+            yield return null;
+        }
     }
 
     // Returns true if player is grounded, false otherwise.
