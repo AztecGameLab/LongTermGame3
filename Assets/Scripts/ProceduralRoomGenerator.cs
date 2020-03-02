@@ -8,6 +8,8 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public bool defaultRoomData=false;
     public RoomData testData;
     public GameObject floorTile;
+    public GameObject doorPrefab;
+    public Vector2 doorDimensions;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +27,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         Walls();
         Ceiling();
     }
+    //create the floor
     private void Floor()
     {
         for(int i = 0; i < myRoom.bounds.size.x;i++)
@@ -37,15 +40,18 @@ public class ProceduralRoomGenerator : MonoBehaviour
             }
         }
     }
+    
     private void Walls()
     {
         for (int i = 0; i < myRoom.bounds.size.y ; i++)
         {
             for (int j = 0; j < myRoom.bounds.size.z ; j++)
             {
+                //left wall
                 GameObject tile = Instantiate(floorTile, transform);
                 tile.transform.localPosition = -myRoom.bounds.extents + new Vector3(0.5f, i, j) +Vector3.right*(myRoom.bounds.size.x-1);
                 tile.transform.rotation = Quaternion.LookRotation(Vector3.right);
+                //right wall
                 tile = Instantiate(floorTile, transform);
                 tile.transform.localPosition = -myRoom.bounds.extents + new Vector3(-0.5f, i, j) ;
                 tile.transform.rotation = Quaternion.LookRotation(Vector3.left);
@@ -55,9 +61,11 @@ public class ProceduralRoomGenerator : MonoBehaviour
         {
             for (int j = 0; j < myRoom.bounds.size.x ; j++)
             {
+                //back wall
                 GameObject tile = Instantiate(floorTile, transform);
                 tile.transform.localPosition = -myRoom.bounds.extents + new Vector3(j, i, 0.5f) + Vector3.forward * (myRoom.bounds.size.z - 1);
                 tile.transform.rotation = Quaternion.LookRotation(Vector3.forward);
+                //forward wall
                 tile = Instantiate(floorTile, transform);
                 tile.transform.localPosition = -myRoom.bounds.extents + new Vector3(j, i, -0.5f);
                 tile.transform.rotation = Quaternion.LookRotation(Vector3.back);

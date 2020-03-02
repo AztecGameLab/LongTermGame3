@@ -335,10 +335,17 @@ MonoBehaviour:
         m_Extent: {x: 0, y: 0, z: 0}
       name: 
       connections: []
+      doors: []
       type: 
+    doors:
+    - wall: {x: 1, y: 0, z: 0}
+      wallPosition: {x: 5, y: 0}
     type: 
   floorTile: {fileID: 6609555836500725476, guid: 9bd4e00193fd522428740a1631dfb072,
     type: 3}
+  doorPrefab: {fileID: 5160797226196359977, guid: 815ba8a74d9d08640b462f5b3b1f7952,
+    type: 3}
+  doorDimensions: {x: 1, y: 1}
 --- !u!4 &1718084379
 Transform:
   m_ObjectHideFlags: 0
