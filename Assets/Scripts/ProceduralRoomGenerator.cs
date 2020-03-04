@@ -43,18 +43,38 @@ public class ProceduralRoomGenerator : MonoBehaviour
     
     private void Walls()
     {
+        Vector2 doorHoleLoc;
+        doorHoleLoc.x = myRoom.bounds.center.x;
+        doorHoleLoc.y = 0;
         for (int i = 0; i < myRoom.bounds.size.y ; i++)
         {
             for (int j = 0; j < myRoom.bounds.size.z ; j++)
             {
                 //left wall
-                GameObject tile = Instantiate(floorTile, transform);
-                tile.transform.localPosition = -myRoom.bounds.extents + new Vector3(0.5f, i, j) +Vector3.right*(myRoom.bounds.size.x-1);
-                tile.transform.rotation = Quaternion.LookRotation(Vector3.right);
+                GameObject tile;
+                if (!(i == doorHoleLoc.y && j == doorHoleLoc.x))
+                {
+                    tile = Instantiate(floorTile, transform);
+                    tile.transform.localPosition = -myRoom.bounds.extents + new Vector3(0.5f, i, j) + Vector3.right * (myRoom.bounds.size.x - 1);
+                    tile.transform.rotation = Quaternion.LookRotation(Vector3.right);
+                } else
+                {
+                    tile = Instantiate(doorPrefab, transform);
+                    tile.transform.localPosition = -myRoom.bounds.extents + new Vector3(0.5f, i, j) + Vector3.right * (myRoom.bounds.size.x - 1);
+                    tile.transform.rotation = Quaternion.LookRotation(Vector3.right);
+                }
                 //right wall
-                tile = Instantiate(floorTile, transform);
-                tile.transform.localPosition = -myRoom.bounds.extents + new Vector3(-0.5f, i, j) ;
-                tile.transform.rotation = Quaternion.LookRotation(Vector3.left);
+                if (!(i == doorHoleLoc.y && j == doorHoleLoc.x))
+                {
+                    tile = Instantiate(floorTile, transform);
+                    tile.transform.localPosition = -myRoom.bounds.extents + new Vector3(-0.5f, i, j);
+                    tile.transform.rotation = Quaternion.LookRotation(Vector3.left);
+                } else {
+                    tile = Instantiate(doorPrefab, transform);
+                    tile.transform.localPosition = -myRoom.bounds.extents + new Vector3(-0.5f, i, j);
+                    tile.transform.rotation = Quaternion.LookRotation(Vector3.left);
+                }
+
             }
         }
         for (int i = 0; i < myRoom.bounds.size.y ; i++)
