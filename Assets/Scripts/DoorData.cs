@@ -4,6 +4,8 @@ using UnityEngine;
 [System.Serializable]
 public struct DoorData
 {
+
+    public string wallSide;//TEMP VARIABLE. WILL REMOVE. Placeholder for wall.
     public Vector3 wall;//represents the direction of the wall the door should be on. 
     public Vector2Int wallPosition;//represents the tile of the wall the door is on, this will be the lower left corner of the door
                                    // this position is measured from the lower left corner of the wall
