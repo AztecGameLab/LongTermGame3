@@ -51,7 +51,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
                 {
                     //left wall
                     GameObject tile;
-                    if (!(doors.wallPosition.x == j && doors.wallPosition.y == i && doors.wallSide.Equals("left")))
+                    if (!(doors.wallPosition.x == j && doors.wallPosition.y == i))
                     {
                         tile = Instantiate(floorTile, transform);
                         tile.transform.localPosition = -myRoom.bounds.extents + new Vector3(0.5f, i, j) + Vector3.right * (myRoom.bounds.size.x - 1);
@@ -65,7 +65,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
                     }
 
                     //right wall
-                    if (!(doors.wallPosition.x == j && doors.wallPosition.y == i && doors.wallSide.Equals("right")))
+                    if (!(doors.wallPosition.x == j && doors.wallPosition.y == i))
                     {
                         tile = Instantiate(floorTile, transform);
                         tile.transform.localPosition = -myRoom.bounds.extents + new Vector3(-0.5f, i, j);
