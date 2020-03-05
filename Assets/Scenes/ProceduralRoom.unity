@@ -327,7 +327,7 @@ MonoBehaviour:
   testData:
     bounds:
       m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 10, y: 10, z: 10}
+      m_Extent: {x: 1.5, y: 1.5, z: 1.5}
     name: TestRoom
     connections:
     - bounds:
@@ -338,8 +338,12 @@ MonoBehaviour:
       doors: []
       type: 
     doors:
-    - wall: {x: 1, y: 0, z: 0}
-      wallPosition: {x: 5, y: 0}
+    - wallSide: 
+      wall: {x: 1, y: 0, z: 0}
+      wallPosition: {x: 1, y: 0}
+    - wallSide: 
+      wall: {x: -1, y: 0, z: 0}
+      wallPosition: {x: 1, y: 0}
     type: 
   floorTile: {fileID: 6609555836500725476, guid: 9bd4e00193fd522428740a1631dfb072,
     type: 3}
