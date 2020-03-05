@@ -7,15 +7,15 @@ public class Driver : MonoBehaviour
     private Transform _player;
     public Transform player{
         get{
-            if(_player != null){
-                _player = this.GetComponent<PlayerDriver>().transform;
+            if(_player == null){
+                _player = GameObject.FindObjectOfType<PlayerDriver>().transform;
             }
             return _player;
         }
     }
 
     void Awake(){
-        _player = this.GetComponent<PlayerDriver>().transform;
+    
     }
 
     public virtual Vector3 GetMovement(){return Vector3.zero;}
