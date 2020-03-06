@@ -24,12 +24,12 @@ public class ProceduralRoomGenerator : MonoBehaviour
         myRoom = data;
         transform.position = myRoom.bounds.center;
         //six surfaces for a basic room
-        CreateSurface(Vector3.up, myRoom.bounds.size.x, myRoom.bounds.size.y, myRoom.bounds.extents.y);
-        CreateSurface(Vector3.down, myRoom.bounds.size.x, myRoom.bounds.size.y, myRoom.bounds.extents.y);
-        CreateSurface(Vector3.left, myRoom.bounds.size.y, myRoom.bounds.size.z, myRoom.bounds.extents.y);
-        CreateSurface(Vector3.right, myRoom.bounds.size.y, myRoom.bounds.size.z, myRoom.bounds.extents.y);
-        CreateSurface(Vector3.forward, myRoom.bounds.size.x, myRoom.bounds.size.z, myRoom.bounds.extents.y);
-        CreateSurface(Vector3.back, myRoom.bounds.size.x, myRoom.bounds.size.z, myRoom.bounds.extents.y);
+        CreateSurface(Vector3.up, myRoom.bounds.size.z, myRoom.bounds.size.x, myRoom.bounds.extents.y);
+        CreateSurface(Vector3.down, myRoom.bounds.size.z, myRoom.bounds.size.x, myRoom.bounds.extents.y);
+        CreateSurface(Vector3.left, myRoom.bounds.size.y, myRoom.bounds.size.z, myRoom.bounds.extents.x);
+        CreateSurface(Vector3.right, myRoom.bounds.size.y, myRoom.bounds.size.z, myRoom.bounds.extents.x);
+        CreateSurface(Vector3.forward, myRoom.bounds.size.y, myRoom.bounds.size.x, myRoom.bounds.extents.z);
+        CreateSurface(Vector3.back, myRoom.bounds.size.y, myRoom.bounds.size.x, myRoom.bounds.extents.z);
         //Floor();
         //Walls();
         //Ceiling();
