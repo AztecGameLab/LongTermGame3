@@ -56,11 +56,10 @@ public class EnemyGhostDriver : Driver
             look = (player.position - transform.position).normalized;
             move = look * moveSpeed;
 
-            look = transform.InverseTransformDirection(look);
-            lookHorizontal = Vector3.Angle(Vector3.forward, look);
-            print("horizontal look: " + lookHorizontal);
-            lookVertical = Vector3.Angle(Vector3.right, look);
-            print("vertical look: " + lookVertical);
+            //look = transform.InverseTransformDirection(look);
+            Quaternion lookQuat = Quaternion.LookRotation(look, Vector3.up);
+            lookHorizontal = lookQuat.eulerAngles.y + 90;
+            lookVertical = lookQuat.eulerAngles.z;
             
 
             //checks if ai should shoot weapon. GetPrimaryWeapon() returns shouldShoot.
