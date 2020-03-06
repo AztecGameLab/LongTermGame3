@@ -42,23 +42,23 @@ public class WeaponComponentGenerator : MonoBehaviour
         choice = recievers[recieverChoice];
         Debug.Log(choice);
 
-        if (recieverChoice == 0)
+        if (recieverChoice == 0) // Standard
         {
             weapon.isAutomatic = false;
             weapon.projectileCount = 1;
         }
-        else if (recieverChoice == 1)
+        else if (recieverChoice == 1) // Automatic
         {
             weapon.isAutomatic = true;
             weapon.projectileCount = 1;
             weapon.fireRate += weapon.fireRate * 0.5f;
         }
-        else if (recieverChoice == 2)
+        else if (recieverChoice == 2) // Shotgun
         {
             weapon.isAutomatic = false;
             weapon.projectileCount = 4 * (int)weapon.testProgressModifier;
         }
-        else
+        else // Sniper
         {
             weapon.isAutomatic = false;
             weapon.projectileCount = 1;
@@ -91,17 +91,17 @@ public class WeaponComponentGenerator : MonoBehaviour
     {
         magazineChoice = (int)Random.Range(0.0f, 2.0f);
         Debug.Log(magazines[magazineChoice]);
-        if(magazineChoice == 0)
+        if(magazineChoice == 0) // Standard
         {
             
         }
 
-        else if (magazineChoice == 1)
+        else if (magazineChoice == 1) // Quick
         {
             weapon.ammoSize -= (int)(weapon.ammoSize * 0.15f);
             weapon.reloadSpeed += weapon.reloadSpeed * 0.15f;
         }
-        else
+        else // Extended
         {
             weapon.ammoSize += (int)(weapon.ammoSize * 0.15f);
             weapon.reloadSpeed -= weapon.reloadSpeed * 0.15f;
@@ -111,19 +111,19 @@ public class WeaponComponentGenerator : MonoBehaviour
     {
         stockChoice = (int)Random.Range(0.0f, 2.0f);
         Debug.Log(stocks[stockChoice]);
-        if (stockChoice == 0)
+        if (stockChoice == 0) // standard
         {
 
         }
 
-        else if (stockChoice == 1)
+        else if (stockChoice == 1) // compact
         {
             weapon.recoil += weapon.recoil * 0.20f;
             weapon.accuracy -= weapon.accuracy * 0.15f;
             weapon.weight -= weapon.weight * 0.30f;
             weapon.reloadSpeed += weapon.reloadSpeed * 0.15f;
         }
-        else
+        else // heavy
         {
             weapon.recoil -= weapon.recoil * 0.20f;
             weapon.ammoSize += (int)(weapon.ammoSize * 0.15f);
