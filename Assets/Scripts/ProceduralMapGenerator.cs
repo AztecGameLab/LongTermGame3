@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class ProceduralMapGenerator : MonoBehaviour
 {
     private List<RoomData> rooms;
@@ -16,6 +16,8 @@ public class ProceduralMapGenerator : MonoBehaviour
     [Range(0, 1)]
     public float branchChance = 1;
     public GameObject roomTemplate;
+    public ProceduralRoomGenerator roomGenerator;
+    public bool isGenerateInterior;
     Vector3[] directions =
     {
         Vector3.left,
@@ -50,6 +52,7 @@ public class ProceduralMapGenerator : MonoBehaviour
         if (rooms.Count >= maxSize)
             return;
         RoomData dumbRoom = new RoomData();
+        dumbRoom.doors = new List<DoorData>();
         if (!AttemptSpawnRoom(dumbRoom, entrancePos, direction))
             backTrack();
     }
@@ -157,13 +160,17 @@ public class ProceduralMapGenerator : MonoBehaviour
     //creates a new object as a child of this script's transform according to the roomData provided
     private void PlaceRoom(RoomData room)
     {
-        GameObject roomObj = Instantiate(roomTemplate);
-        roomObj.GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
-        roomObj.transform.position = room.bounds.center;
-        roomObj.name = room.name;
-        roomObj.transform.localScale = room.bounds.size;
-        roomObj.transform.parent = transform;
-
+        if (isGenerateInterior)
+            roomGenerator.CreateRoom(room);
+        else
+        {
+            GameObject roomObj = Instantiate(roomTemplate);
+            roomObj.GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
+            roomObj.transform.position = room.bounds.center;
+            roomObj.name = room.name;
+            roomObj.transform.localScale = room.bounds.size;
+            roomObj.transform.parent = transform;
+        }
     }
     private Vector3 GetRandomSize()
     {

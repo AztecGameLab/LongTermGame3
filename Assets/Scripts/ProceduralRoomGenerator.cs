@@ -10,6 +10,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public GameObject floorTile;
     public GameObject doorPrefab;
     public Vector2 doorDimensions;
+    Transform roomLocation;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +23,8 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public void CreateRoom(RoomData data)
     {
         myRoom = data;
-        transform.position = myRoom.bounds.center;
+        roomLocation = new GameObject(myRoom.name).transform;
+        roomLocation.position = myRoom.bounds.center / 2;
         //six surfaces for a basic room
         CreateSurface(Vector3.up, myRoom.bounds.size.z, myRoom.bounds.size.x, myRoom.bounds.extents.y);
         CreateSurface(Vector3.down, myRoom.bounds.size.z, myRoom.bounds.size.x, myRoom.bounds.extents.y);
@@ -39,9 +41,9 @@ public class ProceduralRoomGenerator : MonoBehaviour
     {
         //create an object to hold all the tiles in the wall
         GameObject surface = new GameObject("surface");
-        surface.transform.parent = transform;
+        surface.transform.parent = roomLocation;
         //move it <distance> out from center
-        surface.transform.localPosition = transform.position + (-dir) * (distance);
+        surface.transform.localPosition = roomLocation.position + (-dir) * (distance);
         //make it face dir
         surface.transform.rotation = Quaternion.LookRotation(-dir);
         //spawn tiles
