@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyGhostDriver : Driver
 {
     [SerializeField]
-    private float moveSpeed = 5f;
+    private float moveSpeed = 1f;
 
     [SerializeField]
     private float fireRate = 2f;
@@ -23,6 +23,8 @@ public class EnemyGhostDriver : Driver
 
     //where the enemy is looking
     private Vector3 look;
+    private float lookHorizontal;
+    private float lookVertical;
 
     private bool isAlerted;
     private bool shouldMelee;
@@ -53,6 +55,12 @@ public class EnemyGhostDriver : Driver
             //find movement and look vectors, moves ghost towards player
             look = (player.position - transform.position).normalized;
             move = look * moveSpeed;
+
+            look = transform.InverseTransformDirection(look);
+            lookHorizontal = Vector3.Angle(Vector3.forward, look);
+            print("horizontal look: " + lookHorizontal);
+            lookVertical = Vector3.Angle(Vector3.right, look);
+            print("vertical look: " + lookVertical);
             
 
             //checks if ai should shoot weapon. GetPrimaryWeapon() returns shouldShoot.
@@ -64,7 +72,7 @@ public class EnemyGhostDriver : Driver
     }
     public override float GetHorizontalLook()
     {
-        return look.y;
+        return lookHorizontal;
     }
 
     public override bool GetMeleeWeapon()
@@ -89,7 +97,7 @@ public class EnemyGhostDriver : Driver
 
     public override float GetVerticalLook()
     {
-        return look.x;
+        return lookVertical;
     }
 
     public override bool interact()
