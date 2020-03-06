@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class EnvironmentalTrigger : MonoBehaviour
+public class RegularDoor : Interactable
 {
+    public UnityEvent door = new UnityEvent();
     // Start is called before the first frame update
     void Start()
     {
@@ -16,12 +18,9 @@ public class EnvironmentalTrigger : MonoBehaviour
         
     }
 
+    //Function to open the door
 
-    private void OnTriggerStay(Collider other)
-    {
-        if(other.transform.tag.Equals("Player"))
-        {
+    //Function to close the door
 
-        }
-    }
+    
 }
