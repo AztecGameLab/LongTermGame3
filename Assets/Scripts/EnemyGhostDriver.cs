@@ -58,7 +58,7 @@ public class EnemyGhostDriver : Driver
 
             //look = transform.InverseTransformDirection(look);
             Quaternion lookQuat = Quaternion.LookRotation(look, Vector3.up);
-            lookHorizontal = lookQuat.eulerAngles.y + 90;
+            lookHorizontal = lookQuat.eulerAngles.y;
             lookVertical = lookQuat.eulerAngles.z;
             
 
