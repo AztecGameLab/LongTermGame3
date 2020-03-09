@@ -23,10 +23,14 @@ public class WeaponInfo : MonoBehaviour
  
     public float testProgressModifier;
 
-    public GameObject bullet;
+    public GameObject bullet;  //Used for now if no ProjectileSpawner
+
+    private ProjectileSpawner projectileSpawner;
+
     void Start()
     {
         bullet = (GameObject)Resources.Load<GameObject>("Bullet");
+        projectileSpawner = gameObject.GetComponent<ProjectileSpawner>();
     }
 
     // Update is called once per frame
@@ -41,15 +45,29 @@ public class WeaponInfo : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                WeaponAttack();
+                if (projectileSpawner != null)
+                {
+                    projectileSpawner.OnWeaponTrigger();
+                }
+                else
+                {
+                    WeaponAttack();                    
+                }
             }
         }
         
         else if (!isAutomatic)
         {
-            if (Input.GetMouseButtonDown(0))//Left Click
+            if (Input.GetMouseButtonDown(0)) //Left Click
             {
-                WeaponAttack();
+                if (projectileSpawner != null)
+                {
+                    projectileSpawner.OnWeaponTrigger();
+                }
+                else
+                {
+                    WeaponAttack();
+                }
             }
         }
         
@@ -100,6 +118,7 @@ public class WeaponInfo : MonoBehaviour
                 newBullet.GetComponent<Rigidbody>().velocity = new Vector3(newBullet.GetComponent<Rigidbody>().velocity.x, newBullet.GetComponent<Rigidbody>().velocity.y, newBullet.GetComponent<Rigidbody>().velocity.z * (Random.Range(1.0f, accuracy)));
             }
         }
+
         Debug.Log(weaponName + ": Bang!");
     }
 }

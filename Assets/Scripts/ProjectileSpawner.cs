@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class ProjectileSpawner : MonoBehaviour
 {
-    public float muzzleVelocity;
-    public float caliber;
-    public float caliberToLength = 2.0f;
-    public float accuracy = 0.9f;
-    public float targetDistance = 50.0f;
+    //public float muzzleVelocity;
+    //public float caliber;
+    //public float accuracy = 0.9f;
+    //public float caliberToLength = 2.0f;
+    //public Vector3 weaponToMuzzle = new Vector3(0, 0, 0);   //Offset from weapon position to muzzle
 
-    public Vector3 shootFrom;
+    public float targetDistance = 50.0f;                    //Distance to crosshair
+    public Vector2 weaponOffsetXY = new Vector2(0, 0);      //Offset from weapon to crosshair center
 
     public GameObject projectilePrefab;
+
+    private WeaponInfo weaponInfo;
+    private AmmoTypeInfo ammoTypeInfo;
+
+    private float minFireSpan;
+    private float lastFireTime;
 
     class ProjectilePool
     {
@@ -55,37 +62,68 @@ public class ProjectileSpawner : MonoBehaviour
         }
     }
 
-    void Update()
+    void Start()
     {
-        //To do:  Move this script into the Weapon GameObject, then call SpawnProjectile from the weapon instead.
-        if (Input.GetKeyDown("space"))
+        weaponInfo = gameObject.GetComponent<WeaponInfo>();
+        ammoTypeInfo = gameObject.GetComponent<AmmoTypeInfo>();
+
+        if (ammoTypeInfo == null)
         {
-            SpawnProjectile(null, null);
+            ammoTypeInfo = gameObject.AddComponent<AmmoTypeInfo>();
+            AmmoTypeInfo.DefaultAmmoType(ammoTypeInfo);
+        }
+
+        minFireSpan = 60.0f / weaponInfo.fireRate;  //Fire rate as RPM
+        lastFireTime = 0;
+    }
+
+    public void OnWeaponTrigger()
+    {
+        float fireTime = Time.time;
+        float fireSpan = fireTime - lastFireTime;
+     
+        if (fireSpan > minFireSpan)
+        {
+            lastFireTime = fireTime;
+            SpawnProjectile();
         }
     }
 
-    public void SpawnProjectile(WeaponInfo weapon, AmmoTypeInfo ammoType)
+    private Transform GetBarrel()
+    {
+        Transform result = gameObject.transform;
+
+        if (result.childCount > 0) result = result.GetChild(0);
+        if (result.childCount > 0) result = result.GetChild(0);
+
+        return result;
+    }
+
+    private void SpawnProjectile()
     {
         GameObject projectile = projectilePool.GetNext();
+                
+        Vector3 shootFrom = GetBarrel().position;
+        Vector3 shootAt = shootFrom + gameObject.transform.rotation * new Vector3(weaponOffsetXY.x, weaponOffsetXY.y, targetDistance);
 
-        ProjectileInfo info = projectile.GetComponent<ProjectileInfo>();
-        info.startPosition = shootFrom;
-        info.weapon = weapon;
-        info.ammoType = ammoType;
-
-        Vector3 shootAt = new Vector3(0, targetDistance * 0.1f, targetDistance);
-        float scaledErrorX = targetDistance * (1.0f - accuracy);
+        float scaledErrorX = targetDistance * (1.0f - weaponInfo.accuracy);
         float scaledErrorY = scaledErrorX * 0.5f;
+
         Vector3 target = shootAt + new Vector3(Random.Range(-scaledErrorX, scaledErrorX), Random.Range(-scaledErrorY, scaledErrorY), 0.0f);
         Quaternion rotation = Quaternion.LookRotation(target - shootFrom, Vector3.up);
 
-        Vector3 scale = new Vector3(caliber, caliber * caliberToLength, caliber);
+        ProjectileInfo info = projectile.GetComponent<ProjectileInfo>();
+        info.startPosition = shootFrom;
+        info.weaponInfo = weaponInfo;
+        info.ammoTypeInfo = ammoTypeInfo;
+
+        Vector3 scale = new Vector3(ammoTypeInfo.caliber, ammoTypeInfo.caliber * ammoTypeInfo.caliberToLength, ammoTypeInfo.caliber);
         projectile.transform.position = shootFrom;
         projectile.transform.localScale = scale;
 
         Rigidbody body = projectile.GetComponent<Rigidbody>();
 
-        Vector3 direction = new Vector3(0, 0, muzzleVelocity);
+        Vector3 direction = new Vector3(0, 0, weaponInfo.muzzleVelocity);
         projectile.transform.rotation = rotation * Quaternion.Euler(90.0f, 0.0f, 0.0f);
         body.velocity = rotation * direction;
     }
