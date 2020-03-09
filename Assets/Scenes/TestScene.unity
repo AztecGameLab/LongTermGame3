@@ -329,12 +329,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 602598733}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.653, y: 0.0070000887, z: -0.10200024}
-  m_LocalScale: {x: 1.3477731, y: 1.0147836, z: 0.16742535}
+  m_LocalRotation: {x: -0, y: -0.0012035525, z: -0, w: 0.9999993}
+  m_LocalPosition: {x: -3.7187161, y: 1.19, z: -6.837616}
+  m_LocalScale: {x: 1.186866, y: 1.0147836, z: 0.16742532}
   m_Children: []
-  m_Father: {fileID: 2097717261}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &602598735
 BoxCollider:
@@ -589,12 +589,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1071953721}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.653, y: 0.0070000887, z: -0.10200024}
-  m_LocalScale: {x: 1.3477731, y: 1.0147836, z: 0.16742535}
+  m_LocalRotation: {x: -0, y: -0.0012035525, z: -0, w: 0.9999993}
+  m_LocalPosition: {x: -0.2957161, y: 1.19, z: -6.828616}
+  m_LocalScale: {x: 1.186866, y: 1.0147836, z: 0.16742532}
   m_Children: []
-  m_Father: {fileID: 2032014785}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1257085175
 GameObject:
@@ -1090,8 +1090,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0.0012035525, z: -0, w: 0.9999993}
   m_LocalPosition: {x: -0.871, y: 1.183, z: -6.728}
   m_LocalScale: {x: 0.8806127, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1071953725}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: -0.13800001, z: 0}
@@ -1121,8 +1120,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0.0012035525, z: -0, w: 0.9999993}
   m_LocalPosition: {x: -4.294, y: 1.183, z: -6.737}
   m_LocalScale: {x: 0.8806127, y: 1, z: 1}
-  m_Children:
-  - {fileID: 602598734}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: -0.13800001, z: 0}
