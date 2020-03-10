@@ -12,7 +12,7 @@ public class WeaponSpawner : MonoBehaviour
     
     private int weaponCount;//keep track of weapons spawned
     [SerializeField]//Can be used to set range of the initial values based on player progress
-    private float testProgressModifier = 10.0f;
+    private float testProgressModifier = 50.0f;
     // Start is called before the first frame update
     void Start()
     {

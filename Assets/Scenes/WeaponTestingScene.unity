@@ -255,7 +255,7 @@ MonoBehaviour:
     type: 3}
   newMagazine: {fileID: 3581487155278247635, guid: c8a420e0c9ab06347b3fe8f9c6caeee2,
     type: 3}
-  testProgressModifier: 2.64
+  testProgressModifier: 50
 --- !u!1 &1374619049
 GameObject:
   m_ObjectHideFlags: 0
