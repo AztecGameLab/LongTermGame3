@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class WeaponSpawner : MonoBehaviour
 {
+    public WeaponComponentGenerator compGen;
     public GameObject newReciever;
     public GameObject newBarrel;
     public GameObject newStock;
     public GameObject newMagazine;
+    
     private int weaponCount;//keep track of weapons spawned
     [SerializeField]//Can be used to set range of the initial values based on player progress
     private float testProgressModifier = 10.0f;
@@ -15,6 +17,7 @@ public class WeaponSpawner : MonoBehaviour
     void Start()
     {
         weaponCount = 0;
+        compGen = gameObject.AddComponent<WeaponComponentGenerator>();
     }
 
     // Update is called once per frame
@@ -31,11 +34,10 @@ public class WeaponSpawner : MonoBehaviour
     {
         weaponCount++;
         GameObject newWeapon = new GameObject();
-        //GameObject newWeapon = (GameObject)Instantiate(Resources.Load("TestReciever"));
-        GameObject reciever = Instantiate(newReciever, new Vector3(0, 0, 0), Quaternion.identity);
-        GameObject barrel = Instantiate(newBarrel, reciever.transform.GetChild(0).transform.position, Quaternion.identity);
-        GameObject magazine = Instantiate(newMagazine, reciever.transform.GetChild(1).transform.position, Quaternion.identity);
-        GameObject stock = Instantiate(newStock, reciever.transform.GetChild(2).transform.position, Quaternion.identity);
+        GameObject reciever = Instantiate(newReciever, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject barrel = Instantiate(newBarrel, reciever.transform.GetChild(0).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject magazine = Instantiate(newMagazine, reciever.transform.GetChild(1).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject stock = Instantiate(newStock, reciever.transform.GetChild(2).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         newWeapon.AddComponent<WeaponInfo>();
         newWeapon.name = "Weapon" + weaponCount;
         newWeapon.GetComponent<WeaponInfo>().weaponName = newWeapon.name;
@@ -46,9 +48,7 @@ public class WeaponSpawner : MonoBehaviour
         stock.transform.parent = reciever.transform.GetChild(2);
         newWeapon.AddComponent<MeshCollider>();
         newWeapon.AddComponent<Rigidbody>();
-        //barrel.transform.SetParent(reciever.transform.GetChild(0).transform);
-        //Instantiate(newBarrel, new Vector3(0, 0, 0), Quaternion.identity);
-        //GameObject barrelSlot = newWeapon.transform.GetChild(0).gameObject;
-        //barrelSlot = newBarrel;
+        compGen.SetWeaponValues(newWeapon.GetComponent<WeaponInfo>());
+        //newWeapon.AddComponent<ProjectileSpawner>();
     }
 }

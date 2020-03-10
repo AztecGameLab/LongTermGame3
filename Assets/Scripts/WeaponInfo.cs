@@ -20,12 +20,12 @@ public class WeaponInfo : MonoBehaviour
     public float effectiveRange;
     public float damageDropoff;
  
-    private float testProgressModifier;
+    public float testProgressModifier;
 
+    public GameObject bullet;
     void Start()
     {
-        //SetInitialValues(testProgressModifier);
-        //Create components to modify weapon values
+        bullet = (GameObject)Resources.Load<GameObject>("Bullet");
     }
 
     // Update is called once per frame
@@ -36,10 +36,22 @@ public class WeaponInfo : MonoBehaviour
             DisplayValuesTest();
         }
 
-        if (Input.GetMouseButtonDown(0))//Right Click
+        if (isAutomatic)
         {
-            WeaponAttack();
+            if (Input.GetMouseButton(0))
+            {
+                WeaponAttack();
+            }
         }
+        
+        else if (!isAutomatic)
+        {
+            if (Input.GetMouseButtonDown(0))//Left Click
+            {
+                WeaponAttack();
+            }
+        }
+        
     }
 
     //Sets the initial values based on a range of the player's progress
@@ -57,7 +69,7 @@ public class WeaponInfo : MonoBehaviour
         effectiveRange = Random.Range(1.0f, progressModifier);
         damageDropoff = Random.Range(1.0f, progressModifier);
         isAutomatic = (Random.value > 0.5f);
-
+        testProgressModifier = progressModifier;
     }
 
     //test methods to show weapon values and test firing
@@ -68,7 +80,24 @@ public class WeaponInfo : MonoBehaviour
 
     void WeaponAttack()
     {
-
+        for (int i = 0; i < projectileCount; i++)
+        {
+            GameObject newBullet = Instantiate(bullet, transform.GetChild(0).transform.GetChild(0).transform.position, transform.rotation);
+            newBullet.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * 2);
+            int axis = (int)Random.Range(0.0f, 2.0f);
+            if (axis == 0)
+            {
+                newBullet.GetComponent<Rigidbody>().velocity = new Vector3(newBullet.GetComponent<Rigidbody>().velocity.x * (Random.Range(1.0f, accuracy)), newBullet.GetComponent<Rigidbody>().velocity.y, newBullet.GetComponent<Rigidbody>().velocity.z);
+            }
+            else if (axis == 1)
+            {
+                newBullet.GetComponent<Rigidbody>().velocity = new Vector3(newBullet.GetComponent<Rigidbody>().velocity.x , newBullet.GetComponent<Rigidbody>().velocity.y * (Random.Range(1.0f, accuracy)), newBullet.GetComponent<Rigidbody>().velocity.z);
+            }
+            else
+            {
+                newBullet.GetComponent<Rigidbody>().velocity = new Vector3(newBullet.GetComponent<Rigidbody>().velocity.x, newBullet.GetComponent<Rigidbody>().velocity.y, newBullet.GetComponent<Rigidbody>().velocity.z * (Random.Range(1.0f, accuracy)));
+            }
+        }
         Debug.Log(weaponName + ": Bang!");
     }
 }
