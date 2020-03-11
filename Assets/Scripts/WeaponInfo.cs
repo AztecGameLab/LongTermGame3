@@ -19,13 +19,18 @@ public class WeaponInfo : MonoBehaviour
     public float accuracy;
     public float effectiveRange;
     public float damageDropoff;
+    public float weight;
  
     public float testProgressModifier;
 
-    public GameObject bullet;
+    public GameObject bullet;  //Used for now if no ProjectileSpawner
+
+    private ProjectileSpawner projectileSpawner;
+
     void Start()
     {
         bullet = (GameObject)Resources.Load<GameObject>("Bullet");
+        projectileSpawner = gameObject.GetComponent<ProjectileSpawner>();
     }
 
     // Update is called once per frame
@@ -40,15 +45,29 @@ public class WeaponInfo : MonoBehaviour
         {
             if (Input.GetMouseButton(0))
             {
-                WeaponAttack();
+                if (projectileSpawner != null)
+                {
+                    projectileSpawner.OnWeaponTrigger();
+                }
+                else
+                {
+                    WeaponAttack();                    
+                }
             }
         }
         
         else if (!isAutomatic)
         {
-            if (Input.GetMouseButtonDown(0))//Left Click
+            if (Input.GetMouseButtonDown(0)) //Left Click
             {
-                WeaponAttack();
+                if (projectileSpawner != null)
+                {
+                    projectileSpawner.OnWeaponTrigger();
+                }
+                else
+                {
+                    WeaponAttack();
+                }
             }
         }
         
@@ -59,16 +78,17 @@ public class WeaponInfo : MonoBehaviour
     public void SetInitialValues(float progressModifier)
     {
         //Can place an if statement here later to set low end of range based on progressModifier for balancing
-        ammoSize = (int)Random.Range(1.0f, progressModifier);
-        projectileCount = (int)Random.Range(1.0f, progressModifier);
-        fireRate = Random.Range(1.0f, progressModifier);
-        reloadSpeed = Random.Range(1.0f, progressModifier);
-        muzzleVelocity = Random.Range(1.0f, progressModifier);
-        recoil = Random.Range(1.0f, progressModifier);
-        accuracy = Random.Range(1.0f, progressModifier);
-        effectiveRange = Random.Range(1.0f, progressModifier);
-        damageDropoff = Random.Range(1.0f, progressModifier);
+        ammoSize = (int)Random.Range(20.0f, progressModifier);
+        projectileCount = (int)Random.Range(20.0f, progressModifier);
+        fireRate = Random.Range(20.0f, progressModifier);
+        reloadSpeed = Random.Range(20.0f, progressModifier);
+        muzzleVelocity = Random.Range(20.0f, progressModifier);
+        recoil = Random.Range(20.0f, progressModifier);
+        accuracy = Random.Range(20.0f, progressModifier);
+        effectiveRange = Random.Range(20.0f, progressModifier);
+        damageDropoff = Random.Range(20.0f, progressModifier);
         isAutomatic = (Random.value > 0.5f);
+        weight = Random.Range(20.0f, progressModifier);
         testProgressModifier = progressModifier;
     }
 
@@ -98,6 +118,7 @@ public class WeaponInfo : MonoBehaviour
                 newBullet.GetComponent<Rigidbody>().velocity = new Vector3(newBullet.GetComponent<Rigidbody>().velocity.x, newBullet.GetComponent<Rigidbody>().velocity.y, newBullet.GetComponent<Rigidbody>().velocity.z * (Random.Range(1.0f, accuracy)));
             }
         }
+
         Debug.Log(weaponName + ": Bang!");
     }
 }

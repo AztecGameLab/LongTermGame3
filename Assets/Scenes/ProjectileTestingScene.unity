@@ -224,6 +224,8 @@ GameObject:
   - component: {fileID: 1901217622}
   - component: {fileID: 1901217621}
   - component: {fileID: 1901217624}
+  - component: {fileID: 1901217625}
+  - component: {fileID: 1901217626}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -308,14 +310,77 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e962065089f6c6740a36b224bd1d6824, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  muzzleVelocity: 400
-  caliber: 0.5
-  caliberToLength: 1.5
-  accuracy: 0.9
   targetDistance: 50
-  shootFrom: {x: 2, y: 0.5, z: -12}
+  weaponOffsetXY: {x: 0, y: 0}
   projectilePrefab: {fileID: 4285354488852343481, guid: 38198c80cd0dd884cbe454a2e5d91a58,
     type: 3}
+--- !u!114 &1901217625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901217620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e4a53cd66f034a4eb7410b9861510e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponName: Test Weapon
+  ammoSize: 0
+  isAutomatic: 1
+  isEquipped: 0
+  projectileCount: 1
+  fireRate: 300
+  reloadSpeed: 0
+  muzzleVelocity: 200
+  recoil: 0
+  accuracy: 0.9
+  effectiveRange: 50
+  damageDropoff: 10
+  weight: 1000
+  testProgressModifier: 1
+  bullet: {fileID: 0}
+--- !u!114 &1901217626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901217620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be76e5f14cfee674cb30b491fb72b09b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boost: 3.5
+  positionLerpTime: 0.2
+  mouseSensitivityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.5
+      inSlope: 0
+      outSlope: 5
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 2.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rotationLerpTime: 0.01
+  invertY: 0
 --- !u!1 &1939412226
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +396,7 @@ GameObject:
   - component: {fileID: 1939412231}
   m_Layer: 0
   m_Name: TestTarget
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -350,6 +415,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 20
   speed: 1.2
+  timeStart: 0
 --- !u!33 &1939412228
 MeshFilter:
   m_ObjectHideFlags: 0

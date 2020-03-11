@@ -28,21 +28,26 @@ public class AmmoTypeInfo : MonoBehaviour
     }
 
     public float baseDamage;
+    public float caliber;
+    public float caliberToLength;
     public EffectType effectType;
     public float[] damageTypeFactor;
+
+    static public void DefaultAmmoType(AmmoTypeInfo info)
+    {
+        info.baseDamage = 10.0f;
+        info.caliber = Random.value * 0.6f + 0.2f;
+        info.caliberToLength = 2.0f;
+        info.effectType = EffectType.None;
+    }
 
     public float GetProjectileDamage(WeaponInfo weaponInfo, DamageType damageType)
     {
         //return (weaponInfo.baseDamage + baseDamage) * damageTypeFactor[damageType];
-        return 0;
+        return (weaponInfo.muzzleVelocity * caliber * 0.05f + baseDamage) * damageTypeFactor[(int)damageType];
     }
 
-    public void SetDamageTypeFactor(DamageType damageType, float factor)
-    {
-        damageTypeFactor[(int)damageType] = factor;
-    }
-
-    void Awake()
+    public void ResetDamageTypeFactor()
     {
         if (damageTypeFactor == null)
         {
@@ -53,6 +58,16 @@ public class AmmoTypeInfo : MonoBehaviour
         {
             damageTypeFactor[i] = 1.0f;
         }
+    }
+
+    public void SetDamageTypeFactor(DamageType damageType, float factor)
+    {
+        damageTypeFactor[(int)damageType] = factor;
+    }
+
+    void Awake()
+    {
+        ResetDamageTypeFactor();
     }
 
     void Start()

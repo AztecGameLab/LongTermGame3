@@ -55,6 +55,8 @@ public class ProceduralRoomGenerator : MonoBehaviour
                 //check if a door should be here
                 foreach (DoorData d in myRoom.doors)
                 {
+                    //left wall
+                
                     if (d.wall == dir && d.wallPosition == new Vector2Int(i, j))
                     {
                         //if so spawn a door
