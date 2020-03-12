@@ -18,4 +18,14 @@ public class RegularDoorTrigger : MonoBehaviour
     {
         
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        open.Invoke();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        close.Invoke();
+    }
 }
