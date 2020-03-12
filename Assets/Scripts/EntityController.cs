@@ -75,6 +75,9 @@ public class EntityController : MonoBehaviour
 
     public void Interact()
     {
-
+        RaycastHit hit;
+        if(Physics.Raycast(this.transform.position, this.transform.forward, out hit, 5)){
+            return;
+        }
     } 
 }
