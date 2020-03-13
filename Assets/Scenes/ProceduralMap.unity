@@ -310,7 +310,7 @@ MonoBehaviour:
     connections: []
     doors: []
     type: 
-  xRange: 10
+  xRange: 20
   yRange: 10
   zRange: 10
   branchChance: 0.301
