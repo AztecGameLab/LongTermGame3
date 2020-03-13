@@ -42,7 +42,8 @@ public class ProceduralMapGenerator : MonoBehaviour
         rooms = new List<RoomData>();
         if (transform.childCount != 0)
             ClearMap();
-        GenerateRoomData(Vector3.zero, directions.Length -1);
+        GenerateRoomData( Vector3.zero, directions.Length -1);
+        PlaceRooms();
     }
 
 
@@ -57,29 +58,46 @@ public class ProceduralMapGenerator : MonoBehaviour
             backTrack();
     }
 
-    private bool AttemptSpawnRoom(RoomData room, Vector3 entrancePos, int direction)
+    private bool AttemptSpawnRoom(RoomData room,Vector3 entrancePos, int direction)
     {
         bool roomFits = true;
         for (int i = 0; i < numAttempts; i++)
         {
             int newDirection = direction;
-            //  int newDirection = getNewDirection(direction);
             roomFits = true;
             Bounds b = new Bounds();
             b.size = GetRandomSize();
             b.center = entrancePos + Vector3.Scale(b.size / 2, directions[newDirection]) + Vector3.Scale(b.size / 2, new Vector3(0, 1, 0));
             room.bounds = b;
             room.name = "room " + rooms.Count.ToString();
-            print(room.name + ": Attempt " + i);
+           // print(room.name + ": Attempt " + i);
             if (CheckRoom(room))
             {
                 rooms.Add(room);
                 setPrevRoom(room);
-                PlaceRoom(room);
+
+                DoorData temp = new DoorData();
+                temp.wall = directions[direction];
+                temp.wallPosition = new Vector2Int(halfWallLength(room,direction),0);
+               // temp.wallPosition = new Vector2Int(1, 0);
+                room.doors.Add(temp);
+
+                if (room.prev != null)
+                {
+                    DoorData tempPrev = new DoorData();
+                    tempPrev.wall = -directions[direction];
+                    tempPrev.wallPosition = new Vector2Int(halfWallLength(room.prev, direction), 0);
+                    tempPrev.wallSide = "Backwards";
+                    room.prev.doors.Add(tempPrev);
+                }
+
+
+
+                //PlaceRoom(room);
                 currRoom = room;
 
                 var dir = Random.Range(0, directions.Length - 1); //make sure that dir doesn't doesn't corrospond to previous direction
-                GenerateRoomData(room.bounds.center - Vector3.Scale(room.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(directions[dir], room.bounds.size / 2), dir);
+                GenerateRoomData( room.bounds.center - Vector3.Scale(room.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(directions[dir], room.bounds.size / 2), dir);
                 break;
 
             }
@@ -88,6 +106,18 @@ public class ProceduralMapGenerator : MonoBehaviour
         return roomFits;
     }
 
+
+    private int halfWallLength(RoomData room, int dir)
+    {
+        if(dir < 2)
+        {
+            return (int)room.bounds.size.x / 2;
+        }
+        else
+        {
+            return (int)room.bounds.size.z / 2;
+        }
+    }
 
     private void setPrevRoom(RoomData room)
     {
@@ -172,6 +202,18 @@ public class ProceduralMapGenerator : MonoBehaviour
             roomObj.transform.parent = transform;
         }
     }
+
+    private void PlaceRooms()
+    {
+        foreach(RoomData room in rooms)
+        {
+            PlaceRoom(room);
+            foreach(DoorData door in room.doors)
+            {
+                print(room.name + " " + room.bounds.size + " " + door.wallSide + " door: " + door.wall + " " + door.wallPosition);
+            }
+        }
+    }
     private Vector3 GetRandomSize()
     {
         int width = Random.Range(1, xRange);
@@ -181,6 +223,41 @@ public class ProceduralMapGenerator : MonoBehaviour
     }
 }
 /*
+ * 
+ * 
+ *     private bool AttemptSpawnRoom(RoomData room, Vector3 entrancePos, int direction)
+    {
+        bool roomFits = true;
+        for (int i = 0; i < numAttempts; i++)
+        {
+            int newDirection = direction;
+            //  int newDirection = getNewDirection(direction);
+            roomFits = true;
+            Bounds b = new Bounds();
+            b.size = GetRandomSize();
+            b.center = entrancePos + Vector3.Scale(b.size / 2, directions[newDirection]) + Vector3.Scale(b.size / 2, new Vector3(0, 1, 0));
+            room.bounds = b;
+            room.name = "room " + rooms.Count.ToString();
+            print(room.name + ": Attempt " + i);
+            if (CheckRoom(room))
+            {
+                rooms.Add(room);
+                setPrevRoom(room);
+                PlaceRoom(room);
+                currRoom = room;
+
+                var dir = Random.Range(0, directions.Length - 1); //make sure that dir doesn't doesn't corrospond to previous direction
+                GenerateRoomData(room.bounds.center - Vector3.Scale(room.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(directions[dir], room.bounds.size / 2), dir);
+                break;
+
+            }
+            roomFits = false;
+        }
+        return roomFits;
+    }
+
+
+
  * 
  *      private void GenerateRoomData(Vector3 entrancePos, int direction)
     {
