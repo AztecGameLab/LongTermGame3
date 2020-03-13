@@ -1,0 +1,5 @@
+Name: Ryan Wright
+Slack: Eagullfly
+GitHub: Eagullfly
+Interests: Video games and programming
+Goal: Learn how to use Unity
