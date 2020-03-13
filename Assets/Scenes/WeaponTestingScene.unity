@@ -196,13 +196,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1098462288}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 18.53, y: 0.4, z: -0.05}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -20.2, y: 0.2, z: -0.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1313150038
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,13 +247,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compGen: {fileID: 0}
-  newReciever: {fileID: 3169044102157188729, guid: 7f4ea28a8fe3cf4479751e6ddfe8c523,
+  weaponBody: {fileID: 4435282400034434822, guid: 95edb37b5783e084ba33992972c64b00,
     type: 3}
-  newBarrel: {fileID: 4796362734332355900, guid: bdc12ba7a82ffb5468fcc2548dd8a1eb,
+  newReciever: {fileID: 1750768547406387981, guid: b5b613c3c9d9a1e448b086eb7805794b,
     type: 3}
-  newStock: {fileID: 2391924102606297469, guid: 1aa27f31c8f7cae4cb3b89d2c9318b2f,
+  newBarrel: {fileID: 4952592217824089845, guid: 341f8c6b13ba1bd438396f41cd2aaa1e,
     type: 3}
-  newMagazine: {fileID: 3581487155278247635, guid: c8a420e0c9ab06347b3fe8f9c6caeee2,
+  newStock: {fileID: 5447422608020386135, guid: ea41b6579b6ad5e47a95bc9c179bf393,
+    type: 3}
+  newMagazine: {fileID: 820173306670411176, guid: 6e80967988886614db56d212ff838a00,
     type: 3}
   testProgressModifier: 50
 --- !u!1 &1374619049
@@ -286,7 +288,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1374619051
@@ -344,7 +346,7 @@ Transform:
   m_GameObject: {fileID: 1374619049}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -4.13, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 1, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
