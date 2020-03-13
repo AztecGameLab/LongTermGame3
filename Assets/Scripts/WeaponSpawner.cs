@@ -55,6 +55,7 @@ public class WeaponSpawner : MonoBehaviour
         newWeapon.GetComponent<MeshCollider>().convex = true;
         newWeapon.AddComponent<Rigidbody>();
         compGen.SetWeaponValues(newWeapon.GetComponent<WeaponInfo>());
-        //newWeapon.AddComponent<ProjectileSpawner>();
+        newWeapon.AddComponent<ProjectileSpawner>();
+        newWeapon.GetComponent<ProjectileSpawner>().InitializeThis();
     }
 }
