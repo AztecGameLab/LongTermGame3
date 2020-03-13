@@ -21,7 +21,6 @@ public class RegularDoorTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("Hello World");
         open.Invoke();
     }
 
