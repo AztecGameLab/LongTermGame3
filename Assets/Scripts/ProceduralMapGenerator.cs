@@ -87,7 +87,6 @@ public class ProceduralMapGenerator : MonoBehaviour
                     DoorData tempPrev = new DoorData();
                     tempPrev.wall = -directions[direction];
                     tempPrev.wallPosition = new Vector2Int(halfWallLength(room.prev, direction), 0);
-                    tempPrev.wallSide = "Backwards";
                     room.prev.doors.Add(tempPrev);
                 }
 
@@ -210,7 +209,7 @@ public class ProceduralMapGenerator : MonoBehaviour
             PlaceRoom(room);
             foreach(DoorData door in room.doors)
             {
-                print(room.name + " " + room.bounds.size + " " + door.wallSide + " door: " + door.wall + " " + door.wallPosition);
+                print(room.name + " " + room.bounds.size + " " + " door: " + door.wall + " " + door.wallPosition);
             }
         }
     }
