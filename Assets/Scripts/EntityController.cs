@@ -75,6 +75,14 @@ public class EntityController : MonoBehaviour
 
     public void Interact()
     {
+        RaycastHit hit;
+        if(!Physics.Raycast(this.transform.position, this.transform.forward, out hit, 5)){
+            return;
+        }
+        Interactable interact = hit.transform.gameObject.GetComponent<Interactable>();
+        if(interact == null)
+            return;
 
+        interact.OnInteract();
     } 
 }
