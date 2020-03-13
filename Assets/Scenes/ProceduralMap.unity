@@ -310,9 +310,12 @@ MonoBehaviour:
     connections: []
     doors: []
     type: 
-  xRange: 20
-  yRange: 10
-  zRange: 10
+  zUpperBound: 5
+  zLowerBound: 5
+  yUpperBound: 5
+  yLowerBound: 5
+  xUpperBound: 5
+  xLowerBound: 5
   branchChance: 0.301
   roomTemplate: {fileID: 6986889222746248364, guid: 8ccdd429b06e90d499eae52a6efffb71,
     type: 3}

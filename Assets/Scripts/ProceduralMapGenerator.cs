@@ -9,10 +9,15 @@ public class ProceduralMapGenerator : MonoBehaviour
     public int maxSize; //estimated  Max Size
     public int numAttempts;
     public RoomData currRoom;
+    
+    
+    public int zUpperBound;
+    public int zLowerBound;
+    public int yUpperBound;
+    public int yLowerBound;
+    public int xUpperBound;
+    public int xLowerBound;
 
-    public int xRange;
-    public int yRange;
-    public int zRange;
     [Range(0, 1)]
     public float branchChance = 1;
     public GameObject roomTemplate;
@@ -29,7 +34,7 @@ public class ProceduralMapGenerator : MonoBehaviour
         Vector3.zero
         //add up and down     
     };
-
+    int safetyBreakCondition = 0;
     //A new map is generated on play
     private void Awake()
     {
@@ -42,26 +47,17 @@ public class ProceduralMapGenerator : MonoBehaviour
         rooms = new List<RoomData>();
         if (transform.childCount != 0)
             ClearMap();
-        GenerateRoomData(null, Vector3.zero, directions.Length -1);
+        
+        AttemptSpawnRoom(null, Vector3.zero, directions.Length -1);
         PlaceRooms();
-    }
-
-
-    //edit this function to change the room generation algorithm
-    private void GenerateRoomData(RoomData room, Vector3 entrancePos, int direction)
-    {
-        if (rooms.Count >= maxSize)
-            return;
-   //     if(room != null)
-     //   {
-      //      room.doors = new List<DoorData>();
-       // }
-        if (!AttemptSpawnRoom(room, entrancePos, direction))
-            backTrack();
     }
 
     private bool AttemptSpawnRoom(RoomData room,Vector3 entrancePos, int direction)
     {
+        //if (++safetyBreakCondition > 10000)
+        //    return true;
+        if (rooms.Count >= maxSize)
+            return true;
         RoomData roomTemp = new RoomData();
         roomTemp.doors = new List<DoorData>();
         bool roomFits = true;
@@ -101,7 +97,8 @@ public class ProceduralMapGenerator : MonoBehaviour
                 currRoom = roomTemp;
 
                 var dir = Random.Range(0, directions.Length - 1); //make sure that dir doesn't doesn't corrospond to previous direction
-                GenerateRoomData( roomTemp,roomTemp.bounds.center - Vector3.Scale(roomTemp.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(directions[dir], roomTemp.bounds.size / 2), dir);
+                if (!AttemptSpawnRoom(roomTemp, roomTemp.bounds.center - Vector3.Scale(roomTemp.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(directions[dir], roomTemp.bounds.size / 2), dir))
+                    backTrack();
                 break;
 
             }
@@ -138,9 +135,24 @@ public class ProceduralMapGenerator : MonoBehaviour
     private void backTrack()
     {
         if (currRoom.prev != null)
+        {   for (int i = 0; i < directions.Length; i++)
+            {
+                var dir = i;
+                if (AttemptSpawnRoom(currRoom.prev, currRoom.prev.bounds.center - Vector3.Scale(currRoom.prev.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(directions[dir], currRoom.prev.bounds.size / 2), dir))
+                {
+                    break;
+                }
+                else
+                {
+                    print("CATASTROPHIC FAILURE: backttrack failed");
+
+                }
+            }
+            
+        }
+        else
         {
-            var dir1 = Random.Range(0, directions.Length - 1);
-            GenerateRoomData(currRoom.prev.prev, currRoom.prev.bounds.center - Vector3.Scale(currRoom.prev.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(directions[dir1], currRoom.prev.bounds.size / 2), dir1);
+            print("CATASTROPHIC FAILURE: backtracked to start ");
         }
     }
 
@@ -220,9 +232,9 @@ public class ProceduralMapGenerator : MonoBehaviour
     }
     private Vector3 GetRandomSize()
     {
-        int width = Random.Range(1, xRange);
-        int height = Random.Range(1, yRange);
-        int length = Random.Range(1, zRange);
+        int width = Random.Range(xLowerBound, xUpperBound);
+        int height = Random.Range(yLowerBound, yUpperBound);
+        int length = Random.Range(zLowerBound, zUpperBound);
         return new Vector3(width, height, length);
     }
 }

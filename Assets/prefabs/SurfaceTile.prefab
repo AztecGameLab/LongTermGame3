@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4268527778982315600}
   - component: {fileID: 3020890690598530212}
   - component: {fileID: 4274757052535582616}
-  - component: {fileID: 5385574393215827807}
+  - component: {fileID: 4636291496539086432}
   m_Layer: 0
   m_Name: SurfaceTile
   m_TagString: Untagged
@@ -79,8 +79,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &5385574393215827807
-BoxCollider:
+--- !u!64 &4636291496539086432
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -89,6 +89,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
