@@ -14,8 +14,9 @@ public class ProjectileSpawner : MonoBehaviour
     public Vector2 weaponOffsetXY = new Vector2(0, 0);      //Offset from weapon to crosshair center
 
     public GameObject projectilePrefab;
-
+    [SerializeField]
     private WeaponInfo weaponInfo;
+    [SerializeField]
     private AmmoTypeInfo ammoTypeInfo;
 
     private float minFireSpan;
@@ -48,6 +49,34 @@ public class ProjectileSpawner : MonoBehaviour
 
     void Awake()
     {
+        /*if (projectilePool == null)
+        {
+            projectilePool = new ProjectilePool(100);
+        }
+
+        for (int i = 0; i < projectilePool.size; i++)
+        {
+            GameObject p = Instantiate(projectilePrefab);
+            p.SetActive(false);
+
+            projectilePool.data[i] = p;
+        }*/
+    }
+    public void InitializeThis()
+    {
+        projectilePrefab = (GameObject)Resources.Load("Projectile");
+        weaponInfo = gameObject.GetComponent<WeaponInfo>();
+        ammoTypeInfo = gameObject.GetComponent<AmmoTypeInfo>();
+
+        if (ammoTypeInfo == null)
+        {
+            ammoTypeInfo = gameObject.AddComponent<AmmoTypeInfo>();
+            AmmoTypeInfo.DefaultAmmoType(ammoTypeInfo);
+        }
+
+        minFireSpan = 60.0f / weaponInfo.fireRate;  //Fire rate as RPM
+        lastFireTime = 0;
+
         if (projectilePool == null)
         {
             projectilePool = new ProjectilePool(100);
@@ -61,7 +90,6 @@ public class ProjectileSpawner : MonoBehaviour
             projectilePool.data[i] = p;
         }
     }
-
     void Start()
     {
         weaponInfo = gameObject.GetComponent<WeaponInfo>();

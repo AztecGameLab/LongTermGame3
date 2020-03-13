@@ -34,6 +34,11 @@ public class ProjectileInfo : MonoBehaviour
     {
         sqrMaxDistance = weaponInfo.effectiveRange * weaponInfo.effectiveRange;
     }
+    private void Awake()
+    {
+        weaponInfo = GetComponentInParent<WeaponInfo>();
+        sqrMaxDistance = 20;//weaponInfo.effectiveRange * weaponInfo.effectiveRange;
+    }
 
     void FixedUpdate()
     {

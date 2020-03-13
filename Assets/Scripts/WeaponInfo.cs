@@ -51,7 +51,7 @@ public class WeaponInfo : MonoBehaviour
                 }
                 else
                 {
-                    WeaponAttack();                    
+                    //WeaponAttack();                    
                 }
             }
         }
@@ -66,7 +66,7 @@ public class WeaponInfo : MonoBehaviour
                 }
                 else
                 {
-                    WeaponAttack();
+                    //WeaponAttack();
                 }
             }
         }
@@ -90,6 +90,7 @@ public class WeaponInfo : MonoBehaviour
         isAutomatic = (Random.value > 0.5f);
         weight = Random.Range(20.0f, progressModifier);
         testProgressModifier = progressModifier;
+        effectiveRange = 20;
     }
 
     //test methods to show weapon values and test firing
