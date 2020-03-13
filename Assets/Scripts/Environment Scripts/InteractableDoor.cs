@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnvironmentalTrigger : MonoBehaviour
+public class InteractableDoor : Interactable
 {
     // Start is called before the first frame update
     void Start()
@@ -16,12 +16,5 @@ public class EnvironmentalTrigger : MonoBehaviour
         
     }
 
-
-    private void OnTriggerStay(Collider other)
-    {
-        if(other.transform.tag.Equals("Player"))
-        {
-
-        }
-    }
+    
 }
