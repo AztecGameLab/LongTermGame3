@@ -153,16 +153,39 @@ MonoBehaviour:
   testData:
     bounds:
       m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0, y: 0, z: 0}
-    name: 
-    connections: []
-    doors: []
+      m_Extent: {x: 5, y: 10, z: 3}
+    name: TestRoom
+    connections:
+    - bounds:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 0, y: 0, z: 0}
+      name: 
+      connections: []
+      doors: []
+      type: 
+    doors:
+    - wall: {x: 1, y: 0, z: 0}
+      wallPosition: {x: 1, y: 0}
+    - wall: {x: -1, y: 0, z: 0}
+      wallPosition: {x: 1, y: 0}
     type: 
-  floorTile: {fileID: 6609555836500725476, guid: 9bd4e00193fd522428740a1631dfb072,
-    type: 3}
   doorPrefab: {fileID: 5160797226196359977, guid: 815ba8a74d9d08640b462f5b3b1f7952,
     type: 3}
   doorDimensions: {x: 1, y: 1}
+  CeilingEdge: {fileID: 1165704938103817998, guid: 5094e5c988b935747a07de2ea56a281f,
+    type: 3}
+  CeilingCorner: {fileID: 1165704938103817998, guid: 5094e5c988b935747a07de2ea56a281f,
+    type: 3}
+  CeilingTile: {fileID: 1165704938103817998, guid: 5094e5c988b935747a07de2ea56a281f,
+    type: 3}
+  floorEdge: {fileID: 4514113731283478810, guid: d38c98e376ce605409892e91fb3f3e25,
+    type: 3}
+  floorCorner: {fileID: 4514113731283478810, guid: d38c98e376ce605409892e91fb3f3e25,
+    type: 3}
+  floorTile: {fileID: 4514113731283478810, guid: d38c98e376ce605409892e91fb3f3e25,
+    type: 3}
+  wallTile: {fileID: 6609555836500725476, guid: 9bd4e00193fd522428740a1631dfb072,
+    type: 3}
 --- !u!4 &1008516147
 Transform:
   m_ObjectHideFlags: 0
@@ -310,12 +333,12 @@ MonoBehaviour:
     connections: []
     doors: []
     type: 
-  zUpperBound: 5
-  zLowerBound: 5
-  yUpperBound: 5
-  yLowerBound: 5
-  xUpperBound: 5
-  xLowerBound: 5
+  zUpperBound: 4
+  zLowerBound: 6
+  yUpperBound: 4
+  yLowerBound: 6
+  xUpperBound: 4
+  xLowerBound: 6
   branchChance: 0.301
   roomTemplate: {fileID: 6986889222746248364, guid: 8ccdd429b06e90d499eae52a6efffb71,
     type: 3}

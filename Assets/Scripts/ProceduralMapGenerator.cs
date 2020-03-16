@@ -61,6 +61,7 @@ public class ProceduralMapGenerator : MonoBehaviour
         RoomData roomTemp = new RoomData();
         roomTemp.doors = new List<DoorData>();
         bool roomFits = true;
+        //This loop needs to iterate over every possible direction a new room could be in. Preferably, it would also try a variety of sizes for each direction
         for (int i = 0; i < numAttempts; i++)
         {
             int newDirection = direction;
@@ -119,7 +120,8 @@ public class ProceduralMapGenerator : MonoBehaviour
             return (int)room.bounds.size.z / 2;
         }
     }
-
+    //where is this called?
+    //this is questionable. rooms may not always have the room we want to set room.prev to in the last slot
     private void setPrevRoom(RoomData room)
     {
         if(rooms.Count > 1)
@@ -157,7 +159,8 @@ public class ProceduralMapGenerator : MonoBehaviour
     }
 
     private int getNewDirection(int direction) //attempts to find a direction that doesn't go backwards
-    {if(direction == directions.Length - 1)
+    {
+        if (direction == directions.Length - 1)
         {
             return direction;
         }
@@ -233,8 +236,14 @@ public class ProceduralMapGenerator : MonoBehaviour
     private Vector3 GetRandomSize()
     {
         int width = Random.Range(xLowerBound, xUpperBound);
+        if (width % 2 == 0)
+            width ++;
         int height = Random.Range(yLowerBound, yUpperBound);
+        ///if (height % 2 == 0)
+         //   height++;
         int length = Random.Range(zLowerBound, zUpperBound);
+        if (length % 2 == 0)
+            length++;
         return new Vector3(width, height, length);
     }
 }
