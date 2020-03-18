@@ -7,10 +7,11 @@ public class PlayerDriver : Driver
     // Represent movement values for horizontal and vertical axes.
     private float x, z;
 
+    /*
     [SerializeField]
     private AnimationCurve curve;
-
     private bool coroutineRunning;
+    */
 
     private Vector3 horizontalVelocity;
     private Vector3 verticalVelocity;
@@ -62,8 +63,10 @@ public class PlayerDriver : Driver
         if (GroundCheck() && verticalVelocity.y < 0)
         {
             // Regular ground movement.
-            //horizontalVelocity = Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1f) * speed * modifier;
+            horizontalVelocity = Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1f) * speed * modifier;
             
+            /*
+            // Momentum ground movement.
             if (!coroutineRunning && z > -0.01f && z < 0.01f && x > -0.01f && x < 0.01f)
             {
                 StartCoroutine(Decelerate());
@@ -73,7 +76,7 @@ public class PlayerDriver : Driver
                 StopAllCoroutines();
                 horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity / speed / modifier + transform.right * x * 0.35f + transform.forward * z * 0.35f, 1f) * speed * modifier;
             }
-                
+            */    
 
 
             // Space key to jump, adds vertical velocity.
@@ -87,12 +90,13 @@ public class PlayerDriver : Driver
 
         // Modified air movement, maintains velocity but accepts small influence from input. Cannot go faster than on the ground. 
         else
-            horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity / speed / modifier + transform.right * x * 0.025f + transform.forward * z * 0.025f, 1f) * speed * modifier;
+            horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity / speed / modifier + transform.right * x * 0.01f + transform.forward * z * 0.01f, 1f) * speed * modifier;
 
         // Combine our vertical and horizontal velocities.
         return verticalVelocity + horizontalVelocity;
     }
 
+    /*
     private IEnumerator Decelerate()
     {
         float time = 0f;
@@ -103,6 +107,7 @@ public class PlayerDriver : Driver
             yield return null;
         }
     }
+    */
 
     // Returns true if player is grounded, false otherwise.
     private bool GroundCheck()
@@ -114,7 +119,7 @@ public class PlayerDriver : Driver
     public override float GetHorizontalLook()
     {
         // Modifying mouse position based on sensitivity and accounting for framerate.
-        mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+        mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime * 2;
 
         horizontalLook += mouseX;
         if (horizontalLook > 360)
@@ -127,7 +132,7 @@ public class PlayerDriver : Driver
     public override float GetVerticalLook()
     {
         // Modifying mouse position based on sensitivity and accounting for framerate.
-        mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+        mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime * 2;
 
         verticalLook -= mouseY;
         if (verticalLook > 90)
