@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class ProjectileSpawner : MonoBehaviour
 {
-    //public float muzzleVelocity;
-    //public float caliber;
-    //public float accuracy = 0.9f;
-    //public float caliberToLength = 2.0f;
-    //public Vector3 weaponToMuzzle = new Vector3(0, 0, 0);   //Offset from weapon position to muzzle
-
     public float targetDistance = 50.0f;                    //Distance to crosshair
     public Vector2 weaponOffsetXY = new Vector2(0, 0);      //Offset from weapon to crosshair center
 
@@ -47,21 +41,6 @@ public class ProjectileSpawner : MonoBehaviour
 
     static ProjectilePool projectilePool;
 
-    void Awake()
-    {
-        /*if (projectilePool == null)
-        {
-            projectilePool = new ProjectilePool(100);
-        }
-
-        for (int i = 0; i < projectilePool.size; i++)
-        {
-            GameObject p = Instantiate(projectilePrefab);
-            p.SetActive(false);
-
-            projectilePool.data[i] = p;
-        }*/
-    }
     public void InitializeThis()
     {
         projectilePrefab = (GameObject)Resources.Load("Projectile");
@@ -149,9 +128,13 @@ public class ProjectileSpawner : MonoBehaviour
         info.weaponInfo = weaponInfo;
         info.ammoTypeInfo = ammoTypeInfo;
 
-        Vector3 scale = new Vector3(ammoTypeInfo.caliber, ammoTypeInfo.caliber * ammoTypeInfo.caliberToLength, ammoTypeInfo.caliber);
+        //Projectile dimensions
+        float projScale = 0.5f;
+        float projDiameter = ammoTypeInfo.caliber * projScale;
+        float projLength = projDiameter * ammoTypeInfo.caliberToLength;
+
         projectile.transform.position = shootFrom;
-        projectile.transform.localScale = scale;
+        projectile.transform.localScale = new Vector3(projDiameter, projLength, projDiameter);
 
         Rigidbody body = projectile.GetComponent<Rigidbody>();
 
