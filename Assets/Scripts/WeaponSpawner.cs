@@ -38,7 +38,7 @@ public class WeaponSpawner : MonoBehaviour
         weaponCount++;
         GameObject newWeapon = new GameObject();
         //GameObject reciever = Instantiate(newReciever, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        GameObject body = Instantiate(weaponBody, new Vector3(0, 10, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject body = Instantiate(weaponBody, new Vector3(0, 0.02f, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject barrel = Instantiate(newBarrel, body.transform.GetChild(0).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject magazine = Instantiate(newMagazine, body.transform.GetChild(1).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject stock = Instantiate(newStock, body.transform.GetChild(2).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
@@ -60,6 +60,9 @@ public class WeaponSpawner : MonoBehaviour
         compGen.SetWeaponValues(newWeapon.GetComponent<WeaponInfo>());
         newWeapon.AddComponent<ProjectileSpawner>();
         newWeapon.GetComponent<ProjectileSpawner>().InitializeThis();
+        //newWeapon.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+        newWeapon.layer = 10;
+        newWeapon.tag = "Weapon";
 
         return newWeapon;
     }
