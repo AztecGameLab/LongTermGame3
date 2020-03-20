@@ -54,7 +54,7 @@ public class WeaponSpawner : MonoBehaviour
         stock.transform.parent = body.transform.GetChild(2);
         reciever.transform.parent = body.transform.GetChild(3);
         newWeapon.AddComponent<MeshCollider>();
-        //newWeapon.GetComponent<MeshCollider>().convex = true;
+        newWeapon.GetComponent<MeshCollider>().convex = true;
         newWeapon.GetComponent<MeshCollider>().isTrigger = true;
         //newWeapon.AddComponent<Rigidbody>();
         compGen.SetWeaponValues(newWeapon.GetComponent<WeaponInfo>());
