@@ -183,9 +183,11 @@ public class PlayerDriver : Driver
             {
                 Destroy(otherObject.GetComponent<BoxCollider>());
                 Transform otherTrans = otherObject.transform;
-                otherTrans.rotation = transform.rotation;
-                otherTrans.position = transform.position + transform.forward * 0.5f +  transform.right * 0.5f + new Vector3(0, 0.5f, 0);
-                otherTrans.SetParent(ec.childTransform);
+                Transform camera = ec.childTransform;
+                
+                otherTrans.position = camera.position + camera.forward * 0.5f +  camera.right * 0.5f + camera.up * -0.5f;
+                otherTrans.rotation = camera.rotation;
+                otherTrans.SetParent(camera);
 
             }
             else if (otherObject.tag.Equals("Ammo"))
