@@ -48,11 +48,11 @@ public class ProceduralMapGenerator : MonoBehaviour
         if (transform.childCount != 0)
             ClearMap();
         
-        AttemptSpawnRoom(null, Vector3.zero, directions.Length -1);
+        AttemptSpawnRoom(null);
         PlaceRooms();
     }
 
-    private bool AttemptSpawnRoom(RoomData room,Vector3 entrancePos, int direction)
+    private bool AttemptSpawnRoom(RoomData prevRoom)
     {
         //if (++safetyBreakCondition > 10000)
         //    return true;
@@ -61,35 +61,44 @@ public class ProceduralMapGenerator : MonoBehaviour
         RoomData roomTemp = new RoomData();
         roomTemp.doors = new List<DoorData>();
         bool roomFits = true;
+        Vector3[] shuffledDirections = ShuffleDirection();
         //This loop needs to iterate over every possible direction a new room could be in. Preferably, it would also try a variety of sizes for each direction
-        for (int i = 0; i < numAttempts; i++)
+        for (int i = 0; i < shuffledDirections.Length; i++)
         {
-            int newDirection = direction;
+            int newDirection = i;
             roomFits = true;
             Bounds b = new Bounds();
             b.size = GetRandomSize();
-            b.center = entrancePos + Vector3.Scale(b.size / 2, directions[newDirection]) + Vector3.Scale(b.size / 2, new Vector3(0, 1, 0));
+            //b.center = entrancePos + Vector3.Scale(b.size / 2, directions[newDirection]) + Vector3.Scale(b.size / 2, new Vector3(0, 1, 0)); // TODO
+            if (prevRoom != null)
+            {
+                b.center = prevRoom.bounds.center - Vector3.Scale(prevRoom.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(shuffledDirections[i], prevRoom.bounds.size / 2) + Vector3.Scale(b.size / 2, shuffledDirections[i]) + Vector3.Scale(b.size / 2, new Vector3(0, 1, 0)); // TODO
+            }
+            else
+            {
+                b.center = Vector3.zero;
+            }
             roomTemp.bounds = b;
             roomTemp.name = "room " + rooms.Count.ToString();
            // print(room.name + ": Attempt " + i);
             if (CheckRoom(roomTemp))
             {
+                roomTemp.prev = prevRoom;
                 rooms.Add(roomTemp);
-                //setPrevRoom(room);
-                roomTemp.prev = room;
+               
 
-                DoorData temp = new DoorData();
-                temp.wall = directions[direction];
-                temp.wallPosition = new Vector2Int(halfWallLength(roomTemp,direction),0);
+                DoorData currDoor = new DoorData(); //currDoor references the door being made in the current room leading to the previous room
+                currDoor.wall = shuffledDirections[i]; //MIGHT BE BACKWARDS
+                currDoor.wallPosition = new Vector2Int(halfWallLength(roomTemp, shuffledDirections[i]),0);
                // temp.wallPosition = new Vector2Int(1, 0);
-                roomTemp.doors.Add(temp);
+                roomTemp.doors.Add(currDoor);
 
-                if (roomTemp.prev != null)
+                if (roomTemp.prev != null) //backDoor references a door being created in the previous room that leads to the room that has just been created
                 {
-                    DoorData tempPrev = new DoorData();
-                    tempPrev.wall = -directions[direction];
-                    tempPrev.wallPosition = new Vector2Int(halfWallLength(roomTemp.prev, direction), 0);
-                    roomTemp.prev.doors.Add(tempPrev);
+                    DoorData backDoor = new DoorData();
+                    backDoor.wall = -shuffledDirections[i];
+                    backDoor.wallPosition = new Vector2Int(halfWallLength(roomTemp.prev, shuffledDirections[i]), 0);
+                    roomTemp.prev.doors.Add(backDoor);
                 }
 
 
@@ -98,7 +107,7 @@ public class ProceduralMapGenerator : MonoBehaviour
                 currRoom = roomTemp;
 
                 var dir = Random.Range(0, directions.Length - 1); //make sure that dir doesn't doesn't corrospond to previous direction
-                if (!AttemptSpawnRoom(roomTemp, roomTemp.bounds.center - Vector3.Scale(roomTemp.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(directions[dir], roomTemp.bounds.size / 2), dir))
+                if (!AttemptSpawnRoom(roomTemp))
                     backTrack();
                 break;
 
@@ -109,15 +118,15 @@ public class ProceduralMapGenerator : MonoBehaviour
     }
 
 
-    private int halfWallLength(RoomData room, int dir)
+    private int halfWallLength(RoomData room, Vector3 direction)
     {
-        if(dir > 2)
+        if(direction == Vector3.left || direction == Vector3.right)
         {
-            return (int)room.bounds.size.x / 2;
+            return (int)room.bounds.size.z / 2;
         }
         else
         {
-            return (int)room.bounds.size.z / 2;
+            return (int)room.bounds.size.x / 2;
         }
     }
     //where is this called?
@@ -140,7 +149,7 @@ public class ProceduralMapGenerator : MonoBehaviour
         {   for (int i = 0; i < directions.Length; i++)
             {
                 var dir = i;
-                if (AttemptSpawnRoom(currRoom.prev, currRoom.prev.bounds.center - Vector3.Scale(currRoom.prev.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(directions[dir], currRoom.prev.bounds.size / 2), dir))
+                if (AttemptSpawnRoom(currRoom.prev))
                 {
                     break;
                 }
@@ -158,27 +167,18 @@ public class ProceduralMapGenerator : MonoBehaviour
         }
     }
 
-    private int getNewDirection(int direction) //attempts to find a direction that doesn't go backwards
+    private Vector3[] ShuffleDirection() //attempts to find a direction that doesn't go backwards
     {
-        if (direction == directions.Length - 1)
+        Vector3[] temp = directions;
+        int n = temp.Length - 1;
+        for (int i = temp.Length - 1; i > 0; i--)
         {
-            return direction;
+            int r = Random.Range(0, n);
+            Vector3 t = temp[r];
+            temp[r] = temp[i];
+            temp[i] = t;
         }
-        int opposite = direction % 2;
-        if (opposite == 0)
-        {
-            opposite = direction + 1;
-        }
-        else
-        {
-            opposite = direction - 1;
-        }
-        int newDirection = Random.Range(0, directions.Length-1);
-        while (newDirection.Equals(opposite))
-        {
-           newDirection = Random.Range(0, directions.Length-1);
-        }
-        return newDirection;
+        return temp;
     }
 
     private bool CheckRoom(RoomData room)
@@ -248,7 +248,30 @@ public class ProceduralMapGenerator : MonoBehaviour
     }
 }
 /*
- * 
+ *
+ *
+ *    private int getNewDirection(int direction) //attempts to find a direction that doesn't go backwards
+    {
+        if (direction == directions.Length - 1)
+        {
+            return direction;
+        }
+        int opposite = direction % 2;
+        if (opposite == 0)
+        {
+            opposite = direction + 1;
+        }
+        else
+        {
+            opposite = direction - 1;
+        }
+        int newDirection = Random.Range(0, directions.Length-1);
+        while (newDirection.Equals(opposite))
+        {
+           newDirection = Random.Range(0, directions.Length-1);
+        }
+        return newDirection;
+    } 
  * 
  *     private bool AttemptSpawnRoom(RoomData room, Vector3 entrancePos, int direction)
     {
