@@ -10,8 +10,11 @@ public class ProceduralMapGenerator : MonoBehaviour
     public int maxSize; //estimated  Max Size
     public int numAttempts;
     public RoomData currRoom;
-    
-    
+
+    public GameObject optimizationHitbox;
+    private Bounds hitBox;
+
+
     public int zUpperBound;
     public int zLowerBound;
     public int yUpperBound;
@@ -40,6 +43,7 @@ public class ProceduralMapGenerator : MonoBehaviour
     //A new map is generated on play
     private void Awake()
     {
+        hitBox.size = GetHitboxBounds();
         Initialize();
     }
 
@@ -54,6 +58,28 @@ public class ProceduralMapGenerator : MonoBehaviour
         PlaceRooms();
         surface.BuildNavMesh();
     }
+
+    //Right now, Update is used to constantly check whether to spawn rooms or not, maybe instead we can create a method that detects if the character
+    // changes rooms, then update what rooms are in scope or not (rather than constantly checking), but right now everything resides in Update
+    public void Update()
+    {
+        hitBox.center = optimizationHitbox.transform.position;
+        foreach (RoomData placedRoom in rooms)
+        {
+            if (hitBox.Intersects(placedRoom.bounds))
+            {
+                if (GameObject.Find(placedRoom.name) == null)
+                    PlaceRoom(placedRoom);
+            }
+            else
+            {
+                GameObject roomInHitbox = GameObject.Find(placedRoom.name);
+                DestroyImmediate(roomInHitbox);
+            }
+
+        }
+    }
+
 
     private bool AttemptSpawnRoom(RoomData prevRoom)
     {
@@ -218,9 +244,29 @@ public class ProceduralMapGenerator : MonoBehaviour
             length++;
         return new Vector3(width, height, length);
     }
+    private Vector3 GetHitboxBounds()
+    {
+        float width = optimizationHitbox.transform.localScale.x;
+        float height = optimizationHitbox.transform.localScale.y;
+        float length = optimizationHitbox.transform.localScale.z;
+        return new Vector3(width, height, length);
+    }
+
 }
 /*
  *
+ *     public void Initialize()
+    {
+        rooms = new List<RoomData>();
+        if (transform.childCount != 0)
+            ClearMap();
+        
+        AttemptSpawnRoom(null);
+        PlaceRooms();
+        surface.BuildNavMesh();
+    }
+
+ * 
  *
  *    private int getNewDirection(int direction) //attempts to find a direction that doesn't go backwards
     {
