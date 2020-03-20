@@ -137,6 +137,10 @@ public class ProjectileSpawner : MonoBehaviour
         float scaledErrorX = targetDistance * (1.0f - weaponInfo.accuracy);
         float scaledErrorY = scaledErrorX * 0.5f;
 
+        //~Disable accuracy for now
+        scaledErrorX = 0;
+        scaledErrorY = 0;
+
         Vector3 target = shootAt + new Vector3(Random.Range(-scaledErrorX, scaledErrorX), Random.Range(-scaledErrorY, scaledErrorY), 0.0f);
         Quaternion rotation = Quaternion.LookRotation(target - shootFrom, Vector3.up);
 
