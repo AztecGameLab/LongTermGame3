@@ -325,7 +325,7 @@ MonoBehaviour:
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  maxSize: 50
+  maxSize: 90
   numAttempts: 4
   currRoom:
     bounds:

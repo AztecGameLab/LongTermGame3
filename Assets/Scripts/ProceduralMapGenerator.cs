@@ -54,8 +54,6 @@ public class ProceduralMapGenerator : MonoBehaviour
 
     private bool AttemptSpawnRoom(RoomData prevRoom)
     {
-        //if (++safetyBreakCondition > 10000)
-        //    return true;
         if (rooms.Count >= maxSize)
             return true;
         RoomData roomTemp = new RoomData();
@@ -69,7 +67,6 @@ public class ProceduralMapGenerator : MonoBehaviour
             roomFits = true;
             Bounds b = new Bounds();
             b.size = GetRandomSize();
-            //b.center = entrancePos + Vector3.Scale(b.size / 2, directions[newDirection]) + Vector3.Scale(b.size / 2, new Vector3(0, 1, 0)); // TODO
             if (prevRoom != null)
             {
                 b.center = prevRoom.bounds.center - Vector3.Scale(prevRoom.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(shuffledDirections[i], prevRoom.bounds.size / 2) + Vector3.Scale(b.size / 2, shuffledDirections[i]) + Vector3.Scale(b.size / 2, new Vector3(0, 1, 0)); // TODO
@@ -90,7 +87,6 @@ public class ProceduralMapGenerator : MonoBehaviour
                 DoorData currDoor = new DoorData(); //currDoor references the door being made in the current room leading to the previous room
                 currDoor.wall = shuffledDirections[i]; //MIGHT BE BACKWARDS
                 currDoor.wallPosition = new Vector2Int(halfWallLength(roomTemp, shuffledDirections[i]),0);
-               // temp.wallPosition = new Vector2Int(1, 0);
                 roomTemp.doors.Add(currDoor);
 
                 if (roomTemp.prev != null) //backDoor references a door being created in the previous room that leads to the room that has just been created
@@ -100,13 +96,8 @@ public class ProceduralMapGenerator : MonoBehaviour
                     backDoor.wallPosition = new Vector2Int(halfWallLength(roomTemp.prev, shuffledDirections[i]), 0);
                     roomTemp.prev.doors.Add(backDoor);
                 }
-
-
-
-                //PlaceRoom(room);
                 currRoom = roomTemp;
 
-                var dir = Random.Range(0, directions.Length - 1); //make sure that dir doesn't doesn't corrospond to previous direction
                 if (!AttemptSpawnRoom(roomTemp))
                     backTrack();
                 break;
@@ -129,37 +120,15 @@ public class ProceduralMapGenerator : MonoBehaviour
             return (int)room.bounds.size.x / 2;
         }
     }
-    //where is this called?
-    //this is questionable. rooms may not always have the room we want to set room.prev to in the last slot
-    private void setPrevRoom(RoomData room)
-    {
-        if(rooms.Count > 1)
-        {
-            room.prev = rooms[rooms.Count - 2];
-        }
-        else
-        {
-            room.prev = null; //might cause errors, might need an "error Room"
-        }
-    }
 
     private void backTrack()
     {
         if (currRoom.prev != null)
-        {   for (int i = 0; i < directions.Length; i++)
+        { RoomData temp = currRoom.prev;
+            while (!AttemptSpawnRoom(temp))
             {
-                var dir = i;
-                if (AttemptSpawnRoom(currRoom.prev))
-                {
-                    break;
-                }
-                else
-                {
-                    print("CATASTROPHIC FAILURE: backttrack failed");
-
-                }
+                temp = temp.prev;
             }
-            
         }
         else
         {
