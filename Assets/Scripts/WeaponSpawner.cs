@@ -19,6 +19,8 @@ public class WeaponSpawner : MonoBehaviour
     {
         weaponCount = 0;
         compGen = gameObject.AddComponent<WeaponComponentGenerator>();
+        //GameObject gun = SpawnWeapon();
+        
     }
 
     // Update is called once per frame
@@ -31,7 +33,7 @@ public class WeaponSpawner : MonoBehaviour
     }
 
     //Spawn new weapon, add weapon info component, and set values according to player progress
-    void SpawnWeapon()
+    GameObject SpawnWeapon()
     {
         weaponCount++;
         GameObject newWeapon = new GameObject();
@@ -52,10 +54,13 @@ public class WeaponSpawner : MonoBehaviour
         stock.transform.parent = body.transform.GetChild(2);
         reciever.transform.parent = body.transform.GetChild(3);
         newWeapon.AddComponent<MeshCollider>();
-        newWeapon.GetComponent<MeshCollider>().convex = true;
-        newWeapon.AddComponent<Rigidbody>();
+        //newWeapon.GetComponent<MeshCollider>().convex = true;
+        newWeapon.GetComponent<MeshCollider>().isTrigger = true;
+        //newWeapon.AddComponent<Rigidbody>();
         compGen.SetWeaponValues(newWeapon.GetComponent<WeaponInfo>());
         newWeapon.AddComponent<ProjectileSpawner>();
         newWeapon.GetComponent<ProjectileSpawner>().InitializeThis();
+
+        return newWeapon;
     }
 }
