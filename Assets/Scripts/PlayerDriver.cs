@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerDriver : Driver
 {
+    EntityController ec;
+
     // Represent movement values for horizontal and vertical axes.
     private float x, z;
 
@@ -48,6 +50,11 @@ public class PlayerDriver : Driver
         verticalVelocity = new Vector3();
         horizontalLook = transform.eulerAngles.y;
         verticalLook = transform.eulerAngles.x;
+    }
+
+    private void Start()
+    {
+        ec = gameObject.GetComponent<EntityController>();
     }
 
     public override Vector3 GetMovement()
@@ -160,5 +167,39 @@ public class PlayerDriver : Driver
     public override bool interact()
     {
         return true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        GameObject otherObject = other.gameObject;
+        if (otherObject.layer == LayerMask.NameToLayer("Pickup"))
+        {
+            if (otherObject.tag.Equals("Health"))
+            {
+                Destroy(otherObject);
+                ec.Heal(10);
+            }
+            else if (otherObject.tag.Equals("Weapon"))
+            {
+                Destroy(otherObject.GetComponent<BoxCollider>());
+                Transform otherTrans = otherObject.transform;
+                otherTrans.rotation = transform.rotation;
+                otherTrans.position = transform.position + transform.forward * 0.5f +  transform.right * 0.5f + new Vector3(0, 0.5f, 0);
+                otherTrans.SetParent(ec.childTransform);
+
+            }
+            else if (otherObject.tag.Equals("Ammo"))
+            {
+
+
+
+            }
+            else if (otherObject.tag.Equals("Key"))
+            {
+
+
+
+            }
+        }
     }
 }
