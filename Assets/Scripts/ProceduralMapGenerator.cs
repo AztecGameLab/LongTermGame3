@@ -9,6 +9,9 @@ public class ProceduralMapGenerator : MonoBehaviour
     public int maxSize; //estimated  Max Size
     public int numAttempts;
     public RoomData currRoom;
+
+    public GameObject optimizationHitbox;
+    private Bounds hitBox;
     
     
     public int zUpperBound;
@@ -38,7 +41,9 @@ public class ProceduralMapGenerator : MonoBehaviour
     //A new map is generated on play
     private void Awake()
     {
+        hitBox.size = GetHitboxBounds();
         Initialize();
+
     }
 
     //clears the map and generates a new map
@@ -49,21 +54,45 @@ public class ProceduralMapGenerator : MonoBehaviour
             ClearMap();
         
         AttemptSpawnRoom(null);
-        PlaceRooms();
+       // PlaceRooms();
+    }
+
+    //Right now, Update is used to constantly check whether to spawn rooms or not, maybe instead we can create a method that detects if the character
+    // changes rooms, then update what rooms are in scope or not (rather than constantly checking), but right now everything resides in Update
+    public void Update()
+    {
+        hitBox.center = optimizationHitbox.transform.position;
+        foreach (RoomData placedRoom in rooms)
+        {
+            if (hitBox.Intersects(placedRoom.bounds))
+            {
+                if(GameObject.Find(placedRoom.name) == null)
+                    PlaceRoom(placedRoom);
+            }
+            else
+            {
+                GameObject roomInHitbox = GameObject.Find( placedRoom.name);
+                DestroyImmediate(roomInHitbox);
+            }
+
+        }
     }
 
     private bool AttemptSpawnRoom(RoomData prevRoom)
     {
+        //checks to see if max Rooms have been created yet
         if (rooms.Count >= maxSize)
             return true;
+
+        //instantiats data for a new Room
         RoomData roomTemp = new RoomData();
         roomTemp.doors = new List<DoorData>();
+
         bool roomFits = true;
         Vector3[] shuffledDirections = ShuffleDirection();
         //This loop needs to iterate over every possible direction a new room could be in. Preferably, it would also try a variety of sizes for each direction
         for (int i = 0; i < shuffledDirections.Length; i++)
         {
-            int newDirection = i;
             roomFits = true;
             Bounds b = new Bounds();
             b.size = GetRandomSize();
@@ -107,6 +136,8 @@ public class ProceduralMapGenerator : MonoBehaviour
         }
         return roomFits;
     }
+
+
 
 
     private int halfWallLength(RoomData room, Vector3 direction)
@@ -198,7 +229,7 @@ public class ProceduralMapGenerator : MonoBehaviour
             PlaceRoom(room);
             foreach(DoorData door in room.doors)
             {
-                print(room.name + " " + room.bounds.size + " " + " door: " + door.wall + " " + door.wallPosition);
+               // print(room.name + " " + room.bounds.size + " " + " door: " + door.wall + " " + door.wallPosition);
             }
         }
     }
@@ -213,6 +244,14 @@ public class ProceduralMapGenerator : MonoBehaviour
         int length = Random.Range(zLowerBound, zUpperBound);
         if (length % 2 == 0)
             length++;
+        return new Vector3(width, height, length);
+    }
+
+    private Vector3 GetHitboxBounds()
+    {
+        float width = optimizationHitbox.transform.localScale.x;
+        float height = optimizationHitbox.transform.localScale.y;
+        float length = optimizationHitbox.transform.localScale.z;
         return new Vector3(width, height, length);
     }
 }
