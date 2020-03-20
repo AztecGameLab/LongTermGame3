@@ -6,7 +6,7 @@ public class EntityController : MonoBehaviour
 {
     private Driver driver;
     private CharacterController characterController;
-    private Transform childTransform;
+    public Transform childTransform;
 
     private void Awake()
     {
@@ -70,7 +70,7 @@ public class EntityController : MonoBehaviour
 
     public void Heal(float health)
     {
-
+        Debug.Log("Healed");
     }
 
     public void Interact()
