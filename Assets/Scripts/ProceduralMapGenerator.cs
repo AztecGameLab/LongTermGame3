@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 //[ExecuteInEditMode]
 public class ProceduralMapGenerator : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class ProceduralMapGenerator : MonoBehaviour
     public GameObject roomTemplate;
     public ProceduralRoomGenerator roomGenerator;
     public bool isGenerateInterior;
+    public NavMeshSurface surface;
     Vector3[] directions =
     {
         Vector3.left,
@@ -50,6 +52,7 @@ public class ProceduralMapGenerator : MonoBehaviour
         
         AttemptSpawnRoom(null);
         PlaceRooms();
+        surface.BuildNavMesh();
     }
 
     private bool AttemptSpawnRoom(RoomData prevRoom)
