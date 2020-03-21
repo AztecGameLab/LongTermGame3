@@ -10,6 +10,7 @@ public class RoomData
     public List<DoorData> doors;
     public string type; //defines roomType e.g. Start, Boss, Key, Goal, etc.
     public RoomData prev;
+    public List<itemData> objects;
     //public List<DoorData> doors;
     //public Enemy[] enemy
 
