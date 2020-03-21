@@ -7,13 +7,11 @@ public class ProjectileSpawner : MonoBehaviour
     public float targetDistance = 50.0f;                    //Distance to crosshair
     public Vector2 weaponOffsetXY = new Vector2(0, 0);      //Offset from weapon to crosshair center
 
-    public GameObject projectilePrefab;
     [SerializeField]
     private WeaponInfo weaponInfo;
     [SerializeField]
     private AmmoTypeInfo ammoTypeInfo;
 
-    private float minFireSpan;
     private float lastFireTime;
 
     class ProjectilePool
@@ -40,21 +38,18 @@ public class ProjectileSpawner : MonoBehaviour
     }
 
     static ProjectilePool projectilePool;
+    static GameObject projectilePrefab;
 
-    public void InitializeThis()
+    //Temporary for current code in WeaponSpawner
+    //public void InitializeThis()
+    //{
+      //  Awake();
+        //Start();
+    //}
+
+    void Awake()
     {
         projectilePrefab = (GameObject)Resources.Load("Projectile");
-        weaponInfo = gameObject.GetComponent<WeaponInfo>();
-        ammoTypeInfo = gameObject.GetComponent<AmmoTypeInfo>();
-
-        if (ammoTypeInfo == null)
-        {
-            ammoTypeInfo = gameObject.AddComponent<AmmoTypeInfo>();
-            AmmoTypeInfo.DefaultAmmoType(ammoTypeInfo);
-        }
-
-        minFireSpan = 60.0f / weaponInfo.fireRate;  //Fire rate as RPM
-        lastFireTime = 0;
 
         if (projectilePool == null)
         {
@@ -69,6 +64,7 @@ public class ProjectileSpawner : MonoBehaviour
             projectilePool.data[i] = p;
         }
     }
+
     void Start()
     {
         weaponInfo = gameObject.GetComponent<WeaponInfo>();
@@ -80,7 +76,6 @@ public class ProjectileSpawner : MonoBehaviour
             AmmoTypeInfo.DefaultAmmoType(ammoTypeInfo);
         }
 
-        minFireSpan = 60.0f / weaponInfo.fireRate;  //Fire rate as RPM
         lastFireTime = 0;
     }
 
@@ -88,8 +83,11 @@ public class ProjectileSpawner : MonoBehaviour
     {
         float fireTime = Time.time;
         float fireSpan = fireTime - lastFireTime;
-     
-        if (fireSpan > minFireSpan)
+        float minFireSpan = 60.0f / weaponInfo.fireRate;  //Fire rate as RPM
+
+        minFireSpan /= 10.0f;  //Scale to current spawned weapon values
+
+        if (fireSpan >= minFireSpan)
         {
             lastFireTime = fireTime;
             SpawnProjectile();
@@ -109,7 +107,11 @@ public class ProjectileSpawner : MonoBehaviour
     private void SpawnProjectile()
     {
         GameObject projectile = projectilePool.GetNext();
-                
+
+        //Scaling constants for unit compatibility
+        float projScale = 0.5f;         //Projectile scale
+        float velocityScale = 2.0f;    //Muzzle velocity scale
+        
         Vector3 shootFrom = GetBarrel().position;
         Vector3 shootAt = shootFrom + gameObject.transform.rotation * new Vector3(weaponOffsetXY.x, weaponOffsetXY.y, targetDistance);
 
@@ -129,7 +131,6 @@ public class ProjectileSpawner : MonoBehaviour
         info.ammoTypeInfo = ammoTypeInfo;
 
         //Projectile dimensions
-        float projScale = 0.5f;
         float projDiameter = ammoTypeInfo.caliber * projScale;
         float projLength = projDiameter * ammoTypeInfo.caliberToLength;
 
@@ -138,7 +139,7 @@ public class ProjectileSpawner : MonoBehaviour
 
         Rigidbody body = projectile.GetComponent<Rigidbody>();
 
-        Vector3 direction = new Vector3(0, 0, weaponInfo.muzzleVelocity);
+        Vector3 direction = new Vector3(0, 0, weaponInfo.muzzleVelocity * velocityScale);
         projectile.transform.rotation = rotation * Quaternion.Euler(90.0f, 0.0f, 0.0f);
         body.velocity = rotation * direction;
     }

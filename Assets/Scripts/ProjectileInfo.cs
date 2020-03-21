@@ -8,8 +8,6 @@ public class ProjectileInfo : MonoBehaviour
     public WeaponInfo weaponInfo;
     public AmmoTypeInfo ammoTypeInfo;
 
-    private float sqrMaxDistance = 0.0f;
-
     void OnCollisionEnter(Collision collision)
     {
         //To do:  If hit enemy: calculate damage from weaponInfo, ammoTypeInfo, and enemy stats
@@ -30,18 +28,18 @@ public class ProjectileInfo : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    void Start()
+    private void Start()
     {
-        sqrMaxDistance = weaponInfo.effectiveRange * weaponInfo.effectiveRange;
     }
+
     private void Awake()
     {
-        weaponInfo = GetComponentInParent<WeaponInfo>();
-        sqrMaxDistance = 20;//weaponInfo.effectiveRange * weaponInfo.effectiveRange;
     }
 
     void FixedUpdate()
     {
+        float distanceScale = 4.0f;  //Scale to current value range in weaponInfo
+        float sqrMaxDistance = weaponInfo.effectiveRange * weaponInfo.effectiveRange * distanceScale;
         float sqrTravelDist = (gameObject.transform.position - startPosition).sqrMagnitude;
 
         if (sqrTravelDist > sqrMaxDistance)
