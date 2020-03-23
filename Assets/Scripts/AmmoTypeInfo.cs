@@ -31,6 +31,10 @@ public class AmmoTypeInfo : MonoBehaviour
     public float caliber;
     public float caliberToLength;
     public EffectType effectType;
+    public AudioClip soundOnFire;
+    public AudioClip soundOnHitWall;
+    public AudioClip soundOnHitEnemy;
+
     public float[] damageTypeFactor;
 
     static public void DefaultAmmoType(AmmoTypeInfo info)
@@ -67,6 +71,7 @@ public class AmmoTypeInfo : MonoBehaviour
 
     void Awake()
     {
+        DefaultAmmoType(this);
     }
 
     void Start()

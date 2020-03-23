@@ -61,6 +61,7 @@ public class WeaponSpawner : MonoBehaviour
         newWeapon.AddComponent<ProjectileSpawner>();
         //newWeapon.GetComponent<ProjectileSpawner>().InitializeThis();
         //newWeapon.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+        newWeapon.AddComponent<AudioSource>();
         newWeapon.layer = 10;
         newWeapon.tag = "Weapon";
 

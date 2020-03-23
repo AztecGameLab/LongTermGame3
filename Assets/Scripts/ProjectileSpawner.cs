@@ -9,9 +9,8 @@ public class ProjectileSpawner : MonoBehaviour
 
     [SerializeField]
     private WeaponInfo weaponInfo;
-    [SerializeField]
-    private AmmoTypeInfo ammoTypeInfo;
 
+    //private AmmoTypeInfo ammoTypeInfo;
     private float lastFireTime;
 
     class ProjectilePool
@@ -31,6 +30,7 @@ public class ProjectileSpawner : MonoBehaviour
         {
             GameObject result = data[current];
             result.SetActive(true);
+            result.GetComponent<CapsuleCollider>().enabled = true;
             current = (++current % size);
 
             return result;
@@ -49,7 +49,7 @@ public class ProjectileSpawner : MonoBehaviour
 
     void Awake()
     {
-        projectilePrefab = (GameObject)Resources.Load("Projectile");
+        projectilePrefab = (GameObject)Resources.Load("Projectile_LaserBolt");
 
         if (projectilePool == null)
         {
@@ -68,14 +68,6 @@ public class ProjectileSpawner : MonoBehaviour
     void Start()
     {
         weaponInfo = gameObject.GetComponent<WeaponInfo>();
-        ammoTypeInfo = gameObject.GetComponent<AmmoTypeInfo>();
-
-        if (ammoTypeInfo == null)
-        {
-            ammoTypeInfo = gameObject.AddComponent<AmmoTypeInfo>();
-            AmmoTypeInfo.DefaultAmmoType(ammoTypeInfo);
-        }
-
         lastFireTime = 0;
     }
 
@@ -128,7 +120,8 @@ public class ProjectileSpawner : MonoBehaviour
         ProjectileInfo info = projectile.GetComponent<ProjectileInfo>();
         info.startPosition = shootFrom;
         info.weaponInfo = weaponInfo;
-        info.ammoTypeInfo = ammoTypeInfo;
+
+        AmmoTypeInfo ammoTypeInfo = info.GetComponent<AmmoTypeInfo>();
 
         //Projectile dimensions
         float projDiameter = ammoTypeInfo.caliber * projScale;
@@ -142,5 +135,9 @@ public class ProjectileSpawner : MonoBehaviour
         Vector3 direction = new Vector3(0, 0, weaponInfo.muzzleVelocity * velocityScale);
         projectile.transform.rotation = rotation * Quaternion.Euler(90.0f, 0.0f, 0.0f);
         body.velocity = rotation * direction;
+
+        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+        AudioClip fireClip = ammoTypeInfo.soundOnFire;
+        audioSource.PlayOneShot(fireClip);
     }
 }

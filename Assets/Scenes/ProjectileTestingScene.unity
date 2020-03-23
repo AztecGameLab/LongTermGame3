@@ -121,6 +121,75 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &519510390
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4285354488852343481, guid: 38198c80cd0dd884cbe454a2e5d91a58,
+        type: 3}
+      propertyPath: m_Name
+      value: Projectile_LaserBolt
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285354488852343486, guid: 38198c80cd0dd884cbe454a2e5d91a58,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285354488852343486, guid: 38198c80cd0dd884cbe454a2e5d91a58,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -15.72
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285354488852343486, guid: 38198c80cd0dd884cbe454a2e5d91a58,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285354488852343486, guid: 38198c80cd0dd884cbe454a2e5d91a58,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285354488852343486, guid: 38198c80cd0dd884cbe454a2e5d91a58,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285354488852343486, guid: 38198c80cd0dd884cbe454a2e5d91a58,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285354488852343486, guid: 38198c80cd0dd884cbe454a2e5d91a58,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285354488852343486, guid: 38198c80cd0dd884cbe454a2e5d91a58,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285354488852343486, guid: 38198c80cd0dd884cbe454a2e5d91a58,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285354488852343486, guid: 38198c80cd0dd884cbe454a2e5d91a58,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285354488852343486, guid: 38198c80cd0dd884cbe454a2e5d91a58,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 38198c80cd0dd884cbe454a2e5d91a58, type: 3}
 --- !u!1 &1599807957
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,7 +295,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 8bcdcd479f6ded64aaf4f47e9f71657c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -458,8 +527,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbade9b520ebf7843bbfaffb9d7c43d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 20
-  speed: 1.2
+  range: 16
+  speed: 1
   timeStart: 0
 --- !u!33 &1939412228
 MeshFilter:

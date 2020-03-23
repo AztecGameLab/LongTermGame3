@@ -6,7 +6,6 @@ public class ProjectileInfo : MonoBehaviour
 {
     public Vector3 startPosition;
     public WeaponInfo weaponInfo;
-    public AmmoTypeInfo ammoTypeInfo;
 
     void OnCollisionEnter(Collision collision)
     {
@@ -14,6 +13,9 @@ public class ProjectileInfo : MonoBehaviour
         //  On all collision: set projectile to inactive
         //  'startPosition' is for determining effect of damage falloff
         GameObject target = collision.gameObject;
+
+        AmmoTypeInfo ammoType = gameObject.GetComponent<AmmoTypeInfo>();
+        AudioClip hitClip = null;
 
         if (target.tag == "Enemy")
         {
@@ -23,9 +25,36 @@ public class ProjectileInfo : MonoBehaviour
             {
                 testTarget.ResetTarget();
             }
+
+            hitClip = ammoType.soundOnHitEnemy;
+        }
+        else
+        {
+            hitClip = ammoType.soundOnHitWall;
         }
 
+        TerminateWithSound(hitClip);
+    }
+
+    private void TerminateWithSound(AudioClip sound)
+    {
+        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.PlayOneShot(sound);
+
+        Vector3 scalePrior = gameObject.transform.localScale;
+        gameObject.transform.localScale = new Vector3(0, 0, 0);
+        gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+
+        StartCoroutine(DelaySetActive(sound.length, scalePrior));
+    }
+
+    IEnumerator DelaySetActive(float delay, Vector3 localScale)
+    {
+        yield return new WaitForSeconds(delay);
+
         gameObject.SetActive(false);
+        gameObject.transform.localScale = localScale;
+        gameObject.GetComponent<CapsuleCollider>().enabled = true;
     }
 
     private void Start()
@@ -38,13 +67,16 @@ public class ProjectileInfo : MonoBehaviour
 
     void FixedUpdate()
     {
-        float distanceScale = 4.0f;  //Scale to current value range in weaponInfo
-        float sqrMaxDistance = weaponInfo.effectiveRange * weaponInfo.effectiveRange * distanceScale;
-        float sqrTravelDist = (gameObject.transform.position - startPosition).sqrMagnitude;
-
-        if (sqrTravelDist > sqrMaxDistance)
+        if (weaponInfo != null)
         {
-            gameObject.SetActive(false);
+            float distanceScale = 10.0f;  //Scale to current value range in weaponInfo
+            float sqrMaxDistance = weaponInfo.effectiveRange * weaponInfo.effectiveRange * distanceScale;
+            float sqrTravelDist = (gameObject.transform.position - startPosition).sqrMagnitude;
+
+            if (sqrTravelDist > sqrMaxDistance)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }
