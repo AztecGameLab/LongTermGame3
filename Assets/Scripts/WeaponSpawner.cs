@@ -19,7 +19,7 @@ public class WeaponSpawner : MonoBehaviour
     {
         weaponCount = 0;
         compGen = gameObject.AddComponent<WeaponComponentGenerator>();
-        //GameObject gun = SpawnWeapon();
+        
         
     }
 
@@ -37,17 +37,21 @@ public class WeaponSpawner : MonoBehaviour
     {
         weaponCount++;
         GameObject newWeapon = new GameObject();
-        //GameObject reciever = Instantiate(newReciever, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        newWeapon.AddComponent<WeaponInfo>();
+        newWeapon.name = "Weapon" + weaponCount;
+        newWeapon.GetComponent<WeaponInfo>().weaponName = newWeapon.name;
+        newWeapon.GetComponent<WeaponInfo>().SetInitialValues(testProgressModifier);
+        compGen.SetWeaponValues(newWeapon.GetComponent<WeaponInfo>());
+        weaponBody = compGen.weaponBody;
+        newReciever = compGen.weaponReciever;
+        newBarrel = compGen.weaponBarrel;
+        newMagazine = compGen.weaponMagazine;
+        newStock = compGen.weaponStock;
         GameObject body = Instantiate(weaponBody, new Vector3(0, 0.02f, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject barrel = Instantiate(newBarrel, body.transform.GetChild(0).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject magazine = Instantiate(newMagazine, body.transform.GetChild(1).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject stock = Instantiate(newStock, body.transform.GetChild(2).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject reciever = Instantiate(newReciever, body.transform.GetChild(3).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        newWeapon.AddComponent<WeaponInfo>();
-        newWeapon.name = "Weapon" + weaponCount;
-        newWeapon.GetComponent<WeaponInfo>().weaponName = newWeapon.name;
-        newWeapon.GetComponent<WeaponInfo>().SetInitialValues(testProgressModifier);
-        //reciever.transform.SetParent(newWeapon.transform);
         body.transform.SetParent(newWeapon.transform);
         barrel.transform.parent = body.transform.GetChild(0);
         magazine.transform.parent = body.transform.GetChild(1);
@@ -56,11 +60,7 @@ public class WeaponSpawner : MonoBehaviour
         newWeapon.AddComponent<MeshCollider>();
         newWeapon.GetComponent<MeshCollider>().convex = true;
         newWeapon.GetComponent<MeshCollider>().isTrigger = true;
-        //newWeapon.AddComponent<Rigidbody>();
-        compGen.SetWeaponValues(newWeapon.GetComponent<WeaponInfo>());
         newWeapon.AddComponent<ProjectileSpawner>();
-        //newWeapon.GetComponent<ProjectileSpawner>().InitializeThis();
-        //newWeapon.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
         newWeapon.AddComponent<AudioSource>();
         newWeapon.layer = 10;
         newWeapon.tag = "Weapon";

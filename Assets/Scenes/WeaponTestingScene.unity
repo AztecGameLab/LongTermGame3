@@ -198,13 +198,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1098462288}
-  m_LocalRotation: {x: -0, y: 0.2823806, z: -0, w: 0.9593024}
-  m_LocalPosition: {x: -26, y: 0.2, z: -27.7}
+  m_LocalRotation: {x: -0, y: 0.41193226, z: -0, w: 0.91121453}
+  m_LocalPosition: {x: -2.2, y: 1.8, z: -5.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 32.805, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 48.653004, z: 0}
 --- !u!114 &1098462292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,16 +280,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compGen: {fileID: 0}
-  weaponBody: {fileID: 4435282400034434822, guid: 95edb37b5783e084ba33992972c64b00,
-    type: 3}
-  newReciever: {fileID: 1750768547406387981, guid: b5b613c3c9d9a1e448b086eb7805794b,
-    type: 3}
-  newBarrel: {fileID: 4952592217824089845, guid: 341f8c6b13ba1bd438396f41cd2aaa1e,
-    type: 3}
-  newStock: {fileID: 5447422608020386135, guid: ea41b6579b6ad5e47a95bc9c179bf393,
-    type: 3}
-  newMagazine: {fileID: 820173306670411176, guid: 6e80967988886614db56d212ff838a00,
-    type: 3}
+  weaponBody: {fileID: 0}
+  newReciever: {fileID: 0}
+  newBarrel: {fileID: 0}
+  newStock: {fileID: 0}
+  newMagazine: {fileID: 0}
   testProgressModifier: 50
 --- !u!1 &1374619049
 GameObject:
