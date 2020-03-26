@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4285354488852343487}
   - component: {fileID: 6874339138804675463}
   - component: {fileID: 7264691559032287550}
-  m_Layer: 2
+  m_Layer: 11
   m_Name: Projectile_LaserBolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -237,8 +237,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseDamage: 10
-  caliber: 0
-  caliberToLength: 0
+  caliber: 0.7
+  caliberToLength: 3.5
   effectType: 0
   soundOnFire: {fileID: 8300000, guid: af499521ddadc468a8c9fafc8fba48a7, type: 3}
   soundOnHitWall: {fileID: 8300000, guid: 2c1cb77264d374d7dba62357a56c3ea9, type: 3}

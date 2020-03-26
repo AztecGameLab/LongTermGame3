@@ -41,19 +41,23 @@ public class ProjectileInfo : MonoBehaviour
         AudioSource audioSource = gameObject.GetComponent<AudioSource>();
         audioSource.PlayOneShot(sound);
 
-        Vector3 scalePrior = gameObject.transform.localScale;
-        gameObject.transform.localScale = new Vector3(0, 0, 0);
-        gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+        //Vector3 scalePrior = gameObject.transform.localScale;
+        //gameObject.transform.localScale = new Vector3(0, 0, 0);
+        //gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 
-        StartCoroutine(DelaySetActive(sound.length, scalePrior));
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+        gameObject.GetComponent<CapsuleCollider>().enabled = false;
+
+        StartCoroutine(DelaySetActive(sound.length));
     }
 
-    IEnumerator DelaySetActive(float delay, Vector3 localScale)
+    IEnumerator DelaySetActive(float delay)
     {
         yield return new WaitForSeconds(delay);
 
         gameObject.SetActive(false);
-        gameObject.transform.localScale = localScale;
+        //gameObject.transform.localScale = localScale;
+        gameObject.GetComponent<MeshRenderer>().enabled = true;
         gameObject.GetComponent<CapsuleCollider>().enabled = true;
     }
 

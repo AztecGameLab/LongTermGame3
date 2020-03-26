@@ -6,7 +6,7 @@
 
 	SubShader
 	{
-		Blend SrcAlpha OneMinusSrcAlpha
+		Blend SrcAlpha OneMinusSrcAlpha  
 
 		Tags
 		{
@@ -20,7 +20,7 @@
 			#pragma vertex vert
 			#pragma fragment frag
 
-			struct appdata
+			struct appdata  
 			{
 				float4 vertex : POSITION;
 				float2 uv : TEXCOORD0;
@@ -38,8 +38,8 @@
 			v2f vert(appdata v)
 			{
 				v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.uv = v.uv;
+				o.vertex = UnityObjectToClipPos(v.vertex * (sqrt(v.uv.y) * 0.8 + 0.2));
+                o.uv = v.uv;
 
 				return o;
 			}
@@ -48,7 +48,9 @@
 			{
                 float2 rootXY = sqrt(i.uv);
                 float sqrX = i.uv.x * i.uv.x;
-				return fixed4(0.9 + 0.1 * rootXY.x, sqrX * 0.2 + (0.3 - 0.3 * rootXY.y), sqrX * 0.05, rootXY.y);
+                float ax = i.uv.y; 
+				return (i.uv.y > 0.15) ? fixed4(0.9 + 0.1 * rootXY.x, sqrX * 0.2 + (0.3 - 0.3 * rootXY.y), sqrX * 0.05, ax * 2.0)
+                    : fixed4(1.0, 0.2, 0.0, 0.4);
 			}
 			ENDCG
 		}

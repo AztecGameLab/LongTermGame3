@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class ProjectileSpawner : MonoBehaviour
 {
-    public float targetDistance = 50.0f;                    //Distance to crosshair
-    public Vector2 weaponOffsetXY = new Vector2(0, 0);      //Offset from weapon to crosshair center
-
     [SerializeField]
     private WeaponInfo weaponInfo;
 
-    //private AmmoTypeInfo ammoTypeInfo;
+    private GameObject playerWeapon;
     private float lastFireTime;
 
     class ProjectilePool
@@ -30,7 +27,6 @@ public class ProjectileSpawner : MonoBehaviour
         {
             GameObject result = data[current];
             result.SetActive(true);
-            result.GetComponent<CapsuleCollider>().enabled = true;
             current = (++current % size);
 
             return result;
@@ -59,6 +55,7 @@ public class ProjectileSpawner : MonoBehaviour
         for (int i = 0; i < projectilePool.size; i++)
         {
             GameObject p = Instantiate(projectilePrefab);
+
             p.SetActive(false);
 
             projectilePool.data[i] = p;
@@ -67,6 +64,7 @@ public class ProjectileSpawner : MonoBehaviour
 
     void Start()
     {
+        playerWeapon = GameObject.FindGameObjectWithTag("PlayerWeapon");
         weaponInfo = gameObject.GetComponent<WeaponInfo>();
         lastFireTime = 0;
     }
@@ -82,7 +80,16 @@ public class ProjectileSpawner : MonoBehaviour
         if (fireSpan >= minFireSpan)
         {
             lastFireTime = fireTime;
-            SpawnProjectile();
+
+            if (playerWeapon != null)
+            {
+                playerWeapon.GetComponent<PlayerWeapon>().OnFireWeapon();
+            }
+            else
+            {
+                //Temporary to not break test scenes
+                SpawnProjectile();
+            }
         }
     }
 
@@ -96,27 +103,15 @@ public class ProjectileSpawner : MonoBehaviour
         return result;
     }
 
-    private void SpawnProjectile()
+    public void SpawnProjectile()
     {
         GameObject projectile = projectilePool.GetNext();
 
         //Scaling constants for unit compatibility
-        float projScale = 0.5f;         //Projectile scale
-        float velocityScale = 2.0f;    //Muzzle velocity scale
+        float projScale = 0.5f;        //Projectile size scale
+        float velocityScale = 1.5f;    //Muzzle velocity scale
         
         Vector3 shootFrom = GetBarrel().position;
-        Vector3 shootAt = shootFrom + gameObject.transform.rotation * new Vector3(weaponOffsetXY.x, weaponOffsetXY.y, targetDistance);
-
-        float scaledErrorX = targetDistance * (1.0f - weaponInfo.accuracy);
-        float scaledErrorY = scaledErrorX * 0.5f;
-
-        //~Disable accuracy for now
-        scaledErrorX = 0;
-        scaledErrorY = 0;
-
-        Vector3 target = shootAt + new Vector3(Random.Range(-scaledErrorX, scaledErrorX), Random.Range(-scaledErrorY, scaledErrorY), 0.0f);
-        Quaternion rotation = Quaternion.LookRotation(target - shootFrom, Vector3.up);
-
         ProjectileInfo info = projectile.GetComponent<ProjectileInfo>();
         info.startPosition = shootFrom;
         info.weaponInfo = weaponInfo;
@@ -125,7 +120,7 @@ public class ProjectileSpawner : MonoBehaviour
 
         //Projectile dimensions
         float projDiameter = ammoTypeInfo.caliber * projScale;
-        float projLength = projDiameter * ammoTypeInfo.caliberToLength;
+        float projLength = projDiameter * (ammoTypeInfo.caliberToLength * 2.0f);
 
         projectile.transform.position = shootFrom;
         projectile.transform.localScale = new Vector3(projDiameter, projLength, projDiameter);
@@ -133,8 +128,8 @@ public class ProjectileSpawner : MonoBehaviour
         Rigidbody body = projectile.GetComponent<Rigidbody>();
 
         Vector3 direction = new Vector3(0, 0, weaponInfo.muzzleVelocity * velocityScale);
-        projectile.transform.rotation = rotation * Quaternion.Euler(90.0f, 0.0f, 0.0f);
-        body.velocity = rotation * direction;
+        projectile.transform.rotation = gameObject.transform.rotation * Quaternion.Euler(90.0f, 0.0f, 0.0f);
+        body.velocity = gameObject.transform.rotation * direction;
 
         AudioSource audioSource = gameObject.GetComponent<AudioSource>();
         AudioClip fireClip = ammoTypeInfo.soundOnFire;

@@ -10,6 +10,7 @@ public class WeaponSpawner : MonoBehaviour
     public GameObject newBarrel;
     public GameObject newStock;
     public GameObject newMagazine;
+    public bool testSpawnOnShift = true;
     
     private int weaponCount;//keep track of weapons spawned
     [SerializeField]//Can be used to set range of the initial values based on player progress
@@ -27,8 +28,11 @@ public class WeaponSpawner : MonoBehaviour
     void Update()
     {
         //use Left Shift to spawn a new weapon for testing right now
-        if (Input.GetKeyDown(KeyCode.LeftShift)){
-            SpawnWeapon();
+        //DB:  added 'testSpawnOnShift' to disable this test where needed
+        //  Also setting isEquipped by default so I don't break the test scene
+        if (testSpawnOnShift && Input.GetKeyDown(KeyCode.LeftShift)){
+            GameObject weapon = SpawnWeapon();
+            weapon.GetComponent<WeaponInfo>().isEquipped = true;
         }
     }
 

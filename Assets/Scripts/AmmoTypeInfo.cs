@@ -71,7 +71,6 @@ public class AmmoTypeInfo : MonoBehaviour
 
     void Awake()
     {
-        DefaultAmmoType(this);
     }
 
     void Start()

@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3307278325576138102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3307278325576138101}
+  - component: {fileID: 3307278325576138100}
+  - component: {fileID: 3307278325576138107}
+  m_Layer: 0
+  m_Name: PlayerWeapon
+  m_TagString: PlayerWeapon
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3307278325576138101
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3307278325576138102}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.31, y: -0.97, z: 1.82}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3307278325576138100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3307278325576138102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 150f3b819f29a4c43a8beb63607471b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetDistance: 50
+  timeToRecenter: 0.5
+--- !u!114 &3307278325576138107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3307278325576138102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 041a5de6f00e292498ed87fab515910a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  compGen: {fileID: 0}
+  weaponBody: {fileID: 4435282400034434822, guid: 95edb37b5783e084ba33992972c64b00,
+    type: 3}
+  newReciever: {fileID: 1750768547406387981, guid: b5b613c3c9d9a1e448b086eb7805794b,
+    type: 3}
+  newBarrel: {fileID: 4952592217824089845, guid: 341f8c6b13ba1bd438396f41cd2aaa1e,
+    type: 3}
+  newStock: {fileID: 5447422608020386135, guid: ea41b6579b6ad5e47a95bc9c179bf393,
+    type: 3}
+  newMagazine: {fileID: 820173306670411176, guid: 6e80967988886614db56d212ff838a00,
+    type: 3}
+  testSpawnOnShift: 0
+  testProgressModifier: 50

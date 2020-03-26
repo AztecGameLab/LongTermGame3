@@ -41,7 +41,7 @@ public class WeaponInfo : MonoBehaviour
             DisplayValuesTest();
         }
 
-        if (isAutomatic)
+        if (isEquipped && isAutomatic)
         {
             if (Input.GetMouseButton(0))
             {
@@ -56,7 +56,7 @@ public class WeaponInfo : MonoBehaviour
             }
         }
         
-        else if (!isAutomatic)
+        else if (isEquipped && !isAutomatic)
         {
             if (Input.GetMouseButtonDown(0)) //Left Click
             {
