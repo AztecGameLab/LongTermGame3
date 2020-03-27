@@ -25,6 +25,7 @@ public class EntityController : MonoBehaviour
     {
         Aim();
         Movement();
+        Interact();
     }
 
     private void Aim()
