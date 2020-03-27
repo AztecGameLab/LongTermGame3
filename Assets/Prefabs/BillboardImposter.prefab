@@ -63,7 +63,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 61fa6735491afce4ca3044db5d990907, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e5f9076db09d2e540ad32d802b02bd0c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -220,11 +220,11 @@ MonoBehaviour:
   sideViewFacingLeft: 0
   player: {fileID: 0}
   sprites:
-  - {fileID: 21300000, guid: 61fa6735491afce4ca3044db5d990907, type: 3}
-  - {fileID: 21300000, guid: 9dbe7a9c58902f8479ddd093e6014227, type: 3}
-  - {fileID: 21300000, guid: 72f5adb742225224fa693d995511c726, type: 3}
-  - {fileID: 21300000, guid: 1c28ed1f7c9d4824e870fc60997268e0, type: 3}
-  - {fileID: 21300000, guid: c244596b40a2a7742a60cf8a3d106318, type: 3}
-  - {fileID: 21300000, guid: 1c28ed1f7c9d4824e870fc60997268e0, type: 3}
-  - {fileID: 21300000, guid: 72f5adb742225224fa693d995511c726, type: 3}
-  - {fileID: 21300000, guid: 9dbe7a9c58902f8479ddd093e6014227, type: 3}
+  - {fileID: 21300000, guid: e5f9076db09d2e540ad32d802b02bd0c, type: 3}
+  - {fileID: 21300000, guid: 6b5b95271077c2843b9ded91449f9baa, type: 3}
+  - {fileID: 21300000, guid: db2f87da488bdc94f8f89de9aab1179b, type: 3}
+  - {fileID: 21300000, guid: 12add311441c54a4b85e40979b18b4f4, type: 3}
+  - {fileID: 21300000, guid: 7ee1b073d01c13d4bbfac262de152551, type: 3}
+  - {fileID: 21300000, guid: 12add311441c54a4b85e40979b18b4f4, type: 3}
+  - {fileID: 21300000, guid: db2f87da488bdc94f8f89de9aab1179b, type: 3}
+  - {fileID: 21300000, guid: 6b5b95271077c2843b9ded91449f9baa, type: 3}
