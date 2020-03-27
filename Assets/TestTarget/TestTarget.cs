@@ -44,5 +44,10 @@ public class TestTarget : MonoBehaviour
 
         float timeOffset = Time.time - timeStart;
         transform.position = startPosition + direction * Mathf.Sin(timeOffset * speed);
+
+        GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
+
+        Quaternion q = Quaternion.LookRotation(transform.position - camera.transform.position, Vector3.up);
+        transform.rotation = q;
     }
 }

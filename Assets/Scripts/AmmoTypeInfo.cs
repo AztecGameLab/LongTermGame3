@@ -31,13 +31,17 @@ public class AmmoTypeInfo : MonoBehaviour
     public float caliber;
     public float caliberToLength;
     public EffectType effectType;
+    public AudioClip soundOnFire;
+    public AudioClip soundOnHitWall;
+    public AudioClip soundOnHitEnemy;
+
     public float[] damageTypeFactor;
 
     static public void DefaultAmmoType(AmmoTypeInfo info)
     {
         info.baseDamage = 10.0f;
-        info.caliber = Random.value * 0.6f + 0.2f;
-        info.caliberToLength = 2.0f;
+        info.caliber = 0.2f + Random.value * 0.6f;
+        info.caliberToLength = 2.0f + 4.0f * Random.value;
         info.effectType = EffectType.None;
     }
 
@@ -49,7 +53,7 @@ public class AmmoTypeInfo : MonoBehaviour
 
     public void ResetDamageTypeFactor()
     {
-        if (damageTypeFactor == null)
+        if ((damageTypeFactor == null) || (damageTypeFactor.Length == 0))
         {
             damageTypeFactor = new float[(int)DamageType.DamageTypeCount];
         }
@@ -67,12 +71,11 @@ public class AmmoTypeInfo : MonoBehaviour
 
     void Awake()
     {
-        ResetDamageTypeFactor();
     }
 
     void Start()
     {
-
+        ResetDamageTypeFactor();
     }
 
     void Update()

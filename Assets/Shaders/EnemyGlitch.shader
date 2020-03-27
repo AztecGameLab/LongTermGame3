@@ -58,10 +58,10 @@
 				x = pow(x, 4);
 
 				float dx = lerp(0.0, 0.04 * r, x);
-				//float dy = lerp(0.0, 0.01 * r, x);
+				float dy = lerp(0.0, 0.01 * r, x);
 
 				uv.x += dx;
-				//uv.y += dy;
+				uv.y += dy;
 
 				fixed4 col1 = tex2D(_MainTex, uv);
 				fixed4 col2 = tex2D(_SecondTex, uv);
@@ -70,6 +70,11 @@
 				float v = fmod((i.uv.y + p) * 100, 2);
 				if (v > 1.0) v = 1.0;
 
+                float f = sin(_Time.z * 4) * 0.5 + 0.5;
+                float ss = 1.0 / col1.x;
+                ss = lerp(1.0, ss, f);
+                float bb = ((col1.z > 0.4) && (col1.y < 0.2)) ? ss : 1.0;
+                col1 = fixed4(col1.x * bb, col1.y * bb, col1.z * bb, col1.w);
 				return lerp(col1, col2, x * x * 0.6) * lerp(1.0, v, x * 0.8);
 			}
 			ENDCG

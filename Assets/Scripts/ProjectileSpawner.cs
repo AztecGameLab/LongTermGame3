@@ -4,22 +4,10 @@ using UnityEngine;
 
 public class ProjectileSpawner : MonoBehaviour
 {
-    //public float muzzleVelocity;
-    //public float caliber;
-    //public float accuracy = 0.9f;
-    //public float caliberToLength = 2.0f;
-    //public Vector3 weaponToMuzzle = new Vector3(0, 0, 0);   //Offset from weapon position to muzzle
-
-    public float targetDistance = 50.0f;                    //Distance to crosshair
-    public Vector2 weaponOffsetXY = new Vector2(0, 0);      //Offset from weapon to crosshair center
-
-    public GameObject projectilePrefab;
     [SerializeField]
     private WeaponInfo weaponInfo;
-    [SerializeField]
-    private AmmoTypeInfo ammoTypeInfo;
 
-    private float minFireSpan;
+    private GameObject playerWeapon;
     private float lastFireTime;
 
     class ProjectilePool
@@ -46,36 +34,18 @@ public class ProjectileSpawner : MonoBehaviour
     }
 
     static ProjectilePool projectilePool;
+    static GameObject projectilePrefab;
+
+    //Temporary for current code in WeaponSpawner
+    //public void InitializeThis()
+    //{
+      //  Awake();
+        //Start();
+    //}
 
     void Awake()
     {
-        /*if (projectilePool == null)
-        {
-            projectilePool = new ProjectilePool(100);
-        }
-
-        for (int i = 0; i < projectilePool.size; i++)
-        {
-            GameObject p = Instantiate(projectilePrefab);
-            p.SetActive(false);
-
-            projectilePool.data[i] = p;
-        }*/
-    }
-    public void InitializeThis()
-    {
-        projectilePrefab = (GameObject)Resources.Load("Projectile");
-        weaponInfo = gameObject.GetComponent<WeaponInfo>();
-        ammoTypeInfo = gameObject.GetComponent<AmmoTypeInfo>();
-
-        if (ammoTypeInfo == null)
-        {
-            ammoTypeInfo = gameObject.AddComponent<AmmoTypeInfo>();
-            AmmoTypeInfo.DefaultAmmoType(ammoTypeInfo);
-        }
-
-        minFireSpan = 60.0f / weaponInfo.fireRate;  //Fire rate as RPM
-        lastFireTime = 0;
+        projectilePrefab = (GameObject)Resources.Load("Projectile_LaserBolt");
 
         if (projectilePool == null)
         {
@@ -85,23 +55,17 @@ public class ProjectileSpawner : MonoBehaviour
         for (int i = 0; i < projectilePool.size; i++)
         {
             GameObject p = Instantiate(projectilePrefab);
+
             p.SetActive(false);
 
             projectilePool.data[i] = p;
         }
     }
+
     void Start()
     {
+        playerWeapon = GameObject.FindGameObjectWithTag("PlayerWeapon");
         weaponInfo = gameObject.GetComponent<WeaponInfo>();
-        ammoTypeInfo = gameObject.GetComponent<AmmoTypeInfo>();
-
-        if (ammoTypeInfo == null)
-        {
-            ammoTypeInfo = gameObject.AddComponent<AmmoTypeInfo>();
-            AmmoTypeInfo.DefaultAmmoType(ammoTypeInfo);
-        }
-
-        minFireSpan = 60.0f / weaponInfo.fireRate;  //Fire rate as RPM
         lastFireTime = 0;
     }
 
@@ -109,11 +73,23 @@ public class ProjectileSpawner : MonoBehaviour
     {
         float fireTime = Time.time;
         float fireSpan = fireTime - lastFireTime;
-     
-        if (fireSpan > minFireSpan)
+        float minFireSpan = 60.0f / weaponInfo.fireRate;  //Fire rate as RPM
+
+        minFireSpan /= 10.0f;  //Scale to current spawned weapon values
+
+        if (fireSpan >= minFireSpan)
         {
             lastFireTime = fireTime;
-            SpawnProjectile();
+
+            if (playerWeapon != null)
+            {
+                playerWeapon.GetComponent<PlayerWeapon>().OnFireWeapon();
+            }
+            else
+            {
+                //Temporary to not break test scenes
+                SpawnProjectile();
+            }
         }
     }
 
@@ -127,32 +103,36 @@ public class ProjectileSpawner : MonoBehaviour
         return result;
     }
 
-    private void SpawnProjectile()
+    public void SpawnProjectile()
     {
         GameObject projectile = projectilePool.GetNext();
-                
+
+        //Scaling constants for unit compatibility
+        float projScale = 0.5f;        //Projectile size scale
+        float velocityScale = 1.5f;    //Muzzle velocity scale
+        
         Vector3 shootFrom = GetBarrel().position;
-        Vector3 shootAt = shootFrom + gameObject.transform.rotation * new Vector3(weaponOffsetXY.x, weaponOffsetXY.y, targetDistance);
-
-        float scaledErrorX = targetDistance * (1.0f - weaponInfo.accuracy);
-        float scaledErrorY = scaledErrorX * 0.5f;
-
-        Vector3 target = shootAt + new Vector3(Random.Range(-scaledErrorX, scaledErrorX), Random.Range(-scaledErrorY, scaledErrorY), 0.0f);
-        Quaternion rotation = Quaternion.LookRotation(target - shootFrom, Vector3.up);
-
         ProjectileInfo info = projectile.GetComponent<ProjectileInfo>();
         info.startPosition = shootFrom;
         info.weaponInfo = weaponInfo;
-        info.ammoTypeInfo = ammoTypeInfo;
 
-        Vector3 scale = new Vector3(ammoTypeInfo.caliber, ammoTypeInfo.caliber * ammoTypeInfo.caliberToLength, ammoTypeInfo.caliber);
+        AmmoTypeInfo ammoTypeInfo = info.GetComponent<AmmoTypeInfo>();
+
+        //Projectile dimensions
+        float projDiameter = ammoTypeInfo.caliber * projScale;
+        float projLength = projDiameter * (ammoTypeInfo.caliberToLength * 2.0f);
+
         projectile.transform.position = shootFrom;
-        projectile.transform.localScale = scale;
+        projectile.transform.localScale = new Vector3(projDiameter, projLength, projDiameter);
 
         Rigidbody body = projectile.GetComponent<Rigidbody>();
 
-        Vector3 direction = new Vector3(0, 0, weaponInfo.muzzleVelocity);
-        projectile.transform.rotation = rotation * Quaternion.Euler(90.0f, 0.0f, 0.0f);
-        body.velocity = rotation * direction;
+        Vector3 direction = new Vector3(0, 0, weaponInfo.muzzleVelocity * velocityScale);
+        projectile.transform.rotation = gameObject.transform.rotation * Quaternion.Euler(90.0f, 0.0f, 0.0f);
+        body.velocity = gameObject.transform.rotation * direction;
+
+        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+        AudioClip fireClip = ammoTypeInfo.soundOnFire;
+        audioSource.PlayOneShot(fireClip);
     }
 }

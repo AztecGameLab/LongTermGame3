@@ -6,9 +6,6 @@ public class ProjectileInfo : MonoBehaviour
 {
     public Vector3 startPosition;
     public WeaponInfo weaponInfo;
-    public AmmoTypeInfo ammoTypeInfo;
-
-    private float sqrMaxDistance = 0.0f;
 
     void OnCollisionEnter(Collision collision)
     {
@@ -16,6 +13,9 @@ public class ProjectileInfo : MonoBehaviour
         //  On all collision: set projectile to inactive
         //  'startPosition' is for determining effect of damage falloff
         GameObject target = collision.gameObject;
+
+        AmmoTypeInfo ammoType = gameObject.GetComponent<AmmoTypeInfo>();
+        AudioClip hitClip = null;
 
         if (target.tag == "Enemy")
         {
@@ -25,28 +25,62 @@ public class ProjectileInfo : MonoBehaviour
             {
                 testTarget.ResetTarget();
             }
+
+            hitClip = ammoType.soundOnHitEnemy;
+        }
+        else
+        {
+            hitClip = ammoType.soundOnHitWall;
         }
 
-        gameObject.SetActive(false);
+        TerminateWithSound(hitClip);
     }
 
-    void Start()
+    private void TerminateWithSound(AudioClip sound)
     {
-        sqrMaxDistance = weaponInfo.effectiveRange * weaponInfo.effectiveRange;
+        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.PlayOneShot(sound);
+
+        //Vector3 scalePrior = gameObject.transform.localScale;
+        //gameObject.transform.localScale = new Vector3(0, 0, 0);
+        //gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+
+        gameObject.GetComponent<MeshRenderer>().enabled = false;
+        gameObject.GetComponent<CapsuleCollider>().enabled = false;
+
+        StartCoroutine(DelaySetActive(sound.length));
     }
+
+    IEnumerator DelaySetActive(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        gameObject.SetActive(false);
+        //gameObject.transform.localScale = localScale;
+        gameObject.GetComponent<MeshRenderer>().enabled = true;
+        gameObject.GetComponent<CapsuleCollider>().enabled = true;
+    }
+
+    private void Start()
+    {
+    }
+
     private void Awake()
     {
-        weaponInfo = GetComponentInParent<WeaponInfo>();
-        sqrMaxDistance = 20;//weaponInfo.effectiveRange * weaponInfo.effectiveRange;
     }
 
     void FixedUpdate()
     {
-        float sqrTravelDist = (gameObject.transform.position - startPosition).sqrMagnitude;
-
-        if (sqrTravelDist > sqrMaxDistance)
+        if (weaponInfo != null)
         {
-            gameObject.SetActive(false);
+            float distanceScale = 10.0f;  //Scale to current value range in weaponInfo
+            float sqrMaxDistance = weaponInfo.effectiveRange * weaponInfo.effectiveRange * distanceScale;
+            float sqrTravelDist = (gameObject.transform.position - startPosition).sqrMagnitude;
+
+            if (sqrTravelDist > sqrMaxDistance)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }

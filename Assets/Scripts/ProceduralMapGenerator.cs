@@ -8,10 +8,15 @@ public class ProceduralMapGenerator : MonoBehaviour
     private List<RoomData> rooms;
     public LayerMask m_LayerMask;
     public int maxSize; //estimated  Max Size
+    public int maxItems;
     public int numAttempts;
     public RoomData currRoom;
-    
-    
+
+    public GameObject objectTemplate;
+
+    public GameObject optimizationHitbox;
+    private Bounds hitBox;
+
     public int zUpperBound;
     public int zLowerBound;
     public int yUpperBound;
@@ -40,6 +45,7 @@ public class ProceduralMapGenerator : MonoBehaviour
     //A new map is generated on play
     private void Awake()
     {
+        hitBox.size = GetHitboxBounds();
         Initialize();
     }
 
@@ -53,7 +59,37 @@ public class ProceduralMapGenerator : MonoBehaviour
         AttemptSpawnRoom(null);
         PlaceRooms();
         surface.BuildNavMesh();
+        foreach(RoomData room in rooms)
+        {
+            for(int i =0; i < Random.Range(1, maxItems); i++)
+            {
+                room.objects.Add(AttemptSpawnObject(room, objectTemplate, 0)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
+            }
+        }
     }
+
+    //Right now, Update is used to constantly check whether to spawn rooms or not, maybe instead we can create a method that detects if the character
+    // changes rooms, then update what rooms are in scope or not (rather than constantly checking), but right now everything resides in Update
+    public void Update()
+    {
+
+        hitBox.center = optimizationHitbox.transform.position;
+        foreach (RoomData placedRoom in rooms)
+        {
+            if (hitBox.Intersects(placedRoom.bounds))
+            {
+                if (GameObject.Find(placedRoom.name) == null)
+                    PlaceRoom(placedRoom);
+            }
+            else
+            {
+                GameObject roomInHitbox = GameObject.Find(placedRoom.name);
+                DestroyImmediate(roomInHitbox);
+            }
+
+        }
+    }
+
 
     private bool AttemptSpawnRoom(RoomData prevRoom)
     {
@@ -61,6 +97,7 @@ public class ProceduralMapGenerator : MonoBehaviour
             return true;
         RoomData roomTemp = new RoomData();
         roomTemp.doors = new List<DoorData>();
+        roomTemp.objects = new List<itemData>();
         bool roomFits = true;
         Vector3[] shuffledDirections = ShuffleDirection();
         //This loop needs to iterate over every possible direction a new room could be in. Preferably, it would also try a variety of sizes for each direction
@@ -99,6 +136,8 @@ public class ProceduralMapGenerator : MonoBehaviour
                     backDoor.wallPosition = new Vector2Int(halfWallLength(roomTemp.prev, shuffledDirections[i]), 0);
                     roomTemp.prev.doors.Add(backDoor);
                 }
+
+
                 currRoom = roomTemp;
 
                 if (!AttemptSpawnRoom(roomTemp))
@@ -111,6 +150,42 @@ public class ProceduralMapGenerator : MonoBehaviour
         return roomFits;
     }
 
+    public itemData AttemptSpawnObject(RoomData room, GameObject obj,int ySpawnOffset) // tries to spawn object in random position of a room
+    {
+        // find random 2d point on ceiling
+        Vector3 roomCornerOffset = room.bounds.center - (room.bounds.size/ 2);
+        int randomCX = (int)Random.Range(1,room.bounds.size.x);
+        int randomCY = (int)Random.Range(1,room.bounds.size.z);
+        Vector3 ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y-1), randomCY); // make add from corner of position of room
+        while (!validSpawnPosition(ceilingPos,room))
+        {
+
+            randomCX = (int)Random.Range(1, room.bounds.size.x);
+             randomCY = (int)Random.Range(1, room.bounds.size.z);
+             ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY);
+        }
+
+      //  Ray ray = new Ray(ceilingPos, Vector3.down);
+    //    Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 10);
+
+        RaycastHit hit;
+        Ray ray1 = new Ray(ceilingPos, Vector3.down);
+        //  Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 100);
+        Physics.Raycast(ray1, out hit, room.bounds.size.y);
+
+        itemData temp = new itemData(obj); // make spawn off of prefab later TODOTDO
+        temp.pos = hit.point + new Vector3(0,ySpawnOffset,0);
+
+        // temp.name =(room.name + " object: " + temp.transform.position);
+        temp.name = "tempItem";
+        //print(temp.name);
+        return temp;
+            
+        
+        //when true, add gameObject to room objects list
+        //if for some reason can't find a space, return null
+
+    }
 
     private int halfWallLength(RoomData room, Vector3 direction)
     {
@@ -182,7 +257,16 @@ public class ProceduralMapGenerator : MonoBehaviour
     private void PlaceRoom(RoomData room)
     {
         if (isGenerateInterior)
+        {
             roomGenerator.CreateRoom(room);
+                foreach (itemData obj in room.objects)
+                {
+                    GameObject roomObj = Instantiate(obj.obj);
+                    roomObj.GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
+                    roomObj.transform.position = obj.pos;
+                    roomObj.transform.parent = GameObject.Find(room.name).transform;
+                }
+        }
         else
         {
             GameObject roomObj = Instantiate(roomTemplate);
@@ -201,7 +285,7 @@ public class ProceduralMapGenerator : MonoBehaviour
             PlaceRoom(room);
             foreach(DoorData door in room.doors)
             {
-                print(room.name + " " + room.bounds.size + " " + " door: " + door.wall + " " + door.wallPosition);
+               // print(room.name + " " + room.bounds.size + " " + " door: " + door.wall + " " + door.wallPosition);
             }
         }
     }
@@ -218,9 +302,69 @@ public class ProceduralMapGenerator : MonoBehaviour
             length++;
         return new Vector3(width, height, length);
     }
+    private Vector3 GetHitboxBounds()
+    {
+        float width = optimizationHitbox.transform.localScale.x;
+        float height = optimizationHitbox.transform.localScale.y;
+        float length = optimizationHitbox.transform.localScale.z;
+        return new Vector3(width, height, length);
+    }
+    public bool validSpawnPosition(Vector3 source, RoomData room) //TODO make Vector3 at some point to spawn item
+    {
+        float MAX_DISTANCE_FROM_POINT = room.bounds.size.y+10;
+        RaycastHit hit;
+        Ray ray = new Ray(source, Vector3.down);
+      //  Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 100);
+        if (Physics.Raycast(ray, out hit,MAX_DISTANCE_FROM_POINT))
+        {
+            if (hit.collider.name.Equals("surface"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 /*
- *
+ *    public bool AttemptSpawnObject(RoomData room, GameObject obj) // tries to spawn object in random position of a room
+    {
+        //make 2D array of ceiling
+        //shuffle 2D array
+        //while isValidSpawn not true, iterate through 2d array
+        //when true, add gameObject to room objects list
+        //return true
+        //if for some reason can't find a space, return false
+        return false;
+
+    }
+ *  
+ *        if(Input.GetMouseButtonDown(0)) {
+             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+             RaycastHit physicsHit;
+             if(Physics.Raycast(ray, out physicsHit, clickMaxDist)) {
+                 NavMeshHit navmeshHit;
+                 int walkableMask = 1 << NavMesh.GetAreaFromName("Walkable");
+                 if(NavMesh.SamplePosition(physicsHit.point, out navmeshHit, 1.0f, walkableMask)) {
+                     Agent.SetDestination(navmeshHit.position);
+                 }
+             }
+         }
+ * 
+ * 
+ * 
+ *     public void Initialize()
+    {
+        rooms = new List<RoomData>();
+        if (transform.childCount != 0)
+            ClearMap();
+        
+        AttemptSpawnRoom(null);
+        PlaceRooms();
+        surface.BuildNavMesh();
+    }
+
+ * 
  *
  *    private int getNewDirection(int direction) //attempts to find a direction that doesn't go backwards
     {

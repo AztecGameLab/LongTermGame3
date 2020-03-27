@@ -10,6 +10,7 @@ public class WeaponSpawner : MonoBehaviour
     public GameObject newBarrel;
     public GameObject newStock;
     public GameObject newMagazine;
+    public bool testSpawnOnShift = true;
     
     private int weaponCount;//keep track of weapons spawned
     [SerializeField]//Can be used to set range of the initial values based on player progress
@@ -19,33 +20,42 @@ public class WeaponSpawner : MonoBehaviour
     {
         weaponCount = 0;
         compGen = gameObject.AddComponent<WeaponComponentGenerator>();
+        
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         //use Left Shift to spawn a new weapon for testing right now
-        if (Input.GetKeyDown(KeyCode.LeftShift)){
-            SpawnWeapon();
+        //DB:  added 'testSpawnOnShift' to disable this test where needed
+        //  Also setting isEquipped by default so I don't break the test scene
+        if (testSpawnOnShift && Input.GetKeyDown(KeyCode.LeftShift)){
+            GameObject weapon = SpawnWeapon();
+            weapon.GetComponent<WeaponInfo>().isEquipped = true;
         }
     }
 
     //Spawn new weapon, add weapon info component, and set values according to player progress
-    void SpawnWeapon()
+    public GameObject SpawnWeapon()
     {
         weaponCount++;
         GameObject newWeapon = new GameObject();
-        //GameObject reciever = Instantiate(newReciever, new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        GameObject body = Instantiate(weaponBody, new Vector3(0, 10, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        GameObject barrel = Instantiate(newBarrel, body.transform.GetChild(0).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        GameObject magazine = Instantiate(newMagazine, body.transform.GetChild(1).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        GameObject stock = Instantiate(newStock, body.transform.GetChild(2).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        GameObject reciever = Instantiate(newReciever, body.transform.GetChild(3).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         newWeapon.AddComponent<WeaponInfo>();
         newWeapon.name = "Weapon" + weaponCount;
         newWeapon.GetComponent<WeaponInfo>().weaponName = newWeapon.name;
         newWeapon.GetComponent<WeaponInfo>().SetInitialValues(testProgressModifier);
-        //reciever.transform.SetParent(newWeapon.transform);
+        compGen.SetWeaponValues(newWeapon.GetComponent<WeaponInfo>());
+        weaponBody = compGen.weaponBody;
+        newReciever = compGen.weaponReciever;
+        newBarrel = compGen.weaponBarrel;
+        newMagazine = compGen.weaponMagazine;
+        newStock = compGen.weaponStock;
+        GameObject body = Instantiate(weaponBody, new Vector3(0, 0.02f, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject barrel = Instantiate(newBarrel, body.transform.GetChild(0).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject magazine = Instantiate(newMagazine, body.transform.GetChild(1).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject stock = Instantiate(newStock, body.transform.GetChild(2).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject reciever = Instantiate(newReciever, body.transform.GetChild(3).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         body.transform.SetParent(newWeapon.transform);
         barrel.transform.parent = body.transform.GetChild(0);
         magazine.transform.parent = body.transform.GetChild(1);
@@ -53,9 +63,12 @@ public class WeaponSpawner : MonoBehaviour
         reciever.transform.parent = body.transform.GetChild(3);
         newWeapon.AddComponent<MeshCollider>();
         newWeapon.GetComponent<MeshCollider>().convex = true;
-        newWeapon.AddComponent<Rigidbody>();
-        compGen.SetWeaponValues(newWeapon.GetComponent<WeaponInfo>());
+        newWeapon.GetComponent<MeshCollider>().isTrigger = true;
         newWeapon.AddComponent<ProjectileSpawner>();
-        newWeapon.GetComponent<ProjectileSpawner>().InitializeThis();
+        newWeapon.AddComponent<AudioSource>();
+        newWeapon.layer = 10;
+        newWeapon.tag = "Weapon";
+
+        return newWeapon;
     }
 }
