@@ -11,13 +11,15 @@ public class EnemyGruntDriver : MonoBehaviour
     [SerializeField]
     private float alertRadius = 30f;
 
-    //where the enemy is going
-    private Vector3 move;
+    [SerializeField]
+    private float fieldOfView = 120f;
 
-    //where the enemy is looking
-    private Vector3 look;
+    [SerializeField]
+    private float alertCountdown = 1f;
 
     private bool isAlerted;
+
+    private Vector3 playerVector;
 
     private float timeLastShot;
 
@@ -36,17 +38,44 @@ public class EnemyGruntDriver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isAlerted && Vector3.Distance(player.position, transform.position) <= alertRadius)
-        {
-            isAlerted = true;
-        }
-        if (isAlerted)
+        playerVector = player.position - transform.position;
+
+        if (!isAlerted)
+            CheckForAlert();
+
+        if (isAlerted && playerVector.magnitude > agent.stoppingDistance)
         {
             agent.SetDestination(player.position);
-            Vector3 direction = (player.position - transform.position).normalized;
+        }
+
+        if (playerVector.magnitude <= agent.stoppingDistance)
+        {
+            Vector3 direction = new Vector3(playerVector.x, 0, playerVector.z).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = lookRotation;
         }
-        
+        if (isAlerted && (Time.time - timeLastShot >= (1 / fireRate)) && CheckLineOfSight())
+            Fire();
+    }
+    void CheckForAlert()
+    {
+        if (!isAlerted && playerVector.magnitude <= alertRadius && CheckLineOfSight())
+        {
+            alertCountdown -= Time.deltaTime;
+        }
+        if(alertCountdown <= 0f)
+        {
+            isAlerted = true;
+        }
+    }
+     bool CheckLineOfSight()
+    {
+        //layermask that ignores the player layer
+        int layerMask = ~(1 << 12);
+        return !Physics.Raycast(transform.position, playerVector, playerVector.magnitude, layerMask) && Vector3.Angle(transform.forward, playerVector) <= 0.5 * fieldOfView;
+    }
+     void Fire()
+    {
+
     }
 }

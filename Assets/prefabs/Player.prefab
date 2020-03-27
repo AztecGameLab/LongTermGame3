@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7482406497995980635}
   - component: {fileID: 7482406497995980638}
   - component: {fileID: 7482406497995980634}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b25a2bf98d4b18498aa2c67f33f492c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   speed: 10
   modifier: 1
   gravity: 10
@@ -107,7 +108,7 @@ GameObject:
   - component: {fileID: 7482406498992315016}
   - component: {fileID: 7482406498992315014}
   - component: {fileID: 7482406498992315015}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
