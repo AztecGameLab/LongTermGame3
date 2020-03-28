@@ -119,8 +119,7 @@ public class PlayerDriver : Driver
         return verticalLook;
     }
 
-
-    public override 
+ 
 
     public override bool interact()
     {
