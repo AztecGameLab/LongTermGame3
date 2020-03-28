@@ -46,27 +46,16 @@ public class RegularDoor : Interactable
     }
 
     //coroutine to open the door
-
     IEnumerator coroutineOpenDoor()
     {
         while (doorAngle < 1)
         {
             parent.rotation = Quaternion.Slerp(start, end, doorAngle);
-            doorAngle += Time.deltaTime;
+            doorAngle += Time.deltaTime/5;
 
             yield return null; 
         }
 
-    }
-
-    //Function to open the door
-    public void openDoor1()
-    {
-        //StartCoroutine(openDoor);
-
-        parent.rotation = Quaternion.Slerp(start, end, doorAngle);
-        doorAngle += Time.deltaTime;
-        
     }
 
     //coroutine to close the door
@@ -75,7 +64,7 @@ public class RegularDoor : Interactable
         while (doorAngle > 0f)
         {
             parent.rotation = Quaternion.Slerp(start, end, doorAngle);
-            doorAngle -= (Time.deltaTime/2);
+            doorAngle -= (Time.deltaTime/5);
 
             yield return null;
         }
@@ -83,22 +72,15 @@ public class RegularDoor : Interactable
         yield break;
     }
 
-    //Function to close the door
-    public void closeDoor1()
-    {
-        StartCoroutine(closeDoor);
-
-        //parent.rotation = Quaternion.Slerp(start, end, doorAngle);
-        //doorAngle -= Time.deltaTime;
-    }
 
 
     IEnumerator coroutineDoorCycle()
     {
-        StartCoroutine(openDoor);
+        yield return StartCoroutine("coroutineOpenDoor");
 
+        yield return new WaitForSeconds(5f);
 
-        yield return StartCoroutine(closeDoor);
+        StartCoroutine("coroutineCloseDoor");
         /*
         while(doorAngle > 0f)
         {
@@ -109,11 +91,12 @@ public class RegularDoor : Interactable
         }
         */
 
-        StopAllCoroutines();
+
         yield break;
     }
     public void doorCycle1()
     {
-        StartCoroutine(doorCycle);
+        
+        StartCoroutine("coroutineDoorCycle");
     }
 }
