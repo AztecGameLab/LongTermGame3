@@ -8,6 +8,8 @@ public class Driver : MonoBehaviour
     public const int maxHealth = 100;
     public float health;
 
+    public int keyCount = 0;
+
     public Transform player{
         get{
             if(_player == null){

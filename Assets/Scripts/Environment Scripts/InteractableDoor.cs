@@ -1,15 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class RegularDoor : MonoBehaviour
+public class InteractableDoor : Interactable
 {
-
-    //essentially just the fields of the parent object or the "Hinge"
     private Transform parent;
     private Vector3 parentPosition;
-
 
     //VARIABLES NEEDED TO OPEN AND CLOSE DOORS
     //start rotation and the end rotation values. 
@@ -18,10 +14,7 @@ public class RegularDoor : MonoBehaviour
     private Quaternion end;
     private float doorAngle = 0f;
 
-    //List of coroutines needed. Edit: technically not needed anymore because calling with quotations
-    private IEnumerator closeDoor;
-    private IEnumerator openDoor;
-    private IEnumerator doorCycle;
+
 
     // Start is called before the first frame update
     void Start()
@@ -33,29 +26,30 @@ public class RegularDoor : MonoBehaviour
         //initialization of the rotation values needed to open and close doors
         start = parent.rotation;
         end = parent.rotation * Quaternion.Euler(0, 140, 0);
-
-        //initialization of coroutines. Edit: technically not needed anymore because calling with quotations
-        openDoor = coroutineOpenDoor();
-        closeDoor = coroutineCloseDoor();
-        doorCycle = coroutineDoorCycle();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
-    //coroutine to open the door
+    public override void OnInteract(Driver d)
+    {
+        //In this specific part, I can also make it so that they can choose to open the door only, or open and close separately. Etc
+        StartCoroutine("coroutineDoorCycle");
+    }
+
+    //coroutine to open door
     IEnumerator coroutineOpenDoor()
     {
         //keeps animating door opening til it's at open state(140 degrees)
         while (doorAngle < 1)
         {
             parent.rotation = Quaternion.Slerp(start, end, doorAngle);
-            doorAngle += Time.deltaTime/2;
+            doorAngle += Time.deltaTime / 2;
 
-            yield return null; 
+            yield return null;
         }
 
     }
@@ -67,7 +61,7 @@ public class RegularDoor : MonoBehaviour
         while (doorAngle > 0f)
         {
             parent.rotation = Quaternion.Slerp(start, end, doorAngle);
-            doorAngle -= (Time.deltaTime/2);
+            doorAngle -= (Time.deltaTime / 2);
 
             yield return null;
         }
@@ -75,8 +69,7 @@ public class RegularDoor : MonoBehaviour
         yield break;
     }
 
-
-
+    //coroutine for the opening and closing of a door
     IEnumerator coroutineDoorCycle()
     {
         //opens the dooor
@@ -85,14 +78,8 @@ public class RegularDoor : MonoBehaviour
         yield return new WaitForSeconds(5f);
         //closes the door
         StartCoroutine("coroutineCloseDoor");
-        
+
         //terminates coroutine
         yield break;
-    }
-    //The method to open and close the door and the reference for the trigger's unityEvent
-    public void doorCycle1()
-    { 
-        //Calls coroutine to open and close the door
-        StartCoroutine("coroutineDoorCycle");
     }
 }

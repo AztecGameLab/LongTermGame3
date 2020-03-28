@@ -8,6 +8,7 @@ TagManager:
   - Health
   - Weapon
   - PlayerWeapon
+  - Key
   layers:
   - Default
   - TransparentFX

@@ -40,6 +40,9 @@ public class PlayerDriver : Driver
     [SerializeField]
     private float sensitivity = 100f;
 
+    // Number of keys being held
+    //public int keys = 0;
+
     private void Awake()
     {
         horizontalVelocity = new Vector3();
@@ -157,8 +160,8 @@ public class PlayerDriver : Driver
             }
             else if (otherObject.tag.Equals("Key"))
             {
-
-
+                Destroy(otherObject);
+                keyCount += 1;
 
             }
         }

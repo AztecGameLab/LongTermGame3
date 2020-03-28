@@ -25,7 +25,7 @@ public class EntityController : MonoBehaviour
     {
         Aim();
         Movement();
-        if(Input.GetButtonDown("e"))
+        if (Input.GetKeyDown("e"))
             Interact();
     }
 
@@ -78,9 +78,11 @@ public class EntityController : MonoBehaviour
             return;
         }
         Interactable interact = hit.transform.gameObject.GetComponent<Interactable>();
+        //Adding a reference of the player so the interactable object can access player fields
+
         if(interact == null)
             return;
 
-        interact.OnInteract();
+        interact.OnInteract(driver);
     } 
 }
