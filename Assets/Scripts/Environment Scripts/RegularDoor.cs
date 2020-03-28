@@ -7,15 +7,27 @@ public class RegularDoor : Interactable
 {
     public UnityEvent door = new UnityEvent();
 
+    //essentially just the fields of the parent object or the "Hinge"
+    private Transform parent;
     private Vector3 parentPosition;
-    private Quaternion originalRotation;
+
+
+    //variables needed for opening and closing door. These are the start rotation and the end rotation values. float is the speed at which the door moves
+    private Quaternion start;
+    private Quaternion end;
+    private float doorAngle = .0001f;
 
 
     // Start is called before the first frame update
     void Start()
-    {   
-        parentPosition = transform.parent.position;
-        originalRotation = transform.rotation;
+    {
+        //initialization of the fields of the parent object
+        parent = transform.parent;
+        parentPosition = parent.position;
+
+        //initialization of the rotation values needed to open and close doors
+        start = parent.rotation;
+        end = parent.rotation * Quaternion.Euler(0, 140, 0);
     }
 
     // Update is called once per frame
@@ -27,32 +39,17 @@ public class RegularDoor : Interactable
     //Function to open the door
     public void openDoor()
     {
-        for (int i = 0; i < 85; i+=3)
-        {
-            transform.RotateAround(parentPosition, Vector3.up, 3);
-            print(transform.rotation.y);
-        }
 
-        //InvokeRepeating("moveDoor(85f)", .5f, .1f);
-        //while(transform.rotation.y < 85f)
-        //{
-            //transform.RotateAround(parentPosition, Vector3.up, 3);
-        //}
+        parent.rotation = Quaternion.Slerp(start, end, doorAngle);
+        doorAngle += Time.deltaTime;
+        
     }
 
     //Function to close the door
     public void closeDoor()
     {
-        for (int i = 0; i < 85; i += 3)
-        {
-            transform.RotateAround(parentPosition, Vector3.up, -3);
-            print(transform.rotation.y);
-        }
-
-        //while (transform.rotation.y != 0)
-        //{
-        //    transform.RotateAround(parentPosition, Vector3.up, -30 * Time.deltaTime);
-        //}
+        parent.rotation = Quaternion.Slerp(start, end, doorAngle);
+        doorAngle -= Time.deltaTime;
     }
 
     public void moveDoor(float angle)
