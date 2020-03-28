@@ -169,9 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9026d4cb3aec565499da1414fea46e5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &28952839
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -244,25 +241,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a181dffdfd2a44b8d3440476ea245b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  open:
+  doorCycle:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 28952838}
         m_MethodName: doorCycle1
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  close:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 28952838}
-        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -532,7 +515,6 @@ GameObject:
   - component: {fileID: 478451141}
   - component: {fileID: 478451140}
   - component: {fileID: 478451139}
-  - component: {fileID: 478451138}
   m_Layer: 9
   m_Name: Interactable Door
   m_TagString: Untagged
@@ -554,21 +536,6 @@ Transform:
   m_Father: {fileID: 1371254580}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &478451138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 478451136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9026d4cb3aec565499da1414fea46e5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  door:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &478451139
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -769,9 +736,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9026d4cb3aec565499da1414fea46e5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  door:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &731664826
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -895,34 +859,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a181dffdfd2a44b8d3440476ea245b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  open:
+  doorCycle:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 28952838}
-        m_MethodName: openDoor
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  close:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 28952838}
-        m_MethodName: closeDoor
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!65 &881825796
 BoxCollider:
   m_ObjectHideFlags: 0

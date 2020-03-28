@@ -25,7 +25,8 @@ public class EntityController : MonoBehaviour
     {
         Aim();
         Movement();
-        Interact();
+        if(Input.GetButtonDown("e"))
+            Interact();
     }
 
     private void Aim()

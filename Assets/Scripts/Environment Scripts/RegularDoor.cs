@@ -5,19 +5,20 @@ using UnityEngine.Events;
 
 public class RegularDoor : Interactable
 {
-    public UnityEvent door = new UnityEvent();
 
     //essentially just the fields of the parent object or the "Hinge"
     private Transform parent;
     private Vector3 parentPosition;
 
 
-    //variables needed for opening and closing door. These are the start rotation and the end rotation values. float is the speed at which the door moves
+    //VARIABLES NEEDED TO OPEN AND CLOSE DOORS
+    //start rotation and the end rotation values. 
+    //float is the start SLERP interpolation between start and end (0 and 140 degrees)
     private Quaternion start;
     private Quaternion end;
-    private float doorAngle = .0001f;
+    private float doorAngle = 0f;
 
-    //List of coroutines needed
+    //List of coroutines needed. Edit: technically not needed anymore because calling with quotations
     private IEnumerator closeDoor;
     private IEnumerator openDoor;
     private IEnumerator doorCycle;
@@ -33,7 +34,7 @@ public class RegularDoor : Interactable
         start = parent.rotation;
         end = parent.rotation * Quaternion.Euler(0, 140, 0);
 
-        //initialization of coroutines
+        //initialization of coroutines. Edit: technically not needed anymore because calling with quotations
         openDoor = coroutineOpenDoor();
         closeDoor = coroutineCloseDoor();
         doorCycle = coroutineDoorCycle();
@@ -42,16 +43,17 @@ public class RegularDoor : Interactable
     // Update is called once per frame
     void Update()
     {
-        //transform.RotateAround(parentPosition, Vector3.up, -30 * Time.deltaTime);
+
     }
 
     //coroutine to open the door
     IEnumerator coroutineOpenDoor()
     {
+        //keeps animating door opening til it's at open state(140 degrees)
         while (doorAngle < 1)
         {
             parent.rotation = Quaternion.Slerp(start, end, doorAngle);
-            doorAngle += Time.deltaTime/5;
+            doorAngle += Time.deltaTime/2;
 
             yield return null; 
         }
@@ -61,10 +63,11 @@ public class RegularDoor : Interactable
     //coroutine to close the door
     IEnumerator coroutineCloseDoor()
     {
+        //keeps animating door closing til it's at close state(0 degrees)
         while (doorAngle > 0f)
         {
             parent.rotation = Quaternion.Slerp(start, end, doorAngle);
-            doorAngle -= (Time.deltaTime/5);
+            doorAngle -= (Time.deltaTime/2);
 
             yield return null;
         }
@@ -76,27 +79,20 @@ public class RegularDoor : Interactable
 
     IEnumerator coroutineDoorCycle()
     {
+        //opens the dooor
         yield return StartCoroutine("coroutineOpenDoor");
-
+        //leaves it open for 5 seconds
         yield return new WaitForSeconds(5f);
-
+        //closes the door
         StartCoroutine("coroutineCloseDoor");
-        /*
-        while(doorAngle > 0f)
-        {
-            parent.rotation = Quaternion.Slerp(start, end, doorAngle);
-            doorAngle -= Time.deltaTime;
-
-            yield return null;
-        }
-        */
-
-
+        
+        //terminates coroutine
         yield break;
     }
+    //The method to open and close the door and the reference for the trigger's unityEvent
     public void doorCycle1()
-    {
-        
+    { 
+        //Calls coroutine to open and close the door
         StartCoroutine("coroutineDoorCycle");
     }
 }
