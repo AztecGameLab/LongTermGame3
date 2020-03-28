@@ -17,6 +17,10 @@ public class RegularDoor : Interactable
     private Quaternion end;
     private float doorAngle = .0001f;
 
+    //List of coroutines needed
+    private IEnumerator closeDoor;
+    private IEnumerator openDoor;
+    private IEnumerator doorCycle;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +32,11 @@ public class RegularDoor : Interactable
         //initialization of the rotation values needed to open and close doors
         start = parent.rotation;
         end = parent.rotation * Quaternion.Euler(0, 140, 0);
+
+        //initialization of coroutines
+        openDoor = coroutineOpenDoor();
+        closeDoor = coroutineCloseDoor();
+        doorCycle = coroutineDoorCycle();
     }
 
     // Update is called once per frame
@@ -36,28 +45,75 @@ public class RegularDoor : Interactable
         //transform.RotateAround(parentPosition, Vector3.up, -30 * Time.deltaTime);
     }
 
-    //Function to open the door
-    public void openDoor()
+    //coroutine to open the door
+
+    IEnumerator coroutineOpenDoor()
     {
+        while (doorAngle < 1)
+        {
+            parent.rotation = Quaternion.Slerp(start, end, doorAngle);
+            doorAngle += Time.deltaTime;
+
+            yield return null; 
+        }
+
+    }
+
+    //Function to open the door
+    public void openDoor1()
+    {
+        //StartCoroutine(openDoor);
 
         parent.rotation = Quaternion.Slerp(start, end, doorAngle);
         doorAngle += Time.deltaTime;
         
     }
 
-    //Function to close the door
-    public void closeDoor()
+    //coroutine to close the door
+    IEnumerator coroutineCloseDoor()
     {
-        parent.rotation = Quaternion.Slerp(start, end, doorAngle);
-        doorAngle -= Time.deltaTime;
+        while (doorAngle > 0f)
+        {
+            parent.rotation = Quaternion.Slerp(start, end, doorAngle);
+            doorAngle -= (Time.deltaTime/2);
+
+            yield return null;
+        }
+
+        yield break;
     }
 
-    public void moveDoor(float angle)
+    //Function to close the door
+    public void closeDoor1()
     {
-        if (transform.rotation.y < 85f)
-        {
-            transform.RotateAround(parentPosition, Vector3.up, 3);
-        }
+        StartCoroutine(closeDoor);
+
+        //parent.rotation = Quaternion.Slerp(start, end, doorAngle);
+        //doorAngle -= Time.deltaTime;
     }
-    
+
+
+    IEnumerator coroutineDoorCycle()
+    {
+        StartCoroutine(openDoor);
+
+
+        yield return StartCoroutine(closeDoor);
+        /*
+        while(doorAngle > 0f)
+        {
+            parent.rotation = Quaternion.Slerp(start, end, doorAngle);
+            doorAngle -= Time.deltaTime;
+
+            yield return null;
+        }
+        */
+
+        StopAllCoroutines();
+        yield break;
+    }
+    public void doorCycle1()
+    {
+        StartCoroutine(doorCycle);
+    }
 }
