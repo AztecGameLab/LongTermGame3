@@ -10,6 +10,9 @@ public class RegularDoor : MonoBehaviour
     private Transform parent;
     private Vector3 parentPosition;
 
+    //Need a boolean for whether the door is opening/cycling or closed
+    private bool opening  = false;
+
 
     //VARIABLES NEEDED TO OPEN AND CLOSE DOORS
     //start rotation and the end rotation values. 
@@ -84,8 +87,9 @@ public class RegularDoor : MonoBehaviour
         //leaves it open for 5 seconds
         yield return new WaitForSeconds(5f);
         //closes the door
-        StartCoroutine("coroutineCloseDoor");
-        
+        yield return StartCoroutine("coroutineCloseDoor");
+
+
         //terminates coroutine
         yield break;
     }
