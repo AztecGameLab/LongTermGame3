@@ -6,6 +6,18 @@ using UnityEngine.AI;
 public class EnemyGruntDriver : MonoBehaviour
 {
     [SerializeField]
+    private Transform firePointLeft;
+
+    [SerializeField]
+    private Transform firePointRight;
+
+    [SerializeField]
+    private GameObject bullet;
+
+    [SerializeField]
+    private float bulletSpeed = 10f;
+
+    [SerializeField]
     private float fireRate = 2f;
 
     [SerializeField]
@@ -23,6 +35,8 @@ public class EnemyGruntDriver : MonoBehaviour
 
     private float timeLastShot;
 
+    private bool fireRight;
+
     Transform player;
     NavMeshAgent agent;
     // Start is called before the first frame update
@@ -33,6 +47,7 @@ public class EnemyGruntDriver : MonoBehaviour
         
         isAlerted = false;
         timeLastShot = Time.time;
+        fireRight = true;
     }
 
     // Update is called once per frame
@@ -48,14 +63,17 @@ public class EnemyGruntDriver : MonoBehaviour
             agent.SetDestination(player.position);
         }
 
-        if (playerVector.magnitude <= agent.stoppingDistance)
+        if (isAlerted && playerVector.magnitude <= agent.stoppingDistance)
         {
             Vector3 direction = new Vector3(playerVector.x, 0, playerVector.z).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = lookRotation;
         }
         if (isAlerted && (Time.time - timeLastShot >= (1 / fireRate)) && CheckLineOfSight())
+        {
             Fire();
+            timeLastShot = Time.time;
+        }
     }
     void CheckForAlert()
     {
@@ -63,7 +81,7 @@ public class EnemyGruntDriver : MonoBehaviour
         {
             alertCountdown -= Time.deltaTime;
         }
-        if(alertCountdown <= 0f)
+        if(!isAlerted && alertCountdown <= 0f)
         {
             isAlerted = true;
         }
@@ -76,6 +94,19 @@ public class EnemyGruntDriver : MonoBehaviour
     }
      void Fire()
     {
-
+        if (fireRight)
+        {
+            Vector3 dir = (player.position - firePointRight.position).normalized;
+            GameObject newBullet = Instantiate(bullet, firePointRight.position, Quaternion.identity);
+            newBullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed;
+            fireRight = false;
+        }
+        else
+        {
+            Vector3 dir = (player.position - firePointLeft.position).normalized;
+            GameObject newBullet = Instantiate(bullet, firePointLeft.position, Quaternion.identity);
+            newBullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed;
+            fireRight = true;
+        }
     }
 }
