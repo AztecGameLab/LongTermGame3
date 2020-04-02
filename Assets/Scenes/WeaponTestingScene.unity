@@ -285,7 +285,9 @@ MonoBehaviour:
   newBarrel: {fileID: 0}
   newStock: {fileID: 0}
   newMagazine: {fileID: 0}
-  testProgressModifier: 50
+  testSpawnOnShift: 1
+  testProgressModifier: 30
+  statGap: 50
 --- !u!1 &1374619049
 GameObject:
   m_ObjectHideFlags: 0

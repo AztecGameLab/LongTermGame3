@@ -20,8 +20,8 @@ public class WeaponInfo : MonoBehaviour
     public float effectiveRange;
     public float damageDropoff;
     public float weight;
- 
-    public float testProgressModifier;
+    public float statUpperBound;
+    public float statLowerBound;
 
     public GameObject bullet;  //Used for now if no ProjectileSpawner
 
@@ -75,51 +75,35 @@ public class WeaponInfo : MonoBehaviour
 
     //Sets the initial values based on a range of the player's progress
     //This can be changed for balancing or even scrapped later if need be, its main purpose is ensuring unique values
-    public void SetInitialValues(float progressModifier)
+    public void SetInitialValues(float progressModifier, float statGap)
     {
-        //Can place an if statement here later to set low end of range based on progressModifier for balancing
-        ammoSize = (int)Random.Range(20.0f, progressModifier);
-        projectileCount = (int)Random.Range(20.0f, progressModifier);
-        fireRate = Random.Range(20.0f, progressModifier);
-        reloadSpeed = Random.Range(20.0f, progressModifier);
-        muzzleVelocity = Random.Range(20.0f, progressModifier);
-        recoil = Random.Range(20.0f, progressModifier);
-        accuracy = Random.Range(20.0f, progressModifier);
-        effectiveRange = Random.Range(20.0f, progressModifier);
-        damageDropoff = Random.Range(20.0f, progressModifier);
+        if(statGap > progressModifier)
+        {
+            statGap = progressModifier;
+        }
+        statUpperBound = progressModifier;
+        statLowerBound = progressModifier - statGap;
+        ammoSize = (int)Random.Range(progressModifier-statGap, progressModifier);
+        projectileCount = (int)Random.Range(progressModifier - statGap, progressModifier);
+        if(projectileCount == 0)
+        {
+            projectileCount = 1;
+        }
+        fireRate = Random.Range(progressModifier - statGap, progressModifier);
+        reloadSpeed = Random.Range(progressModifier - statGap, progressModifier);
+        muzzleVelocity = Random.Range(progressModifier - statGap, progressModifier);
+        recoil = Random.Range(progressModifier - statGap, progressModifier);
+        accuracy = Random.Range(progressModifier - statGap, progressModifier);
+        effectiveRange = Random.Range(progressModifier - statGap, progressModifier);
+        damageDropoff = Random.Range(progressModifier - statGap, progressModifier);
         isAutomatic = (Random.value > 0.5f);
-        weight = Random.Range(20.0f, progressModifier);
-        testProgressModifier = progressModifier;
-        effectiveRange = 20;
+        weight = Random.Range(progressModifier - statGap, progressModifier);
+        effectiveRange = Random.Range(progressModifier - statGap, progressModifier);
     }
 
     //test methods to show weapon values and test firing
     void DisplayValuesTest()
     {
         Debug.Log(JsonUtility.ToJson(this));
-    }
-
-    void WeaponAttack()
-    {
-        for (int i = 0; i < projectileCount; i++)
-        {
-            GameObject newBullet = Instantiate(bullet, transform.GetChild(0).transform.GetChild(0).transform.position, transform.rotation);
-            newBullet.GetComponent<Rigidbody>().velocity = transform.TransformDirection(Vector3.forward * 2);
-            int axis = (int)Random.Range(0.0f, 2.0f);
-            if (axis == 0)
-            {
-                newBullet.GetComponent<Rigidbody>().velocity = new Vector3(newBullet.GetComponent<Rigidbody>().velocity.x * (Random.Range(1.0f, accuracy)), newBullet.GetComponent<Rigidbody>().velocity.y, newBullet.GetComponent<Rigidbody>().velocity.z);
-            }
-            else if (axis == 1)
-            {
-                newBullet.GetComponent<Rigidbody>().velocity = new Vector3(newBullet.GetComponent<Rigidbody>().velocity.x , newBullet.GetComponent<Rigidbody>().velocity.y * (Random.Range(1.0f, accuracy)), newBullet.GetComponent<Rigidbody>().velocity.z);
-            }
-            else
-            {
-                newBullet.GetComponent<Rigidbody>().velocity = new Vector3(newBullet.GetComponent<Rigidbody>().velocity.x, newBullet.GetComponent<Rigidbody>().velocity.y, newBullet.GetComponent<Rigidbody>().velocity.z * (Random.Range(1.0f, accuracy)));
-            }
-        }
-
-        Debug.Log(weaponName + ": Bang!");
     }
 }

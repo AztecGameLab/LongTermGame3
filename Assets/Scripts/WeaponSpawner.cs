@@ -14,7 +14,10 @@ public class WeaponSpawner : MonoBehaviour
     
     private int weaponCount;//keep track of weapons spawned
     [SerializeField]//Can be used to set range of the initial values based on player progress
-    private float testProgressModifier = 50.0f;
+    [Range(30.0f, 100f)]
+    public float testProgressModifier;
+    [Range(0.0f, 50f)]
+    public float statGap;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +47,7 @@ public class WeaponSpawner : MonoBehaviour
         newWeapon.AddComponent<WeaponInfo>();
         newWeapon.name = "Weapon" + weaponCount;
         newWeapon.GetComponent<WeaponInfo>().weaponName = newWeapon.name;
-        newWeapon.GetComponent<WeaponInfo>().SetInitialValues(testProgressModifier);
+        newWeapon.GetComponent<WeaponInfo>().SetInitialValues(testProgressModifier, statGap);
         compGen.SetWeaponValues(newWeapon.GetComponent<WeaponInfo>());
         weaponBody = compGen.weaponBody;
         newReciever = compGen.weaponReciever;

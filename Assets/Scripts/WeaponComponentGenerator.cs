@@ -48,10 +48,11 @@ public class WeaponComponentGenerator : MonoBehaviour
         choice = recievers[recieverChoice];
         Debug.Log(choice);
 
-        if (recieverChoice == 0) // Standard
+        if (recieverChoice == 3) // Sniper
         {
             weapon.isAutomatic = false;
             weapon.projectileCount = 1;
+            //weapon.muzzleVelocity = 
             weaponReciever = (GameObject)Resources.Load("Reciever1");
             //weaponReciever = (GameObject)Resources.Load("Reciever2");
         }
@@ -66,11 +67,11 @@ public class WeaponComponentGenerator : MonoBehaviour
         else if (recieverChoice == 2) // Shotgun
         {
             weapon.isAutomatic = false;
-            weapon.projectileCount = 4 * (int)weapon.testProgressModifier;
+            weapon.projectileCount = Random.Range(4, 16);
             //weaponReciever = (GameObject)Resources.Load("Reciever2");
             weaponReciever = (GameObject)Resources.Load("Reciever1");
         }
-        else // Sniper
+        else // Standard
         {
             weapon.isAutomatic = false;
             weapon.projectileCount = 1;
@@ -83,13 +84,15 @@ public class WeaponComponentGenerator : MonoBehaviour
         barrelChoice = (int)Random.Range(0.0f, 2.0f);
         choice = barrels[barrelChoice];
         Debug.Log(choice);
-        if (barrelChoice == 0)//standard
+        if (weapon.accuracy >= weapon.statLowerBound && weapon.accuracy <= weapon.statUpperBound * 0.33f)//short
         {
-            //weapon.
+            //weapon.accuracy -= weapon.accuracy * 0.20f;
+            //weapon.muzzleVelocity -= weapon.muzzleVelocity * 0.20f;
+            //weapon.fireRate += weapon.fireRate * 0.30f;
             //weaponBarrel = (GameObject)Resources.Load("Barrel2");
             weaponBarrel = (GameObject)Resources.Load("Barrel1");
         }
-        else if (barrelChoice == 1)//long
+        else if (weapon.accuracy >= weapon.statUpperBound * 0.66f && weapon.accuracy <= weapon.statUpperBound)//long
         {
             weapon.accuracy += weapon.accuracy * 0.15f;
             weapon.muzzleVelocity += weapon.muzzleVelocity * 0.20f;
@@ -97,68 +100,66 @@ public class WeaponComponentGenerator : MonoBehaviour
             weaponBarrel = (GameObject)Resources.Load("Barrel2");
             //weaponBarrel = (GameObject)Resources.Load("Barrel1");
         }
-        else//short
+        else//standard
         {
-            weapon.accuracy -= weapon.accuracy * 0.20f;
-            weapon.muzzleVelocity -= weapon.muzzleVelocity * 0.20f;
-            weapon.fireRate += weapon.fireRate * 0.30f;
-            //weaponBarrel = (GameObject)Resources.Load("Barrel2");
             weaponBarrel = (GameObject)Resources.Load("Barrel1");
         }
     }
 
     public void SetMagazine(WeaponInfo weapon)
     {
-        magazineChoice = (int)Random.Range(0.0f, 2.0f);
-        Debug.Log(magazines[magazineChoice]);
-        if(magazineChoice == 0) // Standard
+        //magazineChoice = (int)Random.Range(0.0f, 2.0f);
+        //Debug.Log(magazines[magazineChoice]);
+        if(weapon.ammoSize >= weapon.statUpperBound * 0.66f && weapon.ammoSize <= weapon.statUpperBound) // Extended
         {
-            //weaponMagazine = (GameObject)Resources.Load("Magazine2");
-            weaponMagazine = (GameObject)Resources.Load("Magazine1");
+            //weapon.ammoSize += (int)(weapon.ammoSize * 0.15f);
+            //weapon.reloadSpeed -= weapon.reloadSpeed * 0.15f;
+            weaponMagazine = (GameObject)Resources.Load("Magazine2");
+            Debug.Log(magazines[2]);
         }
 
-        else if (magazineChoice == 1) // Quick
+        else if (weapon.ammoSize >= weapon.statLowerBound && weapon.ammoSize <= weapon.statUpperBound * 0.33f) // Quick
         {
-            weapon.ammoSize -= (int)(weapon.ammoSize * 0.15f);
-            weapon.reloadSpeed += weapon.reloadSpeed * 0.15f;
+            //weapon.ammoSize -= (int)(weapon.ammoSize * 0.15f);
+            //weapon.reloadSpeed += weapon.reloadSpeed * 0.15f;
             //weaponMagazine = (GameObject)Resources.Load("Magazine2");
-            weaponMagazine = (GameObject)Resources.Load("Magazine1");
+            weaponMagazine = (GameObject)Resources.Load("Magazine1");//change to quick model when available
+            Debug.Log(magazines[1]);
         }
-        else // Extended
+        else // Standard
         {
-            weapon.ammoSize += (int)(weapon.ammoSize * 0.15f);
-            weapon.reloadSpeed -= weapon.reloadSpeed * 0.15f;
-            weaponMagazine = (GameObject)Resources.Load("Magazine2");
-            //weaponMagazine = (GameObject)Resources.Load("Magazine1");
+            weaponMagazine = (GameObject)Resources.Load("Magazine1");
+            Debug.Log(magazines[0]);
         }
     }
     public void SetStock(WeaponInfo weapon)
     {
-        stockChoice = (int)Random.Range(0.0f, 2.0f);
-        Debug.Log(stocks[stockChoice]);
-        if (stockChoice == 0) // standard
+        //stockChoice = (int)Random.Range(0.0f, 2.0f);
+        //Debug.Log(stocks[stockChoice]);
+        if (weapon.recoil >= weapon.statUpperBound*0.66f && weapon.recoil <= weapon.statUpperBound) // heavy
         {
-            //weaponStock = (GameObject)Resources.Load("Stock2");
-            weaponStock = (GameObject)Resources.Load("Stock1");
+            //weapon.recoil -= weapon.recoil * 0.20f;
+            //weapon.ammoSize += (int)(weapon.ammoSize * 0.15f);
+            //weapon.reloadSpeed -= weapon.reloadSpeed * 0.15f;
+            //weapon.weight += weapon.weight * 0.30f;
+            weaponStock = (GameObject)Resources.Load("Stock2");
+            Debug.Log(stocks[2]);
         }
 
-        else if (stockChoice == 1) // compact
+        else if (weapon.recoil >= weapon.statLowerBound && weapon.recoil <= weapon.statUpperBound*0.33f) // compact
         {
-            weapon.recoil += weapon.recoil * 0.20f;
-            weapon.accuracy -= weapon.accuracy * 0.15f;
-            weapon.weight -= weapon.weight * 0.30f;
-            weapon.reloadSpeed += weapon.reloadSpeed * 0.15f;
-            //weaponStock = (GameObject)Resources.Load("Stock2");
-            weaponStock = (GameObject)Resources.Load("Stock1");
+            //weapon.recoil += weapon.recoil * 0.20f;
+            //weapon.accuracy -= weapon.accuracy * 0.15f;
+            //weapon.weight -= weapon.weight * 0.30f;
+            //weapon.reloadSpeed += weapon.reloadSpeed * 0.15f;
+            weaponStock = (GameObject)Resources.Load("Stock1");//change to compact stock when available
+            Debug.Log(stocks[1]);
         }
-        else // heavy
+        else // standard
         {
-            weapon.recoil -= weapon.recoil * 0.20f;
-            weapon.ammoSize += (int)(weapon.ammoSize * 0.15f);
-            weapon.reloadSpeed -= weapon.reloadSpeed * 0.15f;
-            weapon.weight += weapon.weight * 0.30f;
-            weaponStock = (GameObject)Resources.Load("Stock2");
-            //weaponStock = (GameObject)Resources.Load("Stock1");
+            
+            weaponStock = (GameObject)Resources.Load("Stock1");
+            Debug.Log(stocks[0]);
         }
     }
 }
