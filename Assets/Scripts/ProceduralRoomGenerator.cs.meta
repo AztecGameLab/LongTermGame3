@@ -3,7 +3,15 @@ guid: ed33d700073610e43a82eb3481d46f6c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - doorPrefab: {instanceID: 0}
+  - CeilingEdge: {instanceID: 0}
+  - CeilingCorner: {instanceID: 0}
+  - CeilingTile: {instanceID: 0}
+  - floorEdge: {instanceID: 0}
+  - floorCorner: {instanceID: 0}
+  - floorTile: {instanceID: 0}
+  - wallTile: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
