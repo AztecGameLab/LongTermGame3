@@ -57,8 +57,9 @@ public class ProceduralRoomGenerator : MonoBehaviour
                 //if there was no door make a wall
                 
                 tile = Instantiate(tile, surface.transform);
+
                 tile.transform.localPosition = new Vector3(i - (height / 2.0f) + 0.5f, j - width / 2.0f + 0.5f);
-                
+
             }
         }
         
@@ -70,44 +71,48 @@ public class ProceduralRoomGenerator : MonoBehaviour
                     ((0 == y) && (0 == x)) ||
                     ((0== y) && (width - 1 == x)) ||
                     ((height - 1 == y) && (0== x));
+        bool botCorner = (corner && (y == 0) && (x == 0));
+        bool topCorner = (corner && (y == height - 1) && (x == width - 1));
+        bool botEdge = (edge && (x == 0));
+        bool topEdge = (edge && (x == width - 1));
         if (direction == Vector3.down)
         {
-            return CeilingDecision(y, x,edge,corner);
+            return CeilingDecision(y, x, edge, topCorner);
         }
         else if (Vector3.up== direction)
         {
-            return FloorDecision(y, x, edge, corner);
+            return FloorDecision(direction, y, x, edge, corner);
         }
         else
         {
-            return WallDecision(direction,y, x, edge, corner);
+            return WallDecision(direction,y, x, edge, botCorner, topCorner, botEdge, topEdge);
         }
         
     }
     public GameObject CeilingEdge;
     public GameObject CeilingCorner;
     public GameObject CeilingTile;
-    private GameObject CeilingDecision(int y, int x,bool edge,bool corner)
+    private GameObject CeilingDecision(int y, int x,bool edge, bool corner)
     {
-        if (corner)
-            return CeilingCorner;
-        if (edge)
-            return CeilingEdge;
+        //if (corner)
+        //    return CeilingCorner;
+        //if (edge)
+        //    return CeilingEdge;
         return CeilingTile;
     }
     public GameObject floorEdge;
     public GameObject floorCorner;
     public GameObject floorTile;
-    private GameObject FloorDecision(int y, int x, bool edge, bool corner)
+    private GameObject FloorDecision(Vector3 direction, int y, int x, bool edge, bool corner)
     {
-        if (corner)
-            return floorCorner;
-        if (edge)
-            return floorEdge;
+        //if (corner)
+        //  return floorCorner
+        //if (edge)
+        //  return floorEdge;
         return floorTile;
     }
     public GameObject wallTile;
-    private GameObject WallDecision(Vector3 direction,int y, int x, bool edge, bool corner)
+    private GameObject WallDecision(Vector3 direction,int y, int x, bool edge, bool botCorner, bool topCorner, bool botEdge, bool topEdge)
     {
         foreach (DoorData d in myRoom.doors)
         {
@@ -119,6 +124,18 @@ public class ProceduralRoomGenerator : MonoBehaviour
                 
             }
         }
+        //if (corner)
+        if (botCorner)
+            return floorCorner;
+        if (topCorner)
+            return CeilingCorner;
+        if (botEdge)
+            return floorEdge;
+        if (topEdge)
+            return CeilingEdge;
+        //if (edge)
+        //    return floorEdge;
+        
         return wallTile;
     }
     ////create the floor
