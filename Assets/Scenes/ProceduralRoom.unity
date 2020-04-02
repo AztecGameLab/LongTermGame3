@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -145,8 +146,9 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 65729740}
   m_Enabled: 1
-  serializedVersion: 9
+  serializedVersion: 10
   m_Type: 1
+  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -222,6 +224,7 @@ GameObject:
   - component: {fileID: 1090750198}
   - component: {fileID: 1090750197}
   - component: {fileID: 1090750196}
+  - component: {fileID: 1090750199}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -294,6 +297,37 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1090750199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090750195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_CameraOutput: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &1718084377
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,15 +380,15 @@ MonoBehaviour:
   doorPrefab: {fileID: 5160797226196359977, guid: 815ba8a74d9d08640b462f5b3b1f7952,
     type: 3}
   doorDimensions: {x: 1, y: 1}
-  CeilingEdge: {fileID: 1165704938103817998, guid: 5094e5c988b935747a07de2ea56a281f,
+  CeilingEdge: {fileID: 642113412942669608, guid: 9f758c8df7da3ec4b89dfd5f395f4404,
     type: 3}
-  CeilingCorner: {fileID: 1165704938103817998, guid: 5094e5c988b935747a07de2ea56a281f,
+  CeilingCorner: {fileID: 681216833073788502, guid: b2338da091899744eba30d69aa932c0d,
     type: 3}
   CeilingTile: {fileID: 1165704938103817998, guid: 5094e5c988b935747a07de2ea56a281f,
     type: 3}
-  floorEdge: {fileID: 4514113731283478810, guid: d38c98e376ce605409892e91fb3f3e25,
+  floorEdge: {fileID: 5046563040638868538, guid: 9344eebc4c77e1740826ad44b1b9bc74,
     type: 3}
-  floorCorner: {fileID: 4514113731283478810, guid: d38c98e376ce605409892e91fb3f3e25,
+  floorCorner: {fileID: 2518757077511962007, guid: 9d85fd4a5baf77140993bbf6a484e796,
     type: 3}
   floorTile: {fileID: 4514113731283478810, guid: d38c98e376ce605409892e91fb3f3e25,
     type: 3}
