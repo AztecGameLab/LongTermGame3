@@ -261,9 +261,8 @@ public class ProceduralMapGenerator : MonoBehaviour
             roomGenerator.CreateRoom(room);
                 foreach (itemData obj in room.objects)
                 {
-                    GameObject roomObj = Instantiate(obj.obj);
-                    roomObj.GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
-                    roomObj.transform.position = obj.pos;
+                    //temporarily spawns cubes in place of items
+                    GameObject roomObj = obj.Spawn();
                     roomObj.transform.parent = GameObject.Find(room.name).transform;
                 }
         }
@@ -327,6 +326,34 @@ public class ProceduralMapGenerator : MonoBehaviour
 
 }
 /*
+ * 
+ *     private void PlaceRoom(RoomData room)
+    {
+        if (isGenerateInterior)
+        {
+            roomGenerator.CreateRoom(room);
+                foreach (itemData obj in room.objects)
+                {
+                    //temporarily spawns cubes in place of items
+                    //GameObject roomObj = Instantiate(obj.obj);
+                    //roomObj.GetComponent<MeshRenderer>().material.color = obj.typeColor;
+                  //  roomObj.transform.position = obj.pos;
+
+                    GameObject roomObj = obj.Spawn();
+                    roomObj.transform.parent = GameObject.Find(room.name).transform;
+                }
+        }
+        else
+        {
+            GameObject roomObj = Instantiate(roomTemplate);
+            roomObj.GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
+            roomObj.transform.position = room.bounds.center;
+            roomObj.name = room.name;
+            roomObj.transform.localScale = room.bounds.size;
+            roomObj.transform.parent = transform;
+        }
+    }
+ * 
  *    public bool AttemptSpawnObject(RoomData room, GameObject obj) // tries to spawn object in random position of a room
     {
         //make 2D array of ceiling
