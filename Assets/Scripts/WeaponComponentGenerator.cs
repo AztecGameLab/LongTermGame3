@@ -53,15 +53,16 @@ public class WeaponComponentGenerator : MonoBehaviour
             weapon.isAutomatic = false;
             weapon.projectileCount = 1;
             //weapon.muzzleVelocity = 
-            weaponReciever = (GameObject)Resources.Load("Reciever1");
+            weaponReciever = (GameObject)Resources.Load("SniperReciever");
             //weaponReciever = (GameObject)Resources.Load("Reciever2");
+            //weaponReciever = (GameObject)Resources.Load("AutomaticReciever");
         }
         else if (recieverChoice == 1) // Automatic
         {
             weapon.isAutomatic = true;
             weapon.projectileCount = 1;
             weapon.fireRate += weapon.fireRate * 0.5f;
-            weaponReciever = (GameObject)Resources.Load("Reciever2");
+            weaponReciever = (GameObject)Resources.Load("AutomaticReciever");
             //weaponReciever = (GameObject)Resources.Load("Reciever1");
         }
         else if (recieverChoice == 2) // Shotgun
@@ -69,14 +70,16 @@ public class WeaponComponentGenerator : MonoBehaviour
             weapon.isAutomatic = false;
             weapon.projectileCount = Random.Range(4, 16);
             //weaponReciever = (GameObject)Resources.Load("Reciever2");
-            weaponReciever = (GameObject)Resources.Load("Reciever1");
+            weaponReciever = (GameObject)Resources.Load("ShotgunReciever");
+            //weaponReciever = (GameObject)Resources.Load("AutomaticReciever");
         }
         else // Standard
         {
             weapon.isAutomatic = false;
             weapon.projectileCount = 1;
             //weaponReciever = (GameObject)Resources.Load("Reciever2");
-            weaponReciever = (GameObject)Resources.Load("Reciever1");
+            weaponReciever = (GameObject)Resources.Load("StandardReciever");
+            //weaponReciever = (GameObject)Resources.Load("AutomaticReciever");
         }
     }
     public void SetBarrel(WeaponInfo weapon)
@@ -90,19 +93,21 @@ public class WeaponComponentGenerator : MonoBehaviour
             //weapon.muzzleVelocity -= weapon.muzzleVelocity * 0.20f;
             //weapon.fireRate += weapon.fireRate * 0.30f;
             //weaponBarrel = (GameObject)Resources.Load("Barrel2");
-            weaponBarrel = (GameObject)Resources.Load("Barrel1");
+            weaponBarrel = (GameObject)Resources.Load("ShortBarrel");
         }
         else if (weapon.accuracy >= weapon.statUpperBound * 0.66f && weapon.accuracy <= weapon.statUpperBound)//long
         {
             weapon.accuracy += weapon.accuracy * 0.15f;
             weapon.muzzleVelocity += weapon.muzzleVelocity * 0.20f;
             weapon.fireRate -= weapon.fireRate * 0.30f;
-            weaponBarrel = (GameObject)Resources.Load("Barrel2");
+            weaponBarrel = (GameObject)Resources.Load("LongBarrel");
             //weaponBarrel = (GameObject)Resources.Load("Barrel1");
+            //weaponBarrel = (GameObject)Resources.Load("ShortBarrel");
         }
         else//standard
         {
-            weaponBarrel = (GameObject)Resources.Load("Barrel1");
+            weaponBarrel = (GameObject)Resources.Load("StandardBarrel");
+            //weaponBarrel = (GameObject)Resources.Load("ShortBarrel");
         }
     }
 
@@ -114,7 +119,7 @@ public class WeaponComponentGenerator : MonoBehaviour
         {
             //weapon.ammoSize += (int)(weapon.ammoSize * 0.15f);
             //weapon.reloadSpeed -= weapon.reloadSpeed * 0.15f;
-            weaponMagazine = (GameObject)Resources.Load("Magazine2");
+            weaponMagazine = (GameObject)Resources.Load("ExtendedMagazine");
             Debug.Log(magazines[2]);
         }
 
@@ -123,12 +128,12 @@ public class WeaponComponentGenerator : MonoBehaviour
             //weapon.ammoSize -= (int)(weapon.ammoSize * 0.15f);
             //weapon.reloadSpeed += weapon.reloadSpeed * 0.15f;
             //weaponMagazine = (GameObject)Resources.Load("Magazine2");
-            weaponMagazine = (GameObject)Resources.Load("Magazine1");//change to quick model when available
+            weaponMagazine = (GameObject)Resources.Load("QuickMagazine");//change to quick model when available
             Debug.Log(magazines[1]);
         }
         else // Standard
         {
-            weaponMagazine = (GameObject)Resources.Load("Magazine1");
+            weaponMagazine = (GameObject)Resources.Load("StandardMagazine");
             Debug.Log(magazines[0]);
         }
     }
@@ -142,7 +147,7 @@ public class WeaponComponentGenerator : MonoBehaviour
             //weapon.ammoSize += (int)(weapon.ammoSize * 0.15f);
             //weapon.reloadSpeed -= weapon.reloadSpeed * 0.15f;
             //weapon.weight += weapon.weight * 0.30f;
-            weaponStock = (GameObject)Resources.Load("Stock2");
+            weaponStock = (GameObject)Resources.Load("HeavyStock");
             Debug.Log(stocks[2]);
         }
 
@@ -152,13 +157,15 @@ public class WeaponComponentGenerator : MonoBehaviour
             //weapon.accuracy -= weapon.accuracy * 0.15f;
             //weapon.weight -= weapon.weight * 0.30f;
             //weapon.reloadSpeed += weapon.reloadSpeed * 0.15f;
-            weaponStock = (GameObject)Resources.Load("Stock1");//change to compact stock when available
+            weaponStock = (GameObject)Resources.Load("CompactStock");//change to compact stock when available
+            //weaponStock = (GameObject)Resources.Load("HeavyStock");
             Debug.Log(stocks[1]);
         }
         else // standard
         {
             
-            weaponStock = (GameObject)Resources.Load("Stock1");
+            weaponStock = (GameObject)Resources.Load("StandardStock");
+            //weaponStock = (GameObject)Resources.Load("HeavyStock");
             Debug.Log(stocks[0]);
         }
     }
