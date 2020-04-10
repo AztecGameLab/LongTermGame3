@@ -14,7 +14,10 @@ public class WeaponSpawner : MonoBehaviour
     
     private int weaponCount;//keep track of weapons spawned
     [SerializeField]//Can be used to set range of the initial values based on player progress
-    private float testProgressModifier = 50.0f;
+    [Range(30.0f, 100f)]
+    public float testProgressModifier;
+    [Range(0.0f, 50f)]
+    public float statGap;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,23 +47,24 @@ public class WeaponSpawner : MonoBehaviour
         newWeapon.AddComponent<WeaponInfo>();
         newWeapon.name = "Weapon" + weaponCount;
         newWeapon.GetComponent<WeaponInfo>().weaponName = newWeapon.name;
-        newWeapon.GetComponent<WeaponInfo>().SetInitialValues(testProgressModifier);
+        newWeapon.GetComponent<WeaponInfo>().SetInitialValues(testProgressModifier, statGap);
         compGen.SetWeaponValues(newWeapon.GetComponent<WeaponInfo>());
-        weaponBody = compGen.weaponBody;
+        //weaponBody = compGen.weaponBody;
         newReciever = compGen.weaponReciever;
         newBarrel = compGen.weaponBarrel;
         newMagazine = compGen.weaponMagazine;
         newStock = compGen.weaponStock;
-        GameObject body = Instantiate(weaponBody, new Vector3(0, 0.02f, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        GameObject barrel = Instantiate(newBarrel, body.transform.GetChild(0).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        GameObject magazine = Instantiate(newMagazine, body.transform.GetChild(1).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        GameObject stock = Instantiate(newStock, body.transform.GetChild(2).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        GameObject reciever = Instantiate(newReciever, body.transform.GetChild(3).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        body.transform.SetParent(newWeapon.transform);
-        barrel.transform.parent = body.transform.GetChild(0);
-        magazine.transform.parent = body.transform.GetChild(1);
-        stock.transform.parent = body.transform.GetChild(2);
-        reciever.transform.parent = body.transform.GetChild(3);
+        //GameObject body = Instantiate(weaponBody, new Vector3(0, 0.02f, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject reciever = Instantiate(newReciever, new Vector3(0, 0.02f, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject barrel = Instantiate(newBarrel, reciever.transform.GetChild(1).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject magazine = Instantiate(newMagazine, reciever.transform.GetChild(2).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject stock = Instantiate(newStock, reciever.transform.GetChild(3).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        
+        reciever.transform.SetParent(newWeapon.transform);
+        barrel.transform.parent = reciever.transform.GetChild(1);
+        magazine.transform.parent = reciever.transform.GetChild(2);
+        stock.transform.parent = reciever.transform.GetChild(3);
+        
         newWeapon.AddComponent<MeshCollider>();
         newWeapon.GetComponent<MeshCollider>().convex = true;
         newWeapon.GetComponent<MeshCollider>().isTrigger = true;
