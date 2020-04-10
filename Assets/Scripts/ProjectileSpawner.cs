@@ -75,7 +75,7 @@ public class ProjectileSpawner : MonoBehaviour
         float fireSpan = fireTime - lastFireTime;
         float minFireSpan = 60.0f / weaponInfo.fireRate;  //Fire rate as RPM
 
-        minFireSpan /= 10.0f;  //Scale to current spawned weapon values
+        minFireSpan /= 5.0f;  //Scale to current spawned weapon values
 
         if (fireSpan >= minFireSpan)
         {

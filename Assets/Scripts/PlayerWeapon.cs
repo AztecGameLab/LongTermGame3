@@ -12,6 +12,7 @@ public class PlayerWeapon : MonoBehaviour
     public float recoilMaxOffsetZ = 1.0f;
 
     private GameObject weapon;
+    private GameObject envelope;
     private WeaponInfo weaponInfo;
     private ProjectileSpawner projSpawner;
 
@@ -86,8 +87,9 @@ public class PlayerWeapon : MonoBehaviour
             float accuracyScale = 5.0f;
             float accuracyFactor = (100.0f - Mathf.Min(weaponInfo.accuracy, 100.0f)) / (100.0f * accuracyScale);
             float scaledErrorX = targetDistance * accuracyFactor;
-            float scaledErrorY = scaledErrorX * 0.5f;
-            aimOffset = aimOffset + new Vector2(Random.Range(-scaledErrorX, scaledErrorX), Random.Range(-scaledErrorY, scaledErrorY));
+            float scaledErrorY = scaledErrorX;
+            Vector2 errorScaleY = new Vector2(0.1f, 0.5f);
+            aimOffset = aimOffset + new Vector2(Random.Range(-scaledErrorX, scaledErrorX), Random.Range(-scaledErrorY * errorScaleY.x, scaledErrorY * errorScaleY.y));
             
             gameObject.transform.rotation = GetAimRotation();
             SetRecoil(true);
@@ -97,7 +99,7 @@ public class PlayerWeapon : MonoBehaviour
 
             fireOffset = aimOffset;
 
-            float recoilFixedTemp = 10.0f;
+            float recoilFixedTemp = 20.0f;
             float recoilAmount = Random.Range(0.8f, 1.0f) * (recoilFixedTemp / 100.0f);
             recoilFire = recoilCurrent;
             recoilSet = Mathf.Min(recoilCurrent + recoilAmount, 1.0f);
@@ -108,9 +110,12 @@ public class PlayerWeapon : MonoBehaviour
     {
         if (weaponInfo != null) weaponInfo.isEquipped = false; ;
 
+        envelope = gameObject.transform.GetChild(0).gameObject;
+
         weapon = newWeapon;
-        weapon.transform.parent = gameObject.transform;
-        weapon.transform.position = gameObject.transform.position;
+        envelope.transform.position = gameObject.transform.position;
+        weapon.transform.parent = envelope.transform;
+        weapon.transform.position = envelope.transform.position - new Vector3(0.0f, -0.5f, -1.2f);
         weaponInfo = weapon.GetComponent<WeaponInfo>();
         projSpawner = weapon.GetComponent<ProjectileSpawner>();
         weaponInfo.isEquipped = true;
