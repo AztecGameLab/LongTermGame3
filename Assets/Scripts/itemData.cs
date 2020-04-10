@@ -10,7 +10,12 @@ public class itemData
     public int type;
     public Color typeColor;
     public Vector3 pos;
-
+    public enum itemType
+    {
+        Enemy,
+        Gun,
+        Pickup
+    }
     public itemData(GameObject obj, string name)
     {
         this.obj = obj;
@@ -59,10 +64,10 @@ public class itemData
         return 2;
     }
 
-    public GameObject Spawn()
+    public GameObject Spawn(Transform parent)
     {
-        GameObject roomObj = GameObject.Instantiate(obj);
-        roomObj.GetComponent<MeshRenderer>().material.color = typeColor;
+        GameObject roomObj = GameObject.Instantiate(obj,parent);
+        //roomObj.GetComponent<MeshRenderer>().material.color = typeColor;
         roomObj.transform.position = pos;
         return roomObj;
 

@@ -11,6 +11,7 @@ public class RoomData
     public string type; //defines roomType e.g. Start, Boss, Key, Goal, etc.
     public RoomData prev;
     public List<itemData> objects;
+    public GameObject roomObj;
     //public List<DoorData> doors;
     //public Enemy[] enemy
 

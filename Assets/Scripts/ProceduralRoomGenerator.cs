@@ -13,6 +13,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
     Transform roomLocation;
     public Transform map;
     public float brightness;
+    public GameObject[] potentialItemSpawns;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +23,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
             CreateRoom(testData);
         }
     }
-    public void CreateRoom(RoomData data)
+    public GameObject CreateRoom(RoomData data)
     {
         myRoom = data;
         roomLocation = new GameObject(myRoom.name).transform;
@@ -36,47 +37,67 @@ public class ProceduralRoomGenerator : MonoBehaviour
         CreateSurface(Vector3.forward, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.x, myRoom.bounds.extents.z);
         CreateSurface(Vector3.back, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.x, myRoom.bounds.extents.z);
         CreateLight(data,roomLocation);
+        for (int i = 0; i < Random.Range(1, 4); i++)
+        {
+            data.objects.Add(AttemptSpawnObject(data, potentialItemSpawns[Random.Range(0,potentialItemSpawns.Length)], 0,roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
+        }
+        return roomLocation.gameObject;
         //Floor();
         //Walls();
         //Ceiling();
     }
-    //public itemData AttemptSpawnObject(RoomData room, GameObject obj, int ySpawnOffset) // tries to spawn object in random position of a room
-    //{
-    //    // find random 2d point on ceiling
-    //    Vector3 roomCornerOffset = room.bounds.center - (room.bounds.size / 2);
-    //    int randomCX = (int)Random.Range(1, room.bounds.size.x);
-    //    int randomCY = (int)Random.Range(1, room.bounds.size.z);
-    //    Vector3 ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY); // make add from corner of position of room
-    //    while (!validSpawnPosition(ceilingPos, room))
-    //    {
+    public itemData AttemptSpawnObject(RoomData room, GameObject obj, int ySpawnOffset,Transform parent) // tries to spawn object in random position of a room
+    {
+        // find random 2d point on ceiling
+        Vector3 roomCornerOffset = room.bounds.center - (room.bounds.size / 2);
+        int randomCX = (int)Random.Range(1, room.bounds.size.x);
+        int randomCY = (int)Random.Range(1, room.bounds.size.z);
+        Vector3 ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY); // make add from corner of position of room
+        while (!validSpawnPosition(ceilingPos, room))
+        {
 
-    //        randomCX = (int)Random.Range(1, room.bounds.size.x);
-    //        randomCY = (int)Random.Range(1, room.bounds.size.z);
-    //        ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY);
-    //    }
+            randomCX = (int)Random.Range(1, room.bounds.size.x);
+            randomCY = (int)Random.Range(1, room.bounds.size.z);
+            ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY);
+        }
 
-    //    //  Ray ray = new Ray(ceilingPos, Vector3.down);
-    //    //    Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 10);
+        //  Ray ray = new Ray(ceilingPos, Vector3.down);
+        //    Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 10);
 
-    //    RaycastHit hit;
-    //    Ray ray1 = new Ray(ceilingPos, Vector3.down);
-    //    //  Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 100);
-    //    Physics.Raycast(ray1, out hit, room.bounds.size.y);
+        RaycastHit hit;
+        Ray ray1 = new Ray(ceilingPos, Vector3.down);
+        //  Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 100);
+        Physics.Raycast(ray1, out hit, room.bounds.size.y);
 
-    //    itemData temp = new itemData(obj); // make spawn off of prefab later TODOTDO
-    //    temp.pos = hit.point + new Vector3(0, ySpawnOffset, 0);
+        itemData temp = new itemData(obj); // make spawn off of prefab later TODOTDO
+        temp.pos = hit.point + new Vector3(0, ySpawnOffset, 0);
 
-    //    // temp.name =(room.name + " object: " + temp.transform.position);
-    //    temp.name = "tempItem";
-    //    //print(temp.name);
-    //    return temp;
+        // temp.name =(room.name + " object: " + temp.transform.position);
+        temp.name = "tempItem";
+        //print(temp.name);
+        temp.Spawn(parent);
+        return temp;
 
 
-    //    //when true, add gameObject to room objects list
-    //    //if for some reason can't find a space, return null
+        //when true, add gameObject to room objects list
+        //if for some reason can't find a space, return null
 
-    //}
-
+    }
+    public bool validSpawnPosition(Vector3 source, RoomData room) //TODO make Vector3 at some point to spawn item
+    {
+        float MAX_DISTANCE_FROM_POINT = room.bounds.size.y + 10;
+        RaycastHit hit;
+        Ray ray = new Ray(source, Vector3.down);
+        //  Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 100);
+        if (Physics.Raycast(ray, out hit, MAX_DISTANCE_FROM_POINT))
+        {
+            if (hit.collider.name.Equals("surface"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public void CreateLight(RoomData data,Transform room)
     {
         Light light = new GameObject().AddComponent<Light>();

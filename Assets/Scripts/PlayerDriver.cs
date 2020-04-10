@@ -40,6 +40,8 @@ public class PlayerDriver : Driver
     [SerializeField]
     private float sensitivity = 100f;
 
+    float groundCheckRadius;
+    float groundCheckDistance;
     // Number of keys being held
     //public int keys = 0;
 
@@ -49,6 +51,9 @@ public class PlayerDriver : Driver
         verticalVelocity = new Vector3();
         horizontalLook = transform.eulerAngles.y;
         verticalLook = transform.eulerAngles.x;
+        var charController = GetComponent<CharacterController>();
+        groundCheckDistance = charController.height/2;
+        groundCheckRadius = charController.radius;
     }
 
     private void Start()
@@ -93,7 +98,7 @@ public class PlayerDriver : Driver
     private bool GroundCheck()
     {
         // Check an invisible sphere at the bottom of the controller and see if it collides with objects in the ground layer.
-        return Physics.CheckSphere(transform.position + Vector3.down, .4f, LayerMask.GetMask("Ground"));
+        return Physics.CheckSphere(transform.position + Vector3.down*groundCheckDistance, groundCheckRadius, LayerMask.GetMask("Ground"));
     }
 
     public override float GetHorizontalLook()
