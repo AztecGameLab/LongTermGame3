@@ -62,6 +62,11 @@ public class PlayerDriver : Driver
         health = 100;
     }
 
+    void Update()
+    {
+
+    }
+
     public override Vector3 GetMovement()
     {
         // Getting Horizontal and Vertical inputs.
