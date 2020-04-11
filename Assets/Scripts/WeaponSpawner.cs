@@ -68,7 +68,7 @@ public class WeaponSpawner : MonoBehaviour
         newWeapon.AddComponent<MeshCollider>();
         newWeapon.GetComponent<MeshCollider>().convex = true;
         newWeapon.GetComponent<MeshCollider>().isTrigger = true;
-        newWeapon.AddComponent<ProjectileSpawner>();
+        newWeapon.AddComponent<ProjectileSpawner>().enabled = true;
         newWeapon.AddComponent<AudioSource>();
         newWeapon.layer = 10;
         newWeapon.tag = "Weapon";

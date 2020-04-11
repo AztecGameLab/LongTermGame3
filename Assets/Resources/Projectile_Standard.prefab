@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6874339138804675463}
   - component: {fileID: 7264691559032287550}
   m_Layer: 11
-  m_Name: Projectile_LaserBolt
+  m_Name: Projectile_Standard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 4285354488852343481}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.29, y: -15.72, z: -9.11}
-  m_LocalScale: {x: 1, y: 0.1, z: 1}
+  m_LocalScale: {x: 1, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -128,6 +128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPosition: {x: 0, y: 0, z: 0}
   weaponInfo: {fileID: 0}
+  sqrMaxDistance: 0
 --- !u!82 &6874339138804675463
 AudioSource:
   m_ObjectHideFlags: 0
@@ -240,7 +241,7 @@ MonoBehaviour:
   caliber: 0.7
   caliberToLength: 3.5
   effectType: 0
-  soundOnFire: {fileID: 8300000, guid: af499521ddadc468a8c9fafc8fba48a7, type: 3}
+  soundOnFire: {fileID: 8300000, guid: a30630b7fe0dd49eaaf3502825c1c0ca, type: 3}
   soundOnHitWall: {fileID: 8300000, guid: 2c1cb77264d374d7dba62357a56c3ea9, type: 3}
   soundOnHitEnemy: {fileID: 8300000, guid: 002cb39e00ec947fb96720252097456e, type: 3}
   damageTypeFactor: []

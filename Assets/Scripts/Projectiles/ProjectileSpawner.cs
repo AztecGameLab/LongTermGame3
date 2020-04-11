@@ -10,55 +10,16 @@ public class ProjectileSpawner : MonoBehaviour
     private GameObject playerWeapon;
     private float lastFireTime;
 
-    class ProjectilePool
-    {
-        public int current;
-        public int size;
-        public GameObject[] data;
-
-        public ProjectilePool(int _size)
-        {
-            size = _size;
-            current = 0;
-            data = new GameObject[size];
-        }
-
-        public GameObject GetNext()
-        {
-            GameObject result = data[current];
-            result.SetActive(true);
-            current = (++current % size);
-
-            return result;
-        }
-    }
 
     static ProjectilePool projectilePool;
     static GameObject projectilePrefab;
 
-    //Temporary for current code in WeaponSpawner
-    //public void InitializeThis()
-    //{
-      //  Awake();
-        //Start();
-    //}
-
     void Awake()
     {
-        projectilePrefab = (GameObject)Resources.Load("Projectile_LaserBolt");
-
         if (projectilePool == null)
         {
-            projectilePool = new ProjectilePool(100);
-        }
-
-        for (int i = 0; i < projectilePool.size; i++)
-        {
-            GameObject p = Instantiate(projectilePrefab);
-
-            p.SetActive(false);
-
-            projectilePool.data[i] = p;
+            projectilePool = new ProjectilePool();
+            projectilePool.Create();
         }
     }
 
@@ -105,7 +66,7 @@ public class ProjectileSpawner : MonoBehaviour
 
     public void SpawnProjectile()
     {
-        GameObject projectile = projectilePool.GetNext();
+        GameObject projectile = projectilePool.GetNext(ProjectileInfo.Type.Standard);
 
         //Scaling constants for unit compatibility
         float projScale = 0.5f;        //Projectile size scale

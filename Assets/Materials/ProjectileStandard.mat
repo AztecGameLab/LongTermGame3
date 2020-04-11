@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ProjectileBolt
+  m_Name: ProjectileStandard
   m_Shader: {fileID: 4800000, guid: 57ff0a44993bd4380961e6e517c532af, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4

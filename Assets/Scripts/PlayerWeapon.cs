@@ -29,6 +29,13 @@ public class PlayerWeapon : MonoBehaviour
 
     //For accuracy / recoil recovery
     private float lastFireTime;
+
+    //Reload
+    private bool isReloading;
+    private int ammoCount;
+
+    //To do:  Set ammoMax from weapon stats
+    private int ammoMax = 10;
     
     private Quaternion GetAimRotation()
     {
@@ -77,11 +84,17 @@ public class PlayerWeapon : MonoBehaviour
         recoilSet = 0;
         recoilFire = 0;
         recoilCurrent = 0;
+        ammoCount = ammoMax;
         gameObject.transform.rotation = GetAimRotation();
     }
 
     public void OnFireWeapon()
     {
+        //To do: Temporary (remove)
+        if (isReloading) { SetReloaded(); return; }
+
+        if (isReloading) return;
+
         if (weapon != null)
         {
             float accuracyScale = 5.0f;
@@ -103,7 +116,26 @@ public class PlayerWeapon : MonoBehaviour
             float recoilAmount = Random.Range(0.8f, 1.0f) * (recoilFixedTemp / 100.0f);
             recoilFire = recoilCurrent;
             recoilSet = Mathf.Min(recoilCurrent + recoilAmount, 1.0f);
+
+            ammoCount--;
+
+            if (ammoCount == 0)
+            {
+                SetReloading();
+            }
         }
+    }
+
+    void SetReloading()
+    {
+        //To do:  set reloading "animation"
+        isReloading = true;
+    }
+
+    void SetReloaded()
+    {
+        ammoCount = ammoMax;
+        isReloading = false;
     }
 
     public void EquipWeapon(GameObject newWeapon)
