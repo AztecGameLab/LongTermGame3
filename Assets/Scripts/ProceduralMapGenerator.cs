@@ -122,13 +122,15 @@ public class ProceduralMapGenerator : MonoBehaviour
                 rooms.Add(roomTemp);
                
 
-                DoorData currDoor = new DoorData(); //currDoor references the door being made in the current room leading to the previous room
-                currDoor.wall = shuffledDirections[i]; //MIGHT BE BACKWARDS
-                currDoor.wallPosition = new Vector2Int(halfWallLength(roomTemp, shuffledDirections[i]),0);
-                roomTemp.doors.Add(currDoor);
 
                 if (roomTemp.prev != null) //backDoor references a door being created in the previous room that leads to the room that has just been created
                 {
+
+                    DoorData currDoor = new DoorData(); //currDoor references the door being made in the current room leading to the previous room
+                    currDoor.wall = shuffledDirections[i]; //MIGHT BE BACKWARDS
+                    currDoor.wallPosition = new Vector2Int(halfWallLength(roomTemp, shuffledDirections[i]), 0);
+                    roomTemp.doors.Add(currDoor);
+
                     DoorData backDoor = new DoorData();
                     backDoor.wall = -shuffledDirections[i];
                     backDoor.wallPosition = new Vector2Int(halfWallLength(roomTemp.prev, shuffledDirections[i]), 0);
