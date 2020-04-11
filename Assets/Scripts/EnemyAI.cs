@@ -6,7 +6,7 @@ public class EnemyAI : MonoBehaviour
 {
     public Transform playerPos;
     public GameObject Enemy02;
-    public static Rigidbody playerRigidBody;
+    //public static Rigidbody playerRigidBody;
     UnityEngine.AI.NavMeshAgent myNav;
 
     [SerializeField]
@@ -23,11 +23,11 @@ public class EnemyAI : MonoBehaviour
 
     //TODO REMOVE AND PLACE STATIC VARIABLES AFTER TESTING
     [SerializeField]
-    private float agroRange = 15;        //How far until the player agros the enemy
+    private float agroRange = 1500;        //How far until the player agros the enemy
     [SerializeField]
     private float damageToPlayer = 50;   
     [SerializeField]
-    private float timerDuration = 10;        //How long the bomb will blow up
+    private float timerDuration = 3;        //How long the bomb will blow up
     int isExploded = 0;
 
     //Knockback for the player
@@ -40,23 +40,20 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     float healthBar = 100f;
     float bulletDamage = 20f;
+    private bool detonateAnim = false;
+
+    public GameObject image;
 
     void Start()
     {
-        playerRigidBody = playerPos.GetComponent<Rigidbody>();
-        yPos = playerPos.transform.position.y;      //Todo check on what level to spawn the enemies on
-       
-        if (GameObject.FindGameObjectWithTag("Player").activeInHierarchy)   //TODO CHANGE ME BASED OFF OF PLAYER OBJECT
-        {
-            playerPos = GameObject.FindGameObjectWithTag("Player").transform;  //Finding the players position
-        }
-
+        playerPos = GameObject.FindGameObjectWithTag("Player").transform;
+        //playerRigidBody = playerPos.GetComponent<Rigidbody>();
         myNav = gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
-    {       
+    {
         currentDifX = Mathf.Abs(playerPos.transform.position.x - transform.position.x);
         currentDifZ = Mathf.Abs(playerPos.transform.position.z - transform.position.z);
 
@@ -66,11 +63,11 @@ public class EnemyAI : MonoBehaviour
             if (currentDifX <= agroRange && currentDifZ <= agroRange) //this is the range to check the agro distance
             {
                 playerFollower();   //Called to follow the player 
-            }                
+            }
         }
 
         //If the player kills the enemy with a gun
-        if(healthBar <= 0 && isExploded == 0)
+        if (healthBar <= 0 && isExploded == 0)
         {
             isExploded++;
             death();
@@ -110,35 +107,33 @@ public class EnemyAI : MonoBehaviour
 
     void Explode()
     {
-        Enemy02.GetComponent<MeshRenderer>().enabled = false;   //Disabling the viewable enemy CHANGE WHEN I HAVE SPRITES
+        //Explosion particles and the destruction
+        var exp = Enemy02.GetComponent<ParticleSystem>();
+        exp.Emit(100);
+
         if (inRangeDuringExplosion == true && checkOne == false)
         {
             checkOne = true;
             //Add explosion here
-            //Add explosion audio here
+            //Add explosion audio here            
             knockback();
             playerDamage();            
         }
-
-        //Explosion particles and the destruction
-        var exp = Enemy02.GetComponent<ParticleSystem>();
-        exp.Play();
-        Destroy(Enemy02, 3);
+               
+        Destroy(image);             //Destroys the image 
+        Destroy(Enemy02, 3);        //Destroys the enemy gameobject after death
     }
 
     //This function is to knock the player back after explosion
     void knockback()    
     {
-        Vector3 explosionPos = transform.position;        
-        playerRigidBody.AddExplosionForce(power, explosionPos, radius, 3.0F);   
+        Vector3 explosionPos = transform.position;
+        //playerRigidBody.AddExplosionForce(power, explosionPos, radius, 3.0F);
     }
 
     void death()
     {
-        Enemy02.GetComponent<MeshRenderer>().enabled = false;   //Disabling the viewable enemy CHANGE WHEN I HAVE SPRITES
-        var exp = Enemy02.GetComponent<ParticleSystem>();
-        exp.Play();
-        Destroy(Enemy02, 3);
+        Destroy(Enemy02);
     }
 
     //Checks if the object that collided with it is a bullet
@@ -166,6 +161,10 @@ public class EnemyAI : MonoBehaviour
     IEnumerator explosionCounter()  //Adds the delay to the counter
     {
         yield return new WaitForSeconds(timerDuration);
-        Explode();
+        if(detonateAnim == false)
+        {
+            detonateAnim = true;
+            Explode();
+        }        
     }
 }

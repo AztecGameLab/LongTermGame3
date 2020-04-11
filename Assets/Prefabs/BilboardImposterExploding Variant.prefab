@@ -7,6 +7,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 662597291, guid: dd52cb1360160994584b6171017b05a2, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 662597291, guid: dd52cb1360160994584b6171017b05a2, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 662597291, guid: dd52cb1360160994584b6171017b05a2, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 662597292, guid: dd52cb1360160994584b6171017b05a2, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -15,7 +27,7 @@ PrefabInstance:
     - target: {fileID: 84781941489633416, guid: dd52cb1360160994584b6171017b05a2,
         type: 3}
       propertyPath: m_Name
-      value: BilboardImposterExploding
+      value: BilboardImposterExploding Variant
       objectReference: {fileID: 0}
     - target: {fileID: 5511774869613681861, guid: dd52cb1360160994584b6171017b05a2,
         type: 3}
