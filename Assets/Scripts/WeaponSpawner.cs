@@ -21,22 +21,27 @@ public class WeaponSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        weaponCount = 0;
-        compGen = gameObject.AddComponent<WeaponComponentGenerator>();
+        //weaponCount = 0;
+        //compGen = gameObject.AddComponent<WeaponComponentGenerator>();
         
         
     }
-
+    void Awake()
+    {
+        weaponCount = 0;
+        compGen = gameObject.AddComponent<WeaponComponentGenerator>();
+        GameObject weapon = SpawnWeapon();
+    }
     // Update is called once per frame
     void Update()
     {
         //use Left Shift to spawn a new weapon for testing right now
         //DB:  added 'testSpawnOnShift' to disable this test where needed
         //  Also setting isEquipped by default so I don't break the test scene
-        if (testSpawnOnShift && Input.GetKeyDown(KeyCode.LeftShift)){
-            GameObject weapon = SpawnWeapon();
-            weapon.GetComponent<WeaponInfo>().isEquipped = true;
-        }
+        //if (testSpawnOnShift && Input.GetKeyDown(KeyCode.LeftShift)){
+        //    GameObject weapon = SpawnWeapon();
+        //    weapon.GetComponent<WeaponInfo>().isEquipped = true;
+        //}
     }
 
     //Spawn new weapon, add weapon info component, and set values according to player progress
@@ -44,6 +49,7 @@ public class WeaponSpawner : MonoBehaviour
     {
         weaponCount++;
         GameObject newWeapon = new GameObject();
+        newWeapon.transform.SetParent(this.transform);
         newWeapon.AddComponent<WeaponInfo>();
         newWeapon.name = "Weapon" + weaponCount;
         newWeapon.GetComponent<WeaponInfo>().weaponName = newWeapon.name;
@@ -55,7 +61,7 @@ public class WeaponSpawner : MonoBehaviour
         newMagazine = compGen.weaponMagazine;
         newStock = compGen.weaponStock;
         //GameObject body = Instantiate(weaponBody, new Vector3(0, 0.02f, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
-        GameObject reciever = Instantiate(newReciever, new Vector3(0, 0.02f, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
+        GameObject reciever = Instantiate(newReciever, transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject barrel = Instantiate(newBarrel, reciever.transform.GetChild(1).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject magazine = Instantiate(newMagazine, reciever.transform.GetChild(2).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject stock = Instantiate(newStock, reciever.transform.GetChild(3).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));

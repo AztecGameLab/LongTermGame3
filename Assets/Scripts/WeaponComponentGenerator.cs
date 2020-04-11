@@ -32,7 +32,13 @@ public class WeaponComponentGenerator : MonoBehaviour
     {
         
     }
-
+    void Awake()
+    {
+        recievers = new string[] { "standard", "automatic", "shotgun", "sniper" };
+        magazines = new string[] { "standard", "quick", "extended" };
+        barrels = new string[] { "standard", "long", "short" };
+        stocks = new string[] { "standard", "compact", "heavy" };
+    }
     public void SetWeaponValues(WeaponInfo weapon)
     {
         SetReciever(weapon);
