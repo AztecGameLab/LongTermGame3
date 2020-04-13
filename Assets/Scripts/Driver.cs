@@ -23,6 +23,16 @@ public class Driver : MonoBehaviour
     
     }
 
+    public void TakeDamage(float damage){
+        health -= damage;
+        if (health <= 0){
+            health = 0;
+            OnDeath();
+        }
+    }
+
+    protected virtual void OnDeath() { }
+
     public virtual Vector3 GetMovement(){return Vector3.zero;}
     public virtual float GetVerticalLook(){return 0;}
     public virtual float GetHorizontalLook(){return 0;}
