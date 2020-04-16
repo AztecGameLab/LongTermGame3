@@ -19,9 +19,17 @@ public class ProjectilePool
         public GameObject GetNext()
         {
             GameObject result = data[current];
+            result.SetActive(false);
+            result.GetComponent<ProjectileInfo>().ResetState();
             result.SetActive(true);
             current = (++current % size);
 
+            return result;
+        }
+
+        public GameObject PeekNext()
+        {
+            GameObject result = data[current];
             return result;
         }
 
@@ -50,9 +58,9 @@ public class ProjectilePool
         pools = new PoolData[count];
 
         pools[(int)ProjectileInfo.Type.Standard] = new PoolData(40);
-        pools[(int)ProjectileInfo.Type.Shotgun] = new PoolData(40);
+        pools[(int)ProjectileInfo.Type.Shotgun] = new PoolData(120);
         pools[(int)ProjectileInfo.Type.Sniper] = new PoolData(40);
-        pools[(int)ProjectileInfo.Type.Standard] = new PoolData(80);
+        pools[(int)ProjectileInfo.Type.Assault] = new PoolData(80);
 
         for(int i = 0; i < count; i++)
         {
@@ -63,5 +71,10 @@ public class ProjectilePool
     public GameObject GetNext(ProjectileInfo.Type type)
     {
         return pools[(int)type].GetNext();        
+    }
+
+    public GameObject PeekNext(ProjectileInfo.Type type)
+    {
+        return pools[(int)type].PeekNext();
     }
 }

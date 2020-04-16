@@ -125,9 +125,9 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: -2.87
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -225,11 +225,10 @@ MonoBehaviour:
   baseDamage: 40
   caliber: 0.4
   caliberToLength: 5
-  effectType: 0
   soundOnFire: {fileID: 8300000, guid: 166e3bf93d3a84034b7b7b95b63c00db, type: 3}
   soundOnHitWall: {fileID: 8300000, guid: 2c1cb77264d374d7dba62357a56c3ea9, type: 3}
   soundOnHitEnemy: {fileID: 8300000, guid: 002cb39e00ec947fb96720252097456e, type: 3}
-  damageTypeFactor: []
+  soundOnReload: {fileID: 8300000, guid: 0589edad764c04670bc61c4a55d16fe4, type: 3}
 --- !u!114 &3910625832201274458
 MonoBehaviour:
   m_ObjectHideFlags: 0

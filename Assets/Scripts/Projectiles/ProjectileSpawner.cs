@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class ProjectileSpawner : MonoBehaviour
 {
-    [SerializeField]
+    //Temporary, should come from weapon game object
+    public ProjectileInfo.Type ammoType = ProjectileInfo.Type.Shotgun;
+
+    //[SerializeField]
     private WeaponInfo weaponInfo;
 
     private GameObject playerWeapon;
     private float lastFireTime;
-
-
+    
     static ProjectilePool projectilePool;
     static GameObject projectilePrefab;
 
@@ -25,8 +27,11 @@ public class ProjectileSpawner : MonoBehaviour
 
     void Start()
     {
+        ammoType = ProjectileInfo.Type.Shotgun;
         playerWeapon = GameObject.FindGameObjectWithTag("PlayerWeapon");
         weaponInfo = gameObject.GetComponent<WeaponInfo>();
+        weaponInfo.effectiveRange = 0.5f;
+        weaponInfo.muzzleVelocity = 30.0f;
         lastFireTime = 0;
     }
 
@@ -66,13 +71,37 @@ public class ProjectileSpawner : MonoBehaviour
 
     public void SpawnProjectile()
     {
-        GameObject projectile = projectilePool.GetNext(ProjectileInfo.Type.Standard);
-
         //Scaling constants for unit compatibility
         float projScale = 0.5f;        //Projectile size scale
-        float velocityScale = 1.5f;    //Muzzle velocity scale
-        
+
         Vector3 shootFrom = GetBarrel().position;
+
+        SpawnProjectile(gameObject.transform.rotation, shootFrom, projScale, true);
+    }
+
+    public void StartPlayRecharge()
+    {
+        GameObject projectile = projectilePool.PeekNext(ammoType);
+        ProjectileInfo info = projectile.GetComponent<ProjectileInfo>();
+        AmmoTypeInfo ammoTypeInfo = info.GetComponent<AmmoTypeInfo>();
+
+        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+        AudioClip fireClip = ammoTypeInfo.soundOnReload;
+        audioSource.PlayOneShot(fireClip);
+    }
+
+    public void StopPlayRecharge()
+    {
+        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.Stop();
+    }
+
+    public GameObject SpawnProjectile(Quaternion trajectory, Vector3 shootFrom, float projScale, bool playFireClip)
+    {
+        float distanceScale = 10.0f;  //Scale to current value range in weaponInfo
+        float velocityScale = 0.5f;  //1.5   //Muzzle velocity scale
+        GameObject projectile = projectilePool.GetNext(ammoType);
+
         ProjectileInfo info = projectile.GetComponent<ProjectileInfo>();
         info.startPosition = shootFrom;
         info.weaponInfo = weaponInfo;
@@ -89,11 +118,18 @@ public class ProjectileSpawner : MonoBehaviour
         Rigidbody body = projectile.GetComponent<Rigidbody>();
 
         Vector3 direction = new Vector3(0, 0, weaponInfo.muzzleVelocity * velocityScale);
-        projectile.transform.rotation = gameObject.transform.rotation * Quaternion.Euler(90.0f, 0.0f, 0.0f);
-        body.velocity = gameObject.transform.rotation * direction;
+        projectile.transform.rotation = trajectory * Quaternion.Euler(90.0f, 0.0f, 0.0f);
+        body.velocity = trajectory * direction;
 
-        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
-        AudioClip fireClip = ammoTypeInfo.soundOnFire;
-        audioSource.PlayOneShot(fireClip);
+        info.sqrMaxDistance = weaponInfo.effectiveRange * weaponInfo.effectiveRange * distanceScale;
+
+        if (playFireClip)
+        {
+            AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+            AudioClip fireClip = ammoTypeInfo.soundOnFire;
+            audioSource.PlayOneShot(fireClip);
+        }
+
+        return projectile;
     }
 }

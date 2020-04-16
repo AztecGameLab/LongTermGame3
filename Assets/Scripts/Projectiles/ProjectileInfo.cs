@@ -35,11 +35,11 @@ public class ProjectileInfo : MonoBehaviour
 
         if (target.tag == "Enemy")
         {
-            TestTarget testTarget = target.GetComponent<TestTarget>();
+            Driver testTarget = target.GetComponent<Driver>();
 
             if (testTarget != null)
             {
-                testTarget.ResetTarget();
+                testTarget.TakeDamage(50);
             }
 
             hitClip = ammoType.soundOnHitEnemy;
@@ -56,10 +56,6 @@ public class ProjectileInfo : MonoBehaviour
     {
         if (weaponInfo != null)
         {
-            //~Move to projectile spawner
-            float distanceScale = 10.0f;  //Scale to current value range in weaponInfo
-            sqrMaxDistance = weaponInfo.effectiveRange * weaponInfo.effectiveRange * distanceScale;
-
             float sqrTravelDist = (gameObject.transform.position - startPosition).sqrMagnitude;
 
             if (sqrTravelDist > sqrMaxDistance)
@@ -89,6 +85,12 @@ public class ProjectileInfo : MonoBehaviour
         return 100;
     }
 
+    virtual public void ResetState()
+    {
+        gameObject.GetComponent<MeshRenderer>().enabled = true;
+        gameObject.GetComponent<CapsuleCollider>().enabled = true;
+    }
+
     void TerminateWithSound(AudioClip sound)
     {
         AudioSource audioSource = gameObject.GetComponent<AudioSource>();
@@ -105,8 +107,5 @@ public class ProjectileInfo : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         gameObject.SetActive(false);
-        //gameObject.transform.localScale = localScale;
-        gameObject.GetComponent<MeshRenderer>().enabled = true;
-        gameObject.GetComponent<CapsuleCollider>().enabled = true;
     }
 }

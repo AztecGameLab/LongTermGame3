@@ -6,10 +6,20 @@ public class PlayerWeapon : MonoBehaviour
 {
     public float targetDistance = 50.0f;            //Distance to crosshair
     public float timeToRecenter = 0.5f;             //Time to recenter shot
-    public float timeToRecover = 0.5f;              //Max recoil recovery time
+    public float timeToRecover = 0.4f;              //Max recoil recovery time
     public float recoilTime = 0.1f;
     public float recoilMaxTilt = 30.0f;
-    public float recoilMaxOffsetZ = 1.0f;
+    public float recoilMaxOffsetZ = 1.5f;
+    public float reloadMaxTilt = 10.0f;
+    public float reloadMaxOffsetZ = 1.0f;
+
+    //To do:
+    //  Set reload maxTilt and maxOffsetZ per weapon, current 'good':
+    //    tilt = 50, offset = 0 for 'raised up'
+    //    tilt = 0, offset = 1 for 'cock back'
+    //    tilt = -15, offset = 0 for 'lowered'
+    //    tilt = 15, offset = 0.5 for 'raised'
+
 
     private GameObject weapon;
     private GameObject envelope;
@@ -23,8 +33,11 @@ public class PlayerWeapon : MonoBehaviour
     //For recoil
     private Vector2 recoilMin;
     private Vector2 recoilMax;
+    private Vector2 reloadMax;
     private float recoilSet;   //0 to 1
     private float recoilCurrent;
+    private float reloadCurrent;
+    private float reloadFire;
     private float recoilFire;
 
     //For accuracy / recoil recovery
@@ -32,10 +45,22 @@ public class PlayerWeapon : MonoBehaviour
 
     //Reload
     private bool isReloading;
-    private int ammoCount;
+    private bool isCharging;
+    private float reloadStartTime;
 
-    //To do:  Set ammoMax from weapon stats
-    private int ammoMax = 10;
+    private int ammoCount;
+    //To do:  Set from weapon stats
+    private int ammoMax = 3;     //Max ammo, from 'projectileCount'
+    private float reloadSeconds = 1.2f;  //Total reload time, from 'reloadSpeed'
+
+    //Reload config - start with upward arm rotation at t=0, return at t=100
+    //private int reloadGunLowerStart = 30;   //Begin lowering gun
+    //private int reloadArmLiftEnd = 40;      //End of upward arm rotation
+
+    //To do:  Also make these variable per gun type.  If configurable in Unity, set in AmmoTypeInfo
+    private float reloadGunLowerEnd = 0.2f;     //End lowering gun, begin sound
+    private float reloadArmReturnStart = 0.4f;  //Begin downward arm rotation
+    private float reloadGunRaiseEnd = 0.7f;     //End raising gun
     
     private Quaternion GetAimRotation()
     {
@@ -50,8 +75,35 @@ public class PlayerWeapon : MonoBehaviour
 
     private void SetRecoil(bool aimSet)
     {
-        float recoilAngle = Mathf.Lerp(recoilMin.x, recoilMax.x, recoilCurrent);
-        float recoilZ = Mathf.Lerp(recoilMin.y, recoilMax.y, recoilCurrent);
+        float recoilAngle = 0;
+        float reloadAngle = 0;
+        float recoilZ = 0;
+        float reloadZ = 0;
+
+        if (recoilCurrent > 0)
+        {
+            recoilAngle = Mathf.Lerp(recoilMin.x, recoilMax.x, recoilCurrent);
+            recoilZ = Mathf.Lerp(recoilMin.y, recoilMax.y, recoilCurrent);
+        }
+
+        if (reloadCurrent > 0)
+        {
+            reloadAngle = Mathf.Lerp(recoilMin.x, reloadMax.x, reloadCurrent);
+            reloadZ = Mathf.Lerp(recoilMin.y, reloadMax.y, reloadCurrent);
+        }
+
+        //If tilting down to reload, start reload animation after recoil
+        //  'reloadMaxOffsetZ' should be 0 for this scenario
+        if (reloadMaxTilt < 0)
+        {
+            recoilAngle = (recoilCurrent > 0) ? Mathf.Max(recoilAngle, reloadAngle) : Mathf.Min(recoilAngle, reloadAngle);
+        }
+        else
+        {
+            recoilAngle = Mathf.Max(recoilAngle, reloadAngle);
+        }
+
+        recoilZ = Mathf.Min(recoilZ, reloadZ);
 
         Vector3 newPos = new Vector3(gameObject.transform.localPosition.x,
             gameObject.transform.localPosition.y, recoilZ);
@@ -60,6 +112,7 @@ public class PlayerWeapon : MonoBehaviour
 
         if (!aimSet) gameObject.transform.rotation = GetAimRotation();
         Quaternion kickUp = Quaternion.Euler(new Vector3(-recoilAngle, 0, 0));
+
         gameObject.transform.rotation *= kickUp;
     }
 
@@ -81,9 +134,12 @@ public class PlayerWeapon : MonoBehaviour
         aimOffset = Vector2.zero;
         recoilMin = new Vector2(0, gameObject.transform.localPosition.z);
         recoilMax = recoilMin + new Vector2(recoilMaxTilt, -recoilMaxOffsetZ);
+        reloadMax = recoilMin + new Vector2(reloadMaxTilt, -reloadMaxOffsetZ);
         recoilSet = 0;
         recoilFire = 0;
+        reloadFire = 0;
         recoilCurrent = 0;
+        reloadCurrent = 0;
         ammoCount = ammoMax;
         gameObject.transform.rotation = GetAimRotation();
     }
@@ -91,7 +147,7 @@ public class PlayerWeapon : MonoBehaviour
     public void OnFireWeapon()
     {
         //To do: Temporary (remove)
-        if (isReloading) { SetReloaded(); return; }
+        //if (isReloading) { SetReloaded(); return; }
 
         if (isReloading) return;
 
@@ -103,7 +159,7 @@ public class PlayerWeapon : MonoBehaviour
             float scaledErrorY = scaledErrorX;
             Vector2 errorScaleY = new Vector2(0.1f, 0.5f);
             aimOffset = aimOffset + new Vector2(Random.Range(-scaledErrorX, scaledErrorX), Random.Range(-scaledErrorY * errorScaleY.x, scaledErrorY * errorScaleY.y));
-            
+
             gameObject.transform.rotation = GetAimRotation();
             SetRecoil(true);
 
@@ -119,8 +175,11 @@ public class PlayerWeapon : MonoBehaviour
 
             ammoCount--;
 
+            Debug.Log(ammoCount);
+
             if (ammoCount == 0)
             {
+                Debug.Log("load it up!");
                 SetReloading();
             }
         }
@@ -128,14 +187,30 @@ public class PlayerWeapon : MonoBehaviour
 
     void SetReloading()
     {
-        //To do:  set reloading "animation"
+        //To do:  Update for full arm movement when gun center is fixed
         isReloading = true;
+        reloadStartTime = Time.time;
+    }
+
+    void SetCharging()
+    {
+        isCharging = true;
+
+        //Play sound
+        ProjectileSpawner spawner = weapon.GetComponent<ProjectileSpawner>();
+        spawner.StartPlayRecharge();
     }
 
     void SetReloaded()
     {
         ammoCount = ammoMax;
+        reloadCurrent = 0;
         isReloading = false;
+        isCharging = false;
+
+        //Stop sound
+        ProjectileSpawner spawner = weapon.GetComponent<ProjectileSpawner>();
+        spawner.StopPlayRecharge();
     }
 
     public void EquipWeapon(GameObject newWeapon)
@@ -145,9 +220,9 @@ public class PlayerWeapon : MonoBehaviour
         envelope = gameObject.transform.GetChild(0).gameObject;
 
         weapon = newWeapon;
-        envelope.transform.position = gameObject.transform.position;
         weapon.transform.parent = envelope.transform;
-        weapon.transform.position = envelope.transform.position - new Vector3(0.0f, -0.5f, -1.2f);
+        weapon.transform.localPosition = new Vector3(0, 0, 0);
+        weapon.transform.GetChild(0).localPosition = new Vector3(0, 0, 0);
         weaponInfo = weapon.GetComponent<WeaponInfo>();
         projSpawner = weapon.GetComponent<ProjectileSpawner>();
         weaponInfo.isEquipped = true;
@@ -155,8 +230,6 @@ public class PlayerWeapon : MonoBehaviour
 
         gameObject.layer = 13;
         SetLayerRecursive(weapon, 13);
-
-        weaponInfo.isAutomatic = true;
     }
 
     private void TestCreateWeapon()
@@ -175,6 +248,7 @@ public class PlayerWeapon : MonoBehaviour
         if (weapon == null) TestCreateWeapon();
 
         bool aimSet = false;
+        bool needSetRecoil = false;
 
         float delta = Time.time - lastFireTime;
 
@@ -212,6 +286,8 @@ public class PlayerWeapon : MonoBehaviour
                 //To do: Switch to quarter sinusoid
                 recoilCurrent = Mathf.Lerp(recoilFire, recoilSet, f);
             }
+
+            needSetRecoil = true;
         }
         else if (recoilCurrent > 0)
         {
@@ -223,6 +299,13 @@ public class PlayerWeapon : MonoBehaviour
                 recoilCurrent = 0;
                 recoilFire = 0;
                 recoilSet = 0;
+
+                if (reloadMaxTilt < 0)
+                {
+                    //If tilting down to reload, start reload animation after recoil
+                    //  'reloadMaxOffsetZ' should be 0 for this scenario
+                    reloadStartTime = Time.time;
+                }
             }
             else
             {
@@ -231,9 +314,49 @@ public class PlayerWeapon : MonoBehaviour
                 //To do: Switch to half sinusoid
                 recoilCurrent = Mathf.Lerp(recoilFire, recoilSet, f);
             }
+
+            needSetRecoil = true;
         }
 
-        if (recoilCurrent > 0)
+        if (isReloading)
+        {
+            delta = Time.time - reloadStartTime;
+
+            if (delta > reloadSeconds)
+            {
+                SetReloaded();
+            }
+            else
+            {
+                float frame = delta / reloadSeconds;
+
+                if (frame < reloadGunLowerEnd)
+                {
+                    reloadCurrent = frame / reloadGunLowerEnd;
+
+                }
+                else if (frame < reloadGunRaiseEnd)
+                {
+                    if (!isCharging)
+                    {
+                        SetCharging();
+                    }
+
+                    if (frame >= reloadArmReturnStart)
+                    {
+                        reloadCurrent = (reloadGunRaiseEnd - frame) / (reloadGunRaiseEnd - reloadArmReturnStart);
+                    }
+                }
+                else
+                {
+                    reloadCurrent = 0;
+                }
+            }
+
+            needSetRecoil = true;
+        }
+
+        if (needSetRecoil)
         {
             SetRecoil(aimSet);
         }

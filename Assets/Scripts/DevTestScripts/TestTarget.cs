@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestTarget : MonoBehaviour
+public class TestTarget : Driver
 {
     public float range;
     public float speed;
@@ -16,7 +16,7 @@ public class TestTarget : MonoBehaviour
         startPosition = transform.position;
     }
 
-    public void ResetTarget()
+    protected override void OnDeath()
     {
         StartCoroutine(OnResetTarget());
     }
