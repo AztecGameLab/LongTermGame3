@@ -143,7 +143,6 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_CameraOutput: 0
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
@@ -155,6 +154,7 @@ MonoBehaviour:
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
+  m_ClearDepth: 1
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
@@ -993,11 +993,51 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1718796294358381075, guid: e22152a9440d5324784c3fc277b8f929,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.188
+      objectReference: {fileID: 0}
+    - target: {fileID: 1718796294358381075, guid: e22152a9440d5324784c3fc277b8f929,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3.016083
+      objectReference: {fileID: 0}
+    - target: {fileID: 1718796294358381075, guid: e22152a9440d5324784c3fc277b8f929,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3.016083
+      objectReference: {fileID: 0}
+    - target: {fileID: 1718796294358381075, guid: e22152a9440d5324784c3fc277b8f929,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3.016083
+      objectReference: {fileID: 0}
     - target: {fileID: 3212297581303208045, guid: e22152a9440d5324784c3fc277b8f929,
         type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 2105925194}
+    - target: {fileID: 3940458733458359313, guid: e22152a9440d5324784c3fc277b8f929,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 2105925194}
+    - target: {fileID: 6983286057668968314, guid: e22152a9440d5324784c3fc277b8f929,
+        type: 3}
+      propertyPath: m_Radius
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983286057668968314, guid: e22152a9440d5324784c3fc277b8f929,
+        type: 3}
+      propertyPath: m_StoppingDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983286057668968314, guid: e22152a9440d5324784c3fc277b8f929,
+        type: 3}
+      propertyPath: m_AutoBraking
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6983286057668968315, guid: e22152a9440d5324784c3fc277b8f929,
         type: 3}
       propertyPath: m_Name
@@ -1009,6 +1049,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4570021277692409380, guid: 70704eea13d872b4ea031ba3dae29bb0,
         type: 3}
+    - target: {fileID: 6983286057668968317, guid: e22152a9440d5324784c3fc277b8f929,
+        type: 3}
+      propertyPath: rotationSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983286057668968317, guid: e22152a9440d5324784c3fc277b8f929,
+        type: 3}
+      propertyPath: targetPlayerDistance
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6983286057668968319, guid: e22152a9440d5324784c3fc277b8f929,
         type: 3}
       propertyPath: m_LocalPosition.x
