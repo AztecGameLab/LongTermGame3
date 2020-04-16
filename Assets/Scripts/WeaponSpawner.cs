@@ -81,7 +81,15 @@ public class WeaponSpawner : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 12) {
-            this.GetComponentInChildren<WeaponInfo>().isEquipped = true;
+            GetComponentInChildren<WeaponInfo>().isEquipped = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.layer == 12)
+        {
+            GetComponentInChildren<WeaponInfo>().isEquipped = false;
         }
     }
 }
