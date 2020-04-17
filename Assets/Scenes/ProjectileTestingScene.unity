@@ -390,7 +390,7 @@ PrefabInstance:
     - target: {fileID: 3307278325576138100, guid: 3b918aa1194fe417bad1551236359d5f,
         type: 3}
       propertyPath: recoilMaxTilt
-      value: 30
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 3307278325576138100, guid: 3b918aa1194fe417bad1551236359d5f,
         type: 3}

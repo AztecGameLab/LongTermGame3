@@ -11,6 +11,7 @@ public class WeaponSpawner : MonoBehaviour
     public GameObject newStock;
     public GameObject newMagazine;
     public bool testSpawnOnShift = true;
+    public bool spawnOnAwake = true;
     
     private int weaponCount;//keep track of weapons spawned
     [SerializeField]//Can be used to set range of the initial values based on player progress
@@ -28,7 +29,12 @@ public class WeaponSpawner : MonoBehaviour
     {
         weaponCount = 0;
         compGen = gameObject.AddComponent<WeaponComponentGenerator>();
-        GameObject weapon = SpawnWeapon();
+
+        //Needed for now so ProjectileTestScene can spawn from PlayerWeapon
+        if (spawnOnAwake)
+        {
+            GameObject weapon = SpawnWeapon();
+        }
     }
     // Update is called once per frame
     void Update()
