@@ -24,10 +24,21 @@ public class EnemyGruntDriver : MonoBehaviour
     private float alertRadius = 30f;
 
     [SerializeField]
+    private float targetPlayerDistance = 7;
+
+    [SerializeField]
     private float fieldOfView = 120f;
 
     [SerializeField]
+    private float rotationSpeed;
+
+    [SerializeField]
     private float alertCountdown = 1f;
+
+    [SerializeField]
+    private float maxHealth = 100f;
+
+    private float currentHealth;
 
     private bool isAlerted;
 
@@ -48,6 +59,8 @@ public class EnemyGruntDriver : MonoBehaviour
         isAlerted = false;
         timeLastShot = Time.time;
         fireRight = true;
+
+        currentHealth = maxHealth;
     }
 
     // Update is called once per frame
@@ -55,24 +68,54 @@ public class EnemyGruntDriver : MonoBehaviour
     {
         playerVector = player.position - transform.position;
 
+        //print(player.position);
+        print(firePointLeft.position);
         if (!isAlerted)
             CheckForAlert();
 
-        if (isAlerted && playerVector.magnitude > agent.stoppingDistance)
+        //moves the grunt toward the player if far away
+        if (isAlerted && playerVector.magnitude > targetPlayerDistance)
         {
             agent.SetDestination(player.position);
+            agent.updateRotation = true;
+        }
+        //moves the grunt away from the player if too close
+        else if(isAlerted && playerVector.magnitude < targetPlayerDistance)
+        {
+            agent.SetDestination(player.position + (-1 * playerVector.normalized * targetPlayerDistance));
+            agent.updateRotation = false;
         }
 
-        if (isAlerted && playerVector.magnitude <= agent.stoppingDistance)
+        //turns towards the player
+        if (isAlerted && playerVector.magnitude <= targetPlayerDistance)
         {
+            //grunt snaps to player in radius
+            /*
             Vector3 direction = new Vector3(playerVector.x, 0, playerVector.z).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = lookRotation;
+            */
+
+            //grunt has a turning speed
+            Vector3 direction = transform.forward.normalized + new Vector3(playerVector.x-transform.forward.x, 0, playerVector.z - transform.forward.z).normalized * Time.deltaTime * rotationSpeed;
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = lookRotation;
+
         }
         if (isAlerted && (Time.time - timeLastShot >= (1 / fireRate)) && CheckLineOfSight())
         {
             Fire();
             timeLastShot = Time.time;
+        }
+    }
+    private void OnCollisionEnter(Collision other)
+    {
+        GameObject otherObject = other.gameObject;
+
+        if (otherObject.tag.Equals("PlayerWeapon"))
+        {
+            //need a way to get the damage value of player's  bullet
+            //TakeDamage(otherObject.GetComponent<PlayerWeapon>().damage);
         }
     }
     void CheckForAlert()
@@ -92,7 +135,7 @@ public class EnemyGruntDriver : MonoBehaviour
         int layerMask = ~(1 << 12);
         return !Physics.Raycast(transform.position, playerVector, playerVector.magnitude, layerMask) && Vector3.Angle(transform.forward, playerVector) <= 0.5 * fieldOfView;
     }
-     void Fire()
+    void Fire()
     {
         if (fireRight)
         {
@@ -108,5 +151,18 @@ public class EnemyGruntDriver : MonoBehaviour
             newBullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed;
             fireRight = true;
         }
+    }
+    void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if(currentHealth <= 0)
+        {
+            currentHealth = 0;
+            Die();
+        }
+    }
+    void Die()
+    {
+        Destroy(gameObject);
     }
 }

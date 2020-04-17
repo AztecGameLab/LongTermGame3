@@ -18,12 +18,10 @@ public class WeaponSpawner : MonoBehaviour
     public float testProgressModifier;
     [Range(0.0f, 50f)]
     public float statGap;
-    // Start is called before the first frame update
+
     void Start()
     {
-        //weaponCount = 0;
-        //compGen = gameObject.AddComponent<WeaponComponentGenerator>();
-        
+       
         
     }
     void Awake()
@@ -55,12 +53,10 @@ public class WeaponSpawner : MonoBehaviour
         newWeapon.GetComponent<WeaponInfo>().weaponName = newWeapon.name;
         newWeapon.GetComponent<WeaponInfo>().SetInitialValues(testProgressModifier, statGap);
         compGen.SetWeaponValues(newWeapon.GetComponent<WeaponInfo>());
-        //weaponBody = compGen.weaponBody;
         newReciever = compGen.weaponReciever;
         newBarrel = compGen.weaponBarrel;
         newMagazine = compGen.weaponMagazine;
         newStock = compGen.weaponStock;
-        //GameObject body = Instantiate(weaponBody, new Vector3(0, 0.02f, 0), Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject reciever = Instantiate(newReciever, transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject barrel = Instantiate(newBarrel, reciever.transform.GetChild(1).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
         GameObject magazine = Instantiate(newMagazine, reciever.transform.GetChild(2).transform.position, Quaternion.Euler(new Vector3(0, -90.0f, 0)));
@@ -77,8 +73,23 @@ public class WeaponSpawner : MonoBehaviour
         newWeapon.AddComponent<ProjectileSpawner>().enabled = true;
         newWeapon.AddComponent<AudioSource>();
         newWeapon.layer = 10;
-        newWeapon.tag = "Weapon";
+        //newWeapon.tag = "Weapon";
 
         return newWeapon;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 12) {
+            GetComponentInChildren<WeaponInfo>().isEquipped = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if(other.gameObject.layer == 12)
+        {
+            GetComponentInChildren<WeaponInfo>().isEquipped = false;
+        }
     }
 }
