@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 251583585353333961}
   - component: {fileID: 251583585353333958}
   - component: {fileID: 6229620960114569095}
+  - component: {fileID: 3820980574555140904}
   m_Layer: 10
   m_Name: WeaponSpawner
   m_TagString: Weapon
@@ -51,6 +52,7 @@ MonoBehaviour:
   newStock: {fileID: 0}
   newMagazine: {fileID: 0}
   testSpawnOnShift: 1
+  spawnOnAwake: 1
   testProgressModifier: 30
   statGap: 50
 --- !u!65 &6229620960114569095
@@ -66,3 +68,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.12, y: 1, z: 2.15}
   m_Center: {x: 0, y: 0, z: -1.6}
+--- !u!114 &3820980574555140904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 251583585353333960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 150f3b819f29a4c43a8beb63607471b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetDistance: 50
+  timeToRecenter: 0.5
+  timeToRecover: 0.4
+  recoilTime: 0.1
+  recoilMaxTilt: 30
+  recoilMaxOffsetZ: 1.5
+  ammoType: 1

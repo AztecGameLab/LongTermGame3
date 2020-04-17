@@ -155,7 +155,7 @@ public class PlayerDriver : Driver
                 Transform otherTrans = otherObject.transform;
                 Transform camera = ec.childTransform;
                 
-                otherTrans.position = camera.position + camera.forward * 0.5f +  camera.right * 0.5f + camera.up * -0.5f;
+                otherTrans.position = camera.position + camera.forward * 3f +  camera.right * 0.5f + camera.up * -0.5f;
                 otherTrans.rotation = camera.rotation;
                 otherTrans.SetParent(camera);
 
