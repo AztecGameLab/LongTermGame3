@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3820980574555140904}
   m_Layer: 10
   m_Name: WeaponSpawner
-  m_TagString: Weapon
+  m_TagString: PlayerWeapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,7 +52,7 @@ MonoBehaviour:
   newStock: {fileID: 0}
   newMagazine: {fileID: 0}
   testSpawnOnShift: 1
-  spawnOnAwake: 1
+  spawnOnAwake: 0
   testProgressModifier: 30
   statGap: 50
 --- !u!65 &6229620960114569095

@@ -149,7 +149,7 @@ public class PlayerDriver : Driver
                 Destroy(otherObject);
                 ec.Heal(10);
             }
-            else if (otherObject.tag.Equals("Weapon"))
+            else if (otherObject.tag.Equals("PlayerWeapon"))
             {
                 Destroy(otherObject.GetComponent<BoxCollider>());
                 Transform otherTrans = otherObject.transform;

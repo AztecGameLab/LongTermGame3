@@ -45,7 +45,7 @@ public class WeaponComponentGenerator : MonoBehaviour
         SetBarrel(weapon);
         SetMagazine(weapon);
         SetStock(weapon);
-        weaponBody = (GameObject)Resources.Load("Body1");
+        //weaponBody = (GameObject)Resources.Load("Body1");
     }
 
     public void SetReciever(WeaponInfo weapon)
