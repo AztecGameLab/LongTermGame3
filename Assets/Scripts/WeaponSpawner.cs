@@ -12,6 +12,7 @@ public class WeaponSpawner : MonoBehaviour
     public GameObject newMagazine;
     public bool testSpawnOnShift = true;
     public bool spawnOnAwake = true;
+    GameObject weapon;
     
     private int weaponCount;//keep track of weapons spawned
     [SerializeField]//Can be used to set range of the initial values based on player progress
@@ -33,7 +34,7 @@ public class WeaponSpawner : MonoBehaviour
         //Needed for now so ProjectileTestScene can spawn from PlayerWeapon
         if (spawnOnAwake)
         {
-            GameObject weapon = SpawnWeapon();
+            weapon = SpawnWeapon();
         }
     }
     // Update is called once per frame
@@ -88,6 +89,7 @@ public class WeaponSpawner : MonoBehaviour
     {
         if (other.gameObject.layer == 12) {
             GetComponentInChildren<WeaponInfo>().isEquipped = true;
+            GetComponent<PlayerWeapon>().EquipWeapon(weapon);
         }
     }
 
