@@ -224,7 +224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseDamage: 50
   caliber: 1
-  caliberToLength: 3
+  caliberToLength: 1.5
   soundOnFire: {fileID: 8300000, guid: 70ac120014d1f430dbe2134fac46f760, type: 3}
   soundOnHitWall: {fileID: 8300000, guid: 2c1cb77264d374d7dba62357a56c3ea9, type: 3}
   soundOnHitEnemy: {fileID: 8300000, guid: 002cb39e00ec947fb96720252097456e, type: 3}

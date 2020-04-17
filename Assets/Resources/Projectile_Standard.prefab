@@ -243,4 +243,4 @@ MonoBehaviour:
   soundOnFire: {fileID: 8300000, guid: a30630b7fe0dd49eaaf3502825c1c0ca, type: 3}
   soundOnHitWall: {fileID: 8300000, guid: 2c1cb77264d374d7dba62357a56c3ea9, type: 3}
   soundOnHitEnemy: {fileID: 8300000, guid: 002cb39e00ec947fb96720252097456e, type: 3}
-  soundOnReload: {fileID: 8300000, guid: a30630b7fe0dd49eaaf3502825c1c0ca, type: 3}
+  soundOnReload: {fileID: 8300000, guid: df599c364fa044ed28626d19915d29c9, type: 3}

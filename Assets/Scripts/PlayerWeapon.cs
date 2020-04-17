@@ -10,21 +10,13 @@ public class PlayerWeapon : MonoBehaviour
     public float recoilTime = 0.1f;
     public float recoilMaxTilt = 30.0f;
     public float recoilMaxOffsetZ = 1.5f;
-    public float reloadMaxTilt = 10.0f;
-    public float reloadMaxOffsetZ = 1.0f;
 
-    //To do:
-    //  Set reload maxTilt and maxOffsetZ per weapon, current 'good':
-    //    tilt = 50, offset = 0 for 'raised up'
-    //    tilt = 0, offset = 1 for 'cock back'
-    //    tilt = -15, offset = 0 for 'lowered'
-    //    tilt = 15, offset = 0.5 for 'raised'
-
+    //Temporary, should come from weapon game object
+    public ProjectileInfo.Type ammoType = ProjectileInfo.Type.Shotgun;
 
     private GameObject weapon;
     private GameObject envelope;
-    private WeaponInfo weaponInfo;
-    private ProjectileSpawner projSpawner;
+    private ProjectileSpawner spawner;
 
     //For accuracy
     private Vector2 aimOffset;
@@ -49,19 +41,28 @@ public class PlayerWeapon : MonoBehaviour
     private float reloadStartTime;
 
     private int ammoCount;
-    //To do:  Set from weapon stats
-    private int ammoMax = 3;     //Max ammo, from 'projectileCount'
-    private float reloadSeconds = 1.2f;  //Total reload time, from 'reloadSpeed'
 
-    //Reload config - start with upward arm rotation at t=0, return at t=100
-    //private int reloadGunLowerStart = 30;   //Begin lowering gun
-    //private int reloadArmLiftEnd = 40;      //End of upward arm rotation
+    public void EquipWeapon(GameObject newWeapon)
+    {
+        if (weapon != null) weapon.GetComponent<WeaponInfo>().isEquipped = false;
 
-    //To do:  Also make these variable per gun type.  If configurable in Unity, set in AmmoTypeInfo
-    private float reloadGunLowerEnd = 0.2f;     //End lowering gun, begin sound
-    private float reloadArmReturnStart = 0.4f;  //Begin downward arm rotation
-    private float reloadGunRaiseEnd = 0.7f;     //End raising gun
-    
+        envelope = gameObject.transform.GetChild(0).gameObject;
+
+        weapon = newWeapon;
+        weapon.transform.parent = envelope.transform;
+        weapon.transform.localPosition = new Vector3(0, 0, 0);
+        weapon.transform.GetChild(0).localPosition = new Vector3(0, 0, 0);
+        weapon.GetComponent<WeaponInfo>().isEquipped = true;
+        spawner = weapon.GetComponent<ProjectileSpawner>();
+
+        spawner.InitWeaponStats(ammoType);
+
+        InitCenterAim();
+
+        gameObject.layer = 13;
+        SetLayerRecursive(weapon, 13);
+    }
+
     private Quaternion GetAimRotation()
     {
         Vector3 shootFrom = gameObject.transform.position;
@@ -94,7 +95,7 @@ public class PlayerWeapon : MonoBehaviour
 
         //If tilting down to reload, start reload animation after recoil
         //  'reloadMaxOffsetZ' should be 0 for this scenario
-        if (reloadMaxTilt < 0)
+        if (spawner.weaponStats.reloadMaxTilt < 0)
         {
             recoilAngle = (recoilCurrent > 0) ? Mathf.Max(recoilAngle, reloadAngle) : Mathf.Min(recoilAngle, reloadAngle);
         }
@@ -118,7 +119,6 @@ public class PlayerWeapon : MonoBehaviour
 
     public void SetLayerRecursive(GameObject target, int layer)
     {
-        Debug.Log($"Setting Layer for {target.gameObject}");
         target.layer = layer;
 
         foreach (Transform t in target.transform)
@@ -134,27 +134,23 @@ public class PlayerWeapon : MonoBehaviour
         aimOffset = Vector2.zero;
         recoilMin = new Vector2(0, gameObject.transform.localPosition.z);
         recoilMax = recoilMin + new Vector2(recoilMaxTilt, -recoilMaxOffsetZ);
-        reloadMax = recoilMin + new Vector2(reloadMaxTilt, -reloadMaxOffsetZ);
+        reloadMax = recoilMin + new Vector2(spawner.weaponStats.reloadMaxTilt, -spawner.weaponStats.reloadMaxOffsetZ);
         recoilSet = 0;
         recoilFire = 0;
         reloadFire = 0;
         recoilCurrent = 0;
         reloadCurrent = 0;
-        ammoCount = ammoMax;
+        ammoCount = spawner.weaponStats.ammoMaxCount;
         gameObject.transform.rotation = GetAimRotation();
     }
 
     public void OnFireWeapon()
     {
-        //To do: Temporary (remove)
-        //if (isReloading) { SetReloaded(); return; }
-
         if (isReloading) return;
 
         if (weapon != null)
         {
-            float accuracyScale = 5.0f;
-            float accuracyFactor = (100.0f - Mathf.Min(weaponInfo.accuracy, 100.0f)) / (100.0f * accuracyScale);
+            float accuracyFactor = spawner.weaponStats.aimDrift;
             float scaledErrorX = targetDistance * accuracyFactor;
             float scaledErrorY = scaledErrorX;
             Vector2 errorScaleY = new Vector2(0.1f, 0.5f);
@@ -164,22 +160,18 @@ public class PlayerWeapon : MonoBehaviour
             SetRecoil(true);
 
             lastFireTime = Time.time;
-            projSpawner.SpawnProjectile();
+            spawner.SpawnProjectile();
 
             fireOffset = aimOffset;
 
-            float recoilFixedTemp = 20.0f;
-            float recoilAmount = Random.Range(0.8f, 1.0f) * (recoilFixedTemp / 100.0f);
+            float recoilAmount = Random.Range(0.8f, 1.0f) * spawner.weaponStats.shotRecoil;
             recoilFire = recoilCurrent;
             recoilSet = Mathf.Min(recoilCurrent + recoilAmount, 1.0f);
 
             ammoCount--;
 
-            Debug.Log(ammoCount);
-
             if (ammoCount == 0)
             {
-                Debug.Log("load it up!");
                 SetReloading();
             }
         }
@@ -197,46 +189,32 @@ public class PlayerWeapon : MonoBehaviour
         isCharging = true;
 
         //Play sound
-        ProjectileSpawner spawner = weapon.GetComponent<ProjectileSpawner>();
         spawner.StartPlayRecharge();
     }
 
     void SetReloaded()
     {
-        ammoCount = ammoMax;
+        ammoCount = spawner.weaponStats.ammoMaxCount;
         reloadCurrent = 0;
         isReloading = false;
         isCharging = false;
 
         //Stop sound
-        ProjectileSpawner spawner = weapon.GetComponent<ProjectileSpawner>();
         spawner.StopPlayRecharge();
     }
 
-    public void EquipWeapon(GameObject newWeapon)
-    {
-        if (weaponInfo != null) weaponInfo.isEquipped = false; ;
-
-        envelope = gameObject.transform.GetChild(0).gameObject;
-
-        weapon = newWeapon;
-        weapon.transform.parent = envelope.transform;
-        weapon.transform.localPosition = new Vector3(0, 0, 0);
-        weapon.transform.GetChild(0).localPosition = new Vector3(0, 0, 0);
-        weaponInfo = weapon.GetComponent<WeaponInfo>();
-        projSpawner = weapon.GetComponent<ProjectileSpawner>();
-        weaponInfo.isEquipped = true;
-        InitCenterAim();
-
-        gameObject.layer = 13;
-        SetLayerRecursive(weapon, 13);
-    }
-
-    private void TestCreateWeapon()
+    void TestCreateWeapon()
     {
         WeaponSpawner weaponSpawner = gameObject.GetComponent<WeaponSpawner>();
 
-        EquipWeapon(weaponSpawner.SpawnWeapon());
+        StartCoroutine(TestEquipWeapon(weaponSpawner.SpawnWeapon()));
+    }
+
+    IEnumerator TestEquipWeapon(GameObject weapon)
+    {
+        yield return 0;
+
+        EquipWeapon(weapon);
     }
 
     private void Start()
@@ -300,7 +278,7 @@ public class PlayerWeapon : MonoBehaviour
                 recoilFire = 0;
                 recoilSet = 0;
 
-                if (reloadMaxTilt < 0)
+                if (spawner.weaponStats.reloadMaxTilt < 0)
                 {
                     //If tilting down to reload, start reload animation after recoil
                     //  'reloadMaxOffsetZ' should be 0 for this scenario
@@ -322,29 +300,29 @@ public class PlayerWeapon : MonoBehaviour
         {
             delta = Time.time - reloadStartTime;
 
-            if (delta > reloadSeconds)
+            if (delta > spawner.weaponStats.reloadSeconds)
             {
                 SetReloaded();
             }
             else
             {
-                float frame = delta / reloadSeconds;
+                float frame = delta / spawner.weaponStats.reloadSeconds;
 
-                if (frame < reloadGunLowerEnd)
+                if (frame < spawner.weaponStats.reloadGunLowerEnd)
                 {
-                    reloadCurrent = frame / reloadGunLowerEnd;
+                    reloadCurrent = frame / spawner.weaponStats.reloadGunLowerEnd;
 
                 }
-                else if (frame < reloadGunRaiseEnd)
+                else if (frame < spawner.weaponStats.reloadGunRaiseEnd)
                 {
                     if (!isCharging)
                     {
                         SetCharging();
                     }
 
-                    if (frame >= reloadArmReturnStart)
+                    if (frame >= spawner.weaponStats.reloadArmReturnStart)
                     {
-                        reloadCurrent = (reloadGunRaiseEnd - frame) / (reloadGunRaiseEnd - reloadArmReturnStart);
+                        reloadCurrent = (spawner.weaponStats.reloadGunRaiseEnd - frame) / (spawner.weaponStats.reloadGunRaiseEnd - spawner.weaponStats.reloadArmReturnStart);
                     }
                 }
                 else

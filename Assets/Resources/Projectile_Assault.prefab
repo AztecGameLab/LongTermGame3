@@ -223,12 +223,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseDamage: 5
-  caliber: 0.2
+  caliber: 0.7
   caliberToLength: 1.2
-  soundOnFire: {fileID: 8300000, guid: 70ac120014d1f430dbe2134fac46f760, type: 3}
+  soundOnFire: {fileID: 8300000, guid: a30630b7fe0dd49eaaf3502825c1c0ca, type: 3}
   soundOnHitWall: {fileID: 8300000, guid: 2c1cb77264d374d7dba62357a56c3ea9, type: 3}
   soundOnHitEnemy: {fileID: 8300000, guid: 002cb39e00ec947fb96720252097456e, type: 3}
-  soundOnReload: {fileID: 8300000, guid: a30630b7fe0dd49eaaf3502825c1c0ca, type: 3}
+  soundOnReload: {fileID: 8300000, guid: 9388e3c53fc954a75955b615e3cbbd13, type: 3}
 --- !u!114 &3200266905685325357
 MonoBehaviour:
   m_ObjectHideFlags: 0
