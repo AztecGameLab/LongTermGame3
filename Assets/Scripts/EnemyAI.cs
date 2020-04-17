@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : Driver
 {
     public Transform playerPos;
     public GameObject Enemy02;
@@ -14,8 +14,6 @@ public class EnemyAI : MonoBehaviour
     [SerializeField]
     private float nextCheck;
     private float currentDifX = 999;
-    [SerializeField]
-    private float yPos; // Likely 1 story
     private float currentDifZ = 999;
     private bool checkOne = false;
     [SerializeField]
@@ -43,12 +41,19 @@ public class EnemyAI : MonoBehaviour
     private bool detonateAnim = false;
 
     public GameObject image;
+    public GameObject player;
 
+    private GameObject explode1;
+    private GameObject explode2;
     void Start()
     {
+        player = GameObject.Find("Player");
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         //playerRigidBody = playerPos.GetComponent<Rigidbody>();
         myNav = gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        explode1 = GameObject.Find("Explode1");
+        explode2 = GameObject.Find("Explode2");
+        explode2.SetActive(false);
     }
 
     // Update is called once per frame
@@ -71,8 +76,7 @@ public class EnemyAI : MonoBehaviour
         {
             isExploded++;
             death();
-        }
-        
+        }        
     }
 
     void playerFollower()
@@ -110,27 +114,33 @@ public class EnemyAI : MonoBehaviour
         //Explosion particles and the destruction
         var exp = Enemy02.GetComponent<ParticleSystem>();
         exp.Emit(100);
-
+        explode1.SetActive(false);
+        explode2.SetActive(false);
+        Destroy(image);             //Destroys the image 
         if (inRangeDuringExplosion == true && checkOne == false)
         {
             checkOne = true;
+            Debug.Log("Boom");
             //Add explosion here
-            //Add explosion audio here            
+            //Add explosion audio here
+            
             knockback();
             playerDamage();            
         }
                
-        Destroy(image);             //Destroys the image 
+      
         Destroy(Enemy02, 3);        //Destroys the enemy gameobject after death
     }
 
+    //TODO doesnt work now 
     //This function is to knock the player back after explosion
     void knockback()    
     {
-        Vector3 explosionPos = transform.position;
+        //Vector3 explosionPos = transform.position;
         //playerRigidBody.AddExplosionForce(power, explosionPos, radius, 3.0F);
     }
 
+    //This is the enemy dying
     void death()
     {
         Destroy(Enemy02);
@@ -146,20 +156,50 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+
+    //Driver.TakeDamage damages the enemy
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+    //This is the enemy taking damage
     void doDamage()
     {
         healthBar = healthBar - bulletDamage;
         Debug.Log(healthBar); //TODO remove later
+        if (healthBar <= 0)
+        {
+            death();
+        }
+       
     }
 
-    //TODO be written later, player damage
+    //This does damage to the player
     void playerDamage()
     {
-        Debug.Log(damageToPlayer);
+        // you can call either GetComponent<PlayerDriver> or GetComponent<Driver>
+        //on the player GameObject, then call TakeDamage on that object to damage 
+        // the player. 
+        //player.GetComponent<PlayerDriver>.TakeDamage(damageToPlayer);
+        Debug.Log("Damage done: " + damageToPlayer);
+        //TakeDamage(damageToPlayer);       
     }
 
     IEnumerator explosionCounter()  //Adds the delay to the counter
     {
+        explode1.SetActive(false);
+        explode2.SetActive(true);
         yield return new WaitForSeconds(timerDuration);
         if(detonateAnim == false)
         {
