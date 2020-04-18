@@ -23,6 +23,7 @@ public class Driver : MonoBehaviour
     
     }
 
+    //Changed from protected to public
     public void TakeDamage(float damage){
         health -= damage;
         if (health <= 0){

@@ -34,31 +34,36 @@ public class EnemyAI : Driver
     [SerializeField]
     float power = 1000.0f;
 
-    //Health of the enemy 
-    [SerializeField]
-    float healthBar = 100f;
-    float bulletDamage = 20f;
-    private bool detonateAnim = false;
+    //How many blinks the enemy does per sec
+    public float timerBlink = .2f;
 
+    private bool detonateAnim = false;
+    bool isVisible = false;
     public GameObject image;
     public GameObject player;
-
+    RaycastHit hit;
     private GameObject explode1;
     private GameObject explode2;
+    public GameObject explode3;
+    public ParticleSystem pe;
+
+    bool explosion = false;
     void Start()
     {
+        health = 50;    //Setting the enemy health
         player = GameObject.Find("Player");
-        playerPos = GameObject.FindGameObjectWithTag("Player").transform;
-        //playerRigidBody = playerPos.GetComponent<Rigidbody>();
-        myNav = gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>();
         explode1 = GameObject.Find("Explode1");
         explode2 = GameObject.Find("Explode2");
+        playerPos = GameObject.FindGameObjectWithTag("Player").transform;
+        myNav = gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>();        
+        explode3.SetActive(false);
         explode2.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Calculates the difference between player and the enemy
         currentDifX = Mathf.Abs(playerPos.transform.position.x - transform.position.x);
         currentDifZ = Mathf.Abs(playerPos.transform.position.z - transform.position.z);
 
@@ -70,26 +75,48 @@ public class EnemyAI : Driver
                 playerFollower();   //Called to follow the player 
             }
         }
-
-        //If the player kills the enemy with a gun
-        if (healthBar <= 0 && isExploded == 0)
-        {
-            isExploded++;
-            death();
-        }        
     }
 
+    //Some code used from https://www.reddit.com/r/Unity2D/comments/61e1wn/enemy_line_of_sight_raycast2d_help/
+    void FixedUpdate()
+    {
+        //precompute raysettings
+        Vector3 start = transform.position;
+        Vector3 direction = player.transform.position - transform.position;
+
+        float distance = 1.5f;
+
+        //draw ray in editor
+        Debug.DrawRay(start, direction * distance, Color.red, 2f, false);
+
+        RaycastHit sighttest;
+
+        if (Physics.Raycast(start, direction, out sighttest,  100))
+        {
+            //Checks if nothing is in the way of the player
+            if (sighttest.transform.CompareTag("Player"))
+            {
+                isVisible = true;
+            }
+            else
+            {
+                isVisible = false;
+            }
+        }
+
+    }
+
+    //Follows the player
     void playerFollower()
     {
-        //Add the bomb movement animation here
-        //Add the bomb audio animation here
         myNav.SetDestination(playerPos.position);
     }
 
     private void OnTriggerEnter(Collider other) //If the enemy collides with the player
     {
-        if(other.tag == "Player")
+        if(other.tag == "Player" && explosion == false && isVisible == true)
         {
+            explosion = true;
             inRangeDuringExplosion = true;
             detonate();
         }       
@@ -105,7 +132,6 @@ public class EnemyAI : Driver
     {
         myNav.speed = 0;
         //Add audio for detonation beeping here 
-        //Add animation for detonation red/white here
         StartCoroutine(explosionCounter());     //Freezing the enemy to start the countdown
     }
 
@@ -116,19 +142,19 @@ public class EnemyAI : Driver
         exp.Emit(100);
         explode1.SetActive(false);
         explode2.SetActive(false);
-        Destroy(image);             //Destroys the image 
-        if (inRangeDuringExplosion == true && checkOne == false)
+
+        //Destroys the image 
+        Destroy(image);             
+        if (inRangeDuringExplosion == true && checkOne == false && isVisible == true)
         {
             checkOne = true;
-            Debug.Log("Boom");
-            //Add explosion here
+
             //Add explosion audio here
             
-            knockback();
-            playerDamage();            
+            knockback();            
+            doDamage();       //Damages the player     
         }
-               
-      
+                     
         Destroy(Enemy02, 3);        //Destroys the enemy gameobject after death
     }
 
@@ -140,69 +166,42 @@ public class EnemyAI : Driver
         //playerRigidBody.AddExplosionForce(power, explosionPos, radius, 3.0F);
     }
 
-    //This is the enemy dying
-    void death()
+    //The Enemy Fucking Dies
+    protected override void OnDeath()
     {
+        isExploded++;
         Destroy(Enemy02);
     }
 
-    //Checks if the object that collided with it is a bullet
-    //Works when the object has a rigidbody
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.collider.tag == "Bullet")
-        {
-            doDamage();
-        }
-    }
-
-
-    //Driver.TakeDamage damages the enemy
-
-
-
-
-   
-
-
-
-
-
-
-
-
-
-
-    //This is the enemy taking damage
+    //This is the enemy dealing damage
     void doDamage()
     {
-        healthBar = healthBar - bulletDamage;
-        Debug.Log(healthBar); //TODO remove later
-        if (healthBar <= 0)
-        {
-            death();
-        }
-       
-    }
-
-    //This does damage to the player
-    void playerDamage()
-    {
-        // you can call either GetComponent<PlayerDriver> or GetComponent<Driver>
-        //on the player GameObject, then call TakeDamage on that object to damage 
-        // the player. 
-        //player.GetComponent<PlayerDriver>.TakeDamage(damageToPlayer);
         Debug.Log("Damage done: " + damageToPlayer);
-        //TakeDamage(damageToPlayer);       
+        TakeDamage(10f);      
     }
 
     IEnumerator explosionCounter()  //Adds the delay to the counter
     {
-        explode1.SetActive(false);
-        explode2.SetActive(true);
-        yield return new WaitForSeconds(timerDuration);
+        //Switching between the billboards
+
+        explode3.SetActive(true);
+        pe.Play();
+
+        for (int i = 0; i < 20; i++)
+        {
+            explode1.SetActive(false);            
+            explode2.SetActive(true);
+            yield return new WaitForSeconds(timerBlink);
+            explode1.SetActive(true);
+            explode2.SetActive(false);
+            yield return new WaitForSeconds(timerBlink);
+        }
+
+        //yield return new WaitForSeconds(timerDuration);
         if(detonateAnim == false)
         {
+            //Calls the exploding sequence
+            explode3.SetActive(false);
             detonateAnim = true;
             Explode();
         }        
