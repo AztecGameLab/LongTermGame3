@@ -63,6 +63,14 @@ public class PlayerWeapon : MonoBehaviour
         SetLayerRecursive(weapon, 13);
     }
 
+    //Temporary
+    public void SetProjectile(ProjectileInfo.Type type)
+    {
+        ammoType = type;
+
+        EquipWeapon(weapon);
+    }
+
     private Quaternion GetAimRotation()
     {
         Vector3 shootFrom = gameObject.transform.position;

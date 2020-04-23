@@ -19,7 +19,7 @@ public class ProjectileSniper : ProjectileInfo
         stats.SetReloadMethod(0.25f, 0.55f, 0.95f, -15, 0f);
     }
 
-    protected override int GetDamage()
+    public override int GetDamage()
     {
         //To do:  Increase damage per distance to "full effect" distance
         //  Projectile can also accelerate to full effect

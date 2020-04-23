@@ -39,7 +39,7 @@ public class ProjectileInfo : MonoBehaviour
 
             if (testTarget != null)
             {
-                testTarget.TakeDamage(50);
+                testTarget.TakeDamage(GetDamage());
             }
 
             hitClip = ammoType.soundOnHitEnemy;
@@ -78,7 +78,7 @@ public class ProjectileInfo : MonoBehaviour
         return true;
     }
 
-    virtual protected int GetDamage()
+    virtual public int GetDamage()
     {
         //To do:  If hit enemy: calculate damage from weaponInfo, ammoTypeInfo, and enemy stats
         //  'startPosition' is for determining effect of damage falloff
