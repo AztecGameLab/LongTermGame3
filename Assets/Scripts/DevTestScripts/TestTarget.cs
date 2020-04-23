@@ -50,31 +50,4 @@ public class TestTarget : Driver
         Quaternion q = Quaternion.LookRotation(transform.position - camera.transform.position, Vector3.up);
         transform.rotation = q;
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SetPlayerWeaponAmmo(ProjectileInfo.Type.Standard);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            SetPlayerWeaponAmmo(ProjectileInfo.Type.Shotgun);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SetPlayerWeaponAmmo(ProjectileInfo.Type.Assault);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            SetPlayerWeaponAmmo(ProjectileInfo.Type.Sniper);
-        }
-    }
-
-    void SetPlayerWeaponAmmo(ProjectileInfo.Type ammoType)
-    {
-        GameObject weapon = GameObject.FindGameObjectWithTag("PlayerWeapon");
-
-        weapon.GetComponent<PlayerWeapon>().SetProjectile(ammoType);
-    }
 }

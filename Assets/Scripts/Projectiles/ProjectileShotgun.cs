@@ -8,17 +8,15 @@ public class ProjectileShotgun : ProjectileInfo
     const int maxSplits = 3;
     int splitCurrent;
 
-    static public void InitWeaponStats(WeaponInfo info, ref ProjectileSpawner.WeaponStats stats)
+    static public void InitWeaponStats(WeaponInfo info, ref WeaponStats stats)
     {
-        stats.SetAmmoMaxCount(info.ammoSize, 1, 6);
-        stats.SetAimDrift(info.accuracy, 3.0f);
-        stats.SetRPM(info.fireRate, 5.0f);
-        stats.SetShotRecoil(info.recoil, 1.0f);
-
-        //To do:  Base on stats
-        stats.SetVelocity(info.muzzleVelocity, 15.0f);
-        stats.SetRangePerStage(info.effectiveRange, 1.6f);
-        stats.SetReloadSeconds(info.reloadSpeed, 2.0f);
+        stats.SetAmmoMaxCount(info.ammoSize, 1, 8);
+        stats.SetAimDrift(info.accuracy, 10.0f, 10.0f);
+        stats.SetRPM(info.fireRate, 80.0f, 80.0f);
+        stats.SetShotRecoil(info.recoil, 30.0f, 30.0f);
+        stats.SetVelocity(info.muzzleVelocity, 30.0f, 30.0f);
+        stats.SetRangePerStage(info.effectiveRange, 2.0f, 2.0f);
+        stats.SetReloadSeconds(info.reloadSpeed, 2.0f, 2.0f);
 
         stats.SetReloadMethod(0.2f, 0.4f, 0.9f, 50.0f, 0);
     }

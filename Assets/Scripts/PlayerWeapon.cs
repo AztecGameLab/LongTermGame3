@@ -12,7 +12,7 @@ public class PlayerWeapon : MonoBehaviour
     public float recoilMaxOffsetZ = 1.5f;
 
     //Temporary, should come from weapon game object
-    public ProjectileInfo.Type ammoType = ProjectileInfo.Type.Shotgun;
+    public ProjectileInfo.Type ammoType = ProjectileInfo.Type.Standard;
 
     private GameObject weapon;
     private GameObject envelope;
@@ -44,7 +44,13 @@ public class PlayerWeapon : MonoBehaviour
 
     public void EquipWeapon(GameObject newWeapon)
     {
-        if (weapon != null) weapon.GetComponent<WeaponInfo>().isEquipped = false;
+        if (weapon != null)
+        {
+            weapon.GetComponent<WeaponInfo>().isEquipped = false;
+            Destroy(weapon);
+            weapon = null;
+        }
+        
 
         envelope = gameObject.transform.GetChild(0).gameObject;
 
@@ -52,6 +58,7 @@ public class PlayerWeapon : MonoBehaviour
         weapon.transform.parent = envelope.transform;
         weapon.transform.localPosition = new Vector3(0, 0, 0);
         weapon.transform.GetChild(0).localPosition = new Vector3(0, 0, 0);
+        weapon.transform.localRotation = Quaternion.identity;
         weapon.GetComponent<WeaponInfo>().isEquipped = true;
         spawner = weapon.GetComponent<ProjectileSpawner>();
 
@@ -63,15 +70,18 @@ public class PlayerWeapon : MonoBehaviour
         SetLayerRecursive(weapon, 13);
     }
 
-    //Temporary
+    //Temporary for testing
     public void SetProjectile(ProjectileInfo.Type type)
     {
         ammoType = type;
 
-        EquipWeapon(weapon);
+        GameObject newWeapon = weapon;
+        weapon = null;
+
+        EquipWeapon(newWeapon);
     }
 
-    private Quaternion GetAimRotation()
+    Quaternion GetAimRotation()
     {
         Vector3 shootFrom = gameObject.transform.position;
         Quaternion rotation = gameObject.transform.parent.rotation;
@@ -82,7 +92,7 @@ public class PlayerWeapon : MonoBehaviour
         return Quaternion.LookRotation(target - shootFrom, Vector3.up);
     }
 
-    private void SetRecoil(bool aimSet)
+    void SetRecoil(bool aimSet)
     {
         float recoilAngle = 0;
         float reloadAngle = 0;
@@ -135,7 +145,7 @@ public class PlayerWeapon : MonoBehaviour
         }
     }
 
-    private void InitCenterAim()
+    void InitCenterAim()
     {
         lastFireTime = 0;
         fireOffset = Vector2.zero;
@@ -211,28 +221,13 @@ public class PlayerWeapon : MonoBehaviour
         spawner.StopPlayRecharge();
     }
 
-    void TestCreateWeapon()
-    {
-        WeaponSpawner weaponSpawner = gameObject.GetComponent<WeaponSpawner>();
-
-        StartCoroutine(TestEquipWeapon(weaponSpawner.SpawnWeapon()));
-    }
-
-    IEnumerator TestEquipWeapon(GameObject weapon)
-    {
-        yield return 0;
-
-        EquipWeapon(weapon);
-    }
-
+ 
     private void Start()
     {
     }
 
     private void Update()
     {
-        if (weapon == null) TestCreateWeapon();
-
         bool aimSet = false;
         bool needSetRecoil = false;
 
@@ -269,7 +264,7 @@ public class PlayerWeapon : MonoBehaviour
             {
                 float f = delta / recoilTime;
 
-                //To do: Switch to quarter sinusoid
+                //TODO Switch to quarter sinusoid
                 recoilCurrent = Mathf.Lerp(recoilFire, recoilSet, f);
             }
 
