@@ -143,7 +143,6 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_CameraOutput: 0
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
@@ -155,6 +154,7 @@ MonoBehaviour:
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
+  m_ClearDepth: 1
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
@@ -430,6 +430,7 @@ MonoBehaviour:
       doors: []
       type: 
       roomObj: {fileID: 0}
+      obstacles: []
     doors:
     - wall: {x: 1, y: 0, z: 0}
       wallPosition: {x: 1, y: 0}
@@ -437,6 +438,8 @@ MonoBehaviour:
       wallPosition: {x: 1, y: 0}
     type: 
     roomObj: {fileID: 0}
+    obstacles: []
+  numObstacles: 20
   doorPrefab: {fileID: -927199367670048503, guid: d94067c0eb6bdcb4da0e00c8a91ce626,
     type: 3}
   doorDimensions: {x: 1, y: 1}
@@ -519,6 +522,7 @@ MonoBehaviour:
     doors: []
     type: 
     roomObj: {fileID: 0}
+    obstacles: []
   objectTemplate: {fileID: 6986889222746248364, guid: 8ccdd429b06e90d499eae52a6efffb71,
     type: 3}
   optimizationHitbox: {fileID: 521411398}
