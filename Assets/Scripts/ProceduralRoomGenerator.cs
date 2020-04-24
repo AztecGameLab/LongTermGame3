@@ -14,6 +14,9 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public Transform map;
     public float brightness;
     public GameObject[] potentialItemSpawns;
+    [Range(20, 60)]
+    public int numObstacles = 50;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +44,11 @@ public class ProceduralRoomGenerator : MonoBehaviour
         {
             data.objects.Add(AttemptSpawnObject(data, potentialItemSpawns[Random.Range(0,potentialItemSpawns.Length)], 0,roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
         }
+        for (int i = 0; i < getVolume(data) / Random.Range(40, 50); i++) //obstacle number and obstacle spawning
+        {
+            data.obstacles.Add(AttemptSpawnObstacle(data, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
+        }
+
         return roomLocation.gameObject;
         //Floor();
         //Walls();
@@ -83,6 +91,113 @@ public class ProceduralRoomGenerator : MonoBehaviour
         //if for some reason can't find a space, return null
 
     }
+
+    public GameObject AttemptSpawnObstacle(RoomData room, Transform parent) // tries to spawn object in random position of a room
+    {
+        GameObject temp;
+        // find random 2d point on ceiling
+        Vector3 roomCornerOffset = room.bounds.center - (room.bounds.size / 2);
+        int randomCX = (int)Random.Range(1, room.bounds.size.x);
+        int randomCY = (int)Random.Range(1, room.bounds.size.z);
+        Vector3 ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY); // make add from corner of position of room
+
+        //  Ray ray = new Ray(ceilingPos, Vector3.down);
+        //    Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 10);
+
+        RaycastHit hit;
+        Ray ray1 = new Ray(ceilingPos, Vector3.down);
+        //  Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 100);
+        Physics.Raycast(ray1, out hit, room.bounds.size.y);
+
+        int randomObstacle = (int)Random.Range(0, 3); //maybe add a weighted system for obstacles
+        if (randomObstacle == 0)
+        {
+            temp = buildPillar(room, false);
+            temp.transform.position = hit.point;
+
+        }
+        else if (randomObstacle == 1)
+        {
+            temp = buildWall(room, (int)hit.point.x);
+            temp.transform.position = hit.point;
+        }
+        else
+        {
+            temp = GameObject.CreatePrimitive(PrimitiveType.Cube); // make spawn off of prefab later TODOTDO
+            temp.transform.position = hit.point + new Vector3(0, .5f, 0);
+
+        }
+
+        // temp.name =(room.name + " object: " + temp.transform.position);
+        temp.name = "tempObstacle";
+        //print(temp.name);
+        temp.transform.parent = parent;
+        return temp;
+
+
+        //when true, add gameObject to room objects list
+        //if for some reason can't find a space, return null
+
+    }
+
+
+    public GameObject buildPillar(RoomData room, bool isWall)
+    {
+
+        GameObject temp = new GameObject();
+        if (!isWall)
+        {
+            for (int i = 0; i < Random.Range(2, room.bounds.size.y + 1); i++)
+            {
+                GameObject pillarObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                pillarObj.transform.position = new Vector3(0, .5f + .5f * i, 0);
+                pillarObj.transform.parent = temp.transform;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < room.bounds.size.y + 2; i++)
+            {
+                GameObject pillarObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                pillarObj.transform.position = new Vector3(0, .5f + .5f * i, 0);
+                pillarObj.transform.parent = temp.transform;
+            }
+        }
+
+        return temp;
+    }
+
+    public GameObject buildWall(RoomData room, int hitX)
+    {
+        GameObject temp = new GameObject();
+        int wallLength = (int)room.bounds.center.x + ((int)room.bounds.size.x / 2) - hitX;
+        for (int i = 0; i < wallLength; i++)
+        {
+            GameObject wallObj = buildPillar(room, true);
+            wallObj.transform.position = new Vector3(i * .5f, 0, 0);
+            wallObj.transform.parent = temp.transform;
+        }
+        return temp;
+    }
+
+    public int findMinDim(RoomData room)
+    {
+        if (room.bounds.size.x < room.bounds.size.z)
+        {
+            return (int)room.bounds.size.x;
+        }
+        else
+        {
+            return (int)room.bounds.size.z;
+
+        }
+    }
+
+    public int getVolume(RoomData room)
+    {
+        return (int)(room.bounds.size.x * room.bounds.size.y * room.bounds.size.z);
+    }
+
     public bool validSpawnPosition(Vector3 source, RoomData room) //TODO make Vector3 at some point to spawn item
     {
         float MAX_DISTANCE_FROM_POINT = room.bounds.size.y + 10;

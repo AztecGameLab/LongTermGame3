@@ -13,6 +13,7 @@ public class RoomData
     public List<itemData> objects;
     public GameObject roomObj;
     public List<GameObject> obstacles;
+
     //public List<DoorData> doors;
     //public Enemy[] enemy
 
