@@ -7,6 +7,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
     private RoomData myRoom;
     public bool defaultRoomData=false;
     public RoomData testData;
+
     
     public GameObject doorPrefab;
     public Vector2 doorDimensions;
@@ -16,6 +17,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public GameObject[] potentialItemSpawns;
     [Range(20, 60)]
     public int numObstacles = 50;
+    public bool rotateObstacles;
 
     // Start is called before the first frame update
     void Start()
@@ -94,38 +96,61 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
     public GameObject AttemptSpawnObstacle(RoomData room, Transform parent) // tries to spawn object in random position of a room
     {
+        int spawnSide = Random.Range(0, 1);
         GameObject temp;
         // find random 2d point on ceiling
         Vector3 roomCornerOffset = room.bounds.center - (room.bounds.size / 2);
         int randomCX = (int)Random.Range(1, room.bounds.size.x);
         int randomCY = (int)Random.Range(1, room.bounds.size.z);
-        Vector3 ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY); // make add from corner of position of room
+
+        Vector3 surfacePos;
+        if(spawnSide == 0)
+            surfacePos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY); // make add from corner of position of room ceiling pos
+        else
+            surfacePos = roomCornerOffset + new Vector3(randomCX, (float)(1), randomCY); // make add from corner of position of room floor pos
+
 
         //  Ray ray = new Ray(ceilingPos, Vector3.down);
         //    Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 10);
 
         RaycastHit hit;
-        Ray ray1 = new Ray(ceilingPos, Vector3.down);
+        Ray ray1;
+        if (spawnSide == 0)
+            ray1 = new Ray(surfacePos, Vector3.down);
+        else
+            ray1 = new Ray(surfacePos, Vector3.up);
         //  Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 100);
         Physics.Raycast(ray1, out hit, room.bounds.size.y);
 
         int randomObstacle = (int)Random.Range(0, 3); //maybe add a weighted system for obstacles
         if (randomObstacle == 0)
         {
-            temp = buildPillar(room, false);
+            temp = buildPillar(room, false,spawnSide);
             temp.transform.position = hit.point;
+            if(rotateObstacles)
+                temp.transform.Rotate(0, Random.Range(0, 361), 0); //rotates obstacles, has possibility of blocking doors so do not implement yet
 
         }
         else if (randomObstacle == 1)
         {
-            temp = buildWall(room, (int)hit.point.x);
+            temp = buildWall(room, (int)hit.point.x, spawnSide);
             temp.transform.position = hit.point;
+            if (rotateObstacles)
+                temp.transform.Rotate(0, Random.Range(0, 361), 0); //rotates obstacles, has possibility of blocking doors so do not implement yet
+
+
         }
         else
         {
             temp = GameObject.CreatePrimitive(PrimitiveType.Cube); // make spawn off of prefab later TODOTDO
-            temp.transform.position = hit.point + new Vector3(0, .5f, 0);
+            if (spawnSide == 0)
+                temp.transform.position = hit.point + new Vector3(0, .5f, 0);
 
+            else
+                temp.transform.position = hit.point + new Vector3(0, -.5f, 0);
+
+            if (rotateObstacles)
+                temp.transform.Rotate(0, Random.Range(0, 361), 0); //rotates obstacles, has possibility of blocking doors so do not implement yet
         }
 
         // temp.name =(room.name + " object: " + temp.transform.position);
@@ -141,7 +166,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
     }
 
 
-    public GameObject buildPillar(RoomData room, bool isWall)
+    public GameObject buildPillar(RoomData room, bool isWall, int side)
     {
 
         GameObject temp = new GameObject();
@@ -150,7 +175,11 @@ public class ProceduralRoomGenerator : MonoBehaviour
             for (int i = 0; i < Random.Range(2, room.bounds.size.y + 1); i++)
             {
                 GameObject pillarObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                pillarObj.transform.position = new Vector3(0, .5f + .5f * i, 0);
+                if(side ==0)
+                    pillarObj.transform.position = new Vector3(0, .5f + .5f * i, 0);
+                else
+                    pillarObj.transform.position = new Vector3(0, -.5f + -.5f * i, 0);
+
                 pillarObj.transform.parent = temp.transform;
             }
         }
@@ -159,7 +188,10 @@ public class ProceduralRoomGenerator : MonoBehaviour
             for (int i = 0; i < room.bounds.size.y + 2; i++)
             {
                 GameObject pillarObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                pillarObj.transform.position = new Vector3(0, .5f + .5f * i, 0);
+                if (side == 0)
+                    pillarObj.transform.position = new Vector3(0, .5f + .5f * i, 0);
+                else
+                    pillarObj.transform.position = new Vector3(0, -.5f + -.5f * i, 0);
                 pillarObj.transform.parent = temp.transform;
             }
         }
@@ -167,13 +199,13 @@ public class ProceduralRoomGenerator : MonoBehaviour
         return temp;
     }
 
-    public GameObject buildWall(RoomData room, int hitX)
+    public GameObject buildWall(RoomData room, int hitX, int side)
     {
         GameObject temp = new GameObject();
         int wallLength = (int)room.bounds.center.x + ((int)room.bounds.size.x / 2) - hitX;
         for (int i = 0; i < wallLength; i++)
         {
-            GameObject wallObj = buildPillar(room, true);
+            GameObject wallObj = buildPillar(room, true, side);
             wallObj.transform.position = new Vector3(i * .5f, 0, 0);
             wallObj.transform.parent = temp.transform;
         }
