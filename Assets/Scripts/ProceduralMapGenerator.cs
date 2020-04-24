@@ -30,6 +30,7 @@ public class ProceduralMapGenerator : MonoBehaviour
     public ProceduralRoomGenerator roomGenerator;
     public bool isGenerateInterior;
     public NavMeshSurface surface;
+    public float mapScale;
     Vector3[] directions =
     {
         Vector3.left,
@@ -58,6 +59,13 @@ public class ProceduralMapGenerator : MonoBehaviour
         
         AttemptSpawnRoom(null);
         PlaceRooms();
+        transform.localScale = Vector3.one * mapScale;
+
+        foreach (RoomData room in rooms)
+        {
+            room.bounds.center *= mapScale;
+            room.bounds.extents *= mapScale;
+        }
         surface.BuildNavMesh();
         //foreach(RoomData room in rooms)
         //{

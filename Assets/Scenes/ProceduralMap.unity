@@ -178,7 +178,7 @@ PrefabInstance:
     - target: {fileID: 7482406497995980636, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7482406497995980636, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
@@ -253,12 +253,12 @@ PrefabInstance:
     - target: {fileID: 7482406497995980637, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
       propertyPath: m_Height
-      value: 0.2
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7482406497995980637, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
       propertyPath: m_Radius
-      value: 0.05
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7482406497995980637, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
@@ -375,7 +375,7 @@ Transform:
   m_GameObject: {fileID: 521411398}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -1.32, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 20, y: 20, z: 20}
   m_Children: []
   m_Father: {fileID: 746471471}
   m_RootOrder: 1
@@ -439,16 +439,15 @@ MonoBehaviour:
     type: 
     roomObj: {fileID: 0}
     obstacles: []
-  numObstacles: 20
-  doorPrefab: {fileID: -927199367670048503, guid: d94067c0eb6bdcb4da0e00c8a91ce626,
+  doorPrefab: {fileID: 3972723334067714794, guid: 05ca29923be4db9459eebb726a3bb530,
     type: 3}
   doorDimensions: {x: 1, y: 1}
   map: {fileID: 1670693425}
-  brightness: 1.5
+  brightness: 8
   potentialItemSpawns:
   - {fileID: 6983286057668968315, guid: e22152a9440d5324784c3fc277b8f929, type: 3}
-  - {fileID: 9212417195878825477, guid: 7c1a9c977c6b1e34e95fd0af726bb4fe, type: 3}
-  - {fileID: 6983286057668968315, guid: e22152a9440d5324784c3fc277b8f929, type: 3}
+  - {fileID: 3307278325576138102, guid: 3b918aa1194fe417bad1551236359d5f, type: 3}
+  - {fileID: 887129037396086608, guid: 66587e9fb9128ba44b2076a5e9b34553, type: 3}
   CeilingEdge: {fileID: 6609555836500725476, guid: 9bd4e00193fd522428740a1631dfb072,
     type: 3}
   CeilingCorner: {fileID: 6609555836500725476, guid: 9bd4e00193fd522428740a1631dfb072,
@@ -538,6 +537,7 @@ MonoBehaviour:
   roomGenerator: {fileID: 1008516146}
   isGenerateInterior: 1
   surface: {fileID: 1670693426}
+  mapScale: 3
 --- !u!4 &1670693425
 Transform:
   m_ObjectHideFlags: 0
