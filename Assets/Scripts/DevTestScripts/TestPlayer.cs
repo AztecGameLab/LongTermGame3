@@ -32,6 +32,10 @@ public class TestPlayer : MonoBehaviour
 
     }
 
+    private void Awake()
+    {
+    }
+
     void HandleInputSetProjectile()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))

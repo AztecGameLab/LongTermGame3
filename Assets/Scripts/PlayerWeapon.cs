@@ -228,6 +228,20 @@ public class PlayerWeapon : MonoBehaviour
 
     private void Update()
     {
+        //TODO Temporary fix!
+        if (gameObject.transform.childCount > 1)
+        {
+            for(int i = 0; i < gameObject.transform.childCount; i++)
+            {
+                GameObject child = gameObject.transform.GetChild(i).gameObject;
+
+                if (child.tag == "Weapon")
+                {
+                    Destroy(child);
+                }
+            }
+        }
+
         bool aimSet = false;
         bool needSetRecoil = false;
 

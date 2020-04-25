@@ -17,10 +17,6 @@ public class TestPickup : MonoBehaviour
     {
         float angle = angularVelocity * Time.time;
 
-
-
-        Debug.Log(angle);
-
         gameObject.transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
     }
 }

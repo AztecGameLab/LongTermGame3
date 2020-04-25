@@ -80,7 +80,7 @@ public class WeaponSpawner : MonoBehaviour
         newWeapon.AddComponent<ProjectileSpawner>().enabled = true;
         newWeapon.AddComponent<AudioSource>();
         newWeapon.layer = 10;
-        newWeapon.tag = "PlayerWeapon";
+        newWeapon.tag = "Weapon";
 
         return newWeapon;
     }
@@ -88,7 +88,7 @@ public class WeaponSpawner : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 12) {
-            GetComponentInChildren<WeaponInfo>().isEquipped = true;
+            //GetComponentInChildren<WeaponInfo>().isEquipped = true;
             GameObject.FindObjectOfType<PlayerWeapon>().EquipWeapon(weapon);
         }
     }
