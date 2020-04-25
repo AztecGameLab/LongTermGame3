@@ -69,6 +69,7 @@ public class itemData
         GameObject roomObj = GameObject.Instantiate(obj,parent);
         //roomObj.GetComponent<MeshRenderer>().material.color = typeColor;
         roomObj.transform.position = pos;
+        roomObj.transform.Rotate(0, Random.Range(0,361), 0); //randomly orientates object
         return roomObj;
 
         /*
