@@ -18,7 +18,9 @@ public class ProceduralRoomGenerator : MonoBehaviour
     [Range(20, 60)]
     public int numObstacles = 50;
     public bool rotateObstacles;
-
+    public GameObject wallTile;
+    public GameObject cielingTile;
+    public GameObject floorTile;
     // Start is called before the first frame update
     void Start()
     {
@@ -297,11 +299,11 @@ public class ProceduralRoomGenerator : MonoBehaviour
                     ((height - 1 == y) && (0== x));
         if (direction == Vector3.down)
         {
-            return CeilingDecision(y, x,edge,corner);
+            return cielingTile;
         }
         else if (Vector3.up== direction)
         {
-            return FloorDecision(y, x, edge, corner);
+            return floorTile;
         }
         else
         {
@@ -309,29 +311,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         }
         
     }
-    public GameObject CeilingEdge;
-    public GameObject CeilingCorner;
-    public GameObject CeilingTile;
-    private GameObject CeilingDecision(int y, int x,bool edge,bool corner)
-    {
-        if (corner)
-            return CeilingCorner;
-        if (edge)
-            return CeilingEdge;
-        return CeilingTile;
-    }
-    public GameObject floorEdge;
-    public GameObject floorCorner;
-    public GameObject floorTile;
-    private GameObject FloorDecision(int y, int x, bool edge, bool corner)
-    {
-        if (corner)
-            return floorCorner;
-        if (edge)
-            return floorEdge;
-        return floorTile;
-    }
-    public GameObject wallTile;
+    
     private GameObject WallDecision(Vector3 direction,int y, int x, bool edge, bool corner)
     {
         foreach (DoorData d in myRoom.doors)
