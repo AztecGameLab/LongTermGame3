@@ -101,8 +101,10 @@ public class ProceduralMapGenerator : MonoBehaviour
 
     private bool AttemptSpawnRoom(RoomData prevRoom)
     {
-        if (rooms.Count >= maxSize)
+        if (rooms.Count >= maxSize){
+           prevRoom.final=true;
             return true;
+        }
         RoomData roomTemp = new RoomData();
         roomTemp.doors = new List<DoorData>();
         roomTemp.objects = new List<itemData>();

@@ -265,6 +265,8 @@ MonoBehaviour:
   - {fileID: 251583585353333960, guid: e4a066fd9a7e34e438d57c6b560eb041, type: 3}
   - {fileID: 6787044273262382386, guid: 2ad758b9fe9539b4b8c476b9e786b119, type: 3}
   - {fileID: 6983286057668968315, guid: e22152a9440d5324784c3fc277b8f929, type: 3}
+  exitTeleporter: {fileID: 5297920626617760653, guid: 11c68885df028b34ebd1bfb82d6bfed5,
+    type: 3}
   numObstacles: 50
   rotateObstacles: 0
   wallTile: {fileID: 6609555836500725476, guid: 9bd4e00193fd522428740a1631dfb072,
@@ -429,7 +431,7 @@ MonoBehaviour:
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  maxSize: 15
+  maxSize: 5
   maxItems: 5
   numAttempts: 4
   currRoom:

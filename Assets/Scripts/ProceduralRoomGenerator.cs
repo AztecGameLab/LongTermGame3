@@ -15,6 +15,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public Transform map;
     public float brightness;
     public GameObject[] potentialItemSpawns;
+    public GameObject exitTeleporter;
     [Range(20, 60)]
     public int numObstacles = 50;
     public bool rotateObstacles;
@@ -44,15 +45,18 @@ public class ProceduralRoomGenerator : MonoBehaviour
         CreateSurface(Vector3.forward, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.x, myRoom.bounds.extents.z);
         CreateSurface(Vector3.back, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.x, myRoom.bounds.extents.z);
         CreateLight(data,roomLocation);
-        for (int i = 0; i < Random.Range(1, 4); i++)
-        {
-            data.objects.Add(AttemptSpawnObject(data, potentialItemSpawns[Random.Range(0,potentialItemSpawns.Length)], 0,roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
+        if(data.final)
+            data.objects.Add(AttemptSpawnObject(data,exitTeleporter , 0,roomLocation));
+        else{
+            for (int i = 0; i < Random.Range(1, 4); i++)
+            {
+                data.objects.Add(AttemptSpawnObject(data, potentialItemSpawns[Random.Range(0,potentialItemSpawns.Length)], 0,roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
+            }
+            for (int i = 0; i < getVolume(data) / Random.Range(40, 50); i++) //obstacle number and obstacle spawning
+            {
+                data.obstacles.Add(AttemptSpawnObstacle(data, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
+            }
         }
-        for (int i = 0; i < getVolume(data) / Random.Range(40, 50); i++) //obstacle number and obstacle spawning
-        {
-            data.obstacles.Add(AttemptSpawnObstacle(data, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
-        }
-
         return roomLocation.gameObject;
         //Floor();
         //Walls();

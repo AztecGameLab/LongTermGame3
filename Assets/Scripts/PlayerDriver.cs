@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class PlayerDriver : Driver
 {
     EntityController ec;
@@ -173,6 +173,11 @@ public class PlayerDriver : Driver
                 Destroy(otherObject);
                 keyCount += 1;
 
+            }
+            else if (otherObject.tag.Equals("Teleporter"))
+            {
+                //next scene
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
     }

@@ -14,6 +14,7 @@ public class RoomData
     public GameObject roomObj;
     public List<GameObject> obstacles;
 
+    public bool final;
     //public List<DoorData> doors;
     //public Enemy[] enemy
 

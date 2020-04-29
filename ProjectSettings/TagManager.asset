@@ -9,6 +9,7 @@ TagManager:
   - Weapon
   - PlayerWeapon
   - Key
+  - Teleporter
   layers:
   - Default
   - TransparentFX
