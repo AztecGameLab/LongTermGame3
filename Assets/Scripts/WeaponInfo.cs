@@ -22,7 +22,8 @@ public class WeaponInfo : MonoBehaviour
     public float weight;
     public float statUpperBound;
     public float statLowerBound;
-
+    public Vector3 weaponCenter;
+    public string reciverType;
     public GameObject bullet;  //Used for now if no ProjectileSpawner
 
     private ProjectileSpawner projectileSpawner;
