@@ -53,7 +53,8 @@ public class EnemyGruntDriver : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindObjectOfType<PlayerDriver>().transform;
+        //player = GameObject.FindObjectOfType<PlayerDriver>().transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
         
         isAlerted = false;
