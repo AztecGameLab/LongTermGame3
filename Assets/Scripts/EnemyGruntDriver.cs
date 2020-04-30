@@ -67,6 +67,8 @@ public class EnemyGruntDriver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawLine(firePointRight.position, player.position);
+        Debug.DrawLine(firePointLeft.position, player.position);
         playerVector = player.position - transform.position;
 
         //print(player.position);
