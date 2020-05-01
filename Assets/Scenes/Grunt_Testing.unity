@@ -971,21 +971,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grunt
       objectReference: {fileID: 0}
-    - target: {fileID: 6983286057668968317, guid: e22152a9440d5324784c3fc277b8f929,
-        type: 3}
-      propertyPath: alertRadius
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983286057668968317, guid: e22152a9440d5324784c3fc277b8f929,
-        type: 3}
-      propertyPath: fireRate
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983286057668968317, guid: e22152a9440d5324784c3fc277b8f929,
-        type: 3}
-      propertyPath: bulletSpeed
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 6983286057668968319, guid: e22152a9440d5324784c3fc277b8f929,
         type: 3}
       propertyPath: m_LocalPosition.x

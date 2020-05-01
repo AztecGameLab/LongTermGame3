@@ -134,9 +134,12 @@ public class EnemyGruntDriver : MonoBehaviour
     }
      bool CheckLineOfSight()
     {
+        bool isSighted;
         //layermask that ignores the player layer
-        int layerMask = ~(1 << 12);
-        return !Physics.Raycast(transform.position, playerVector, playerVector.magnitude, layerMask) && Vector3.Angle(transform.forward, playerVector) <= 0.5 * fieldOfView;
+        int layerMask = LayerMask.GetMask("Player");
+        isSighted = Physics.Raycast(transform.position, playerVector, playerVector.magnitude, layerMask) && Vector3.Angle(transform.forward, playerVector) <= 0.5 * fieldOfView;
+        //print(isSighted);
+        return isSighted;
     }
     void Fire()
     {
