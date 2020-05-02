@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyGruntDriver : MonoBehaviour
+public class EnemyGruntDriver : Driver
 {
     [SerializeField]
     private Transform firePointLeft;
@@ -35,11 +35,6 @@ public class EnemyGruntDriver : MonoBehaviour
     [SerializeField]
     private float alertCountdown = 1f;
 
-    [SerializeField]
-    private float maxHealth = 100f;
-
-    private float currentHealth;
-
     private bool isAlerted;
 
     private Vector3 playerVector;
@@ -61,14 +56,14 @@ public class EnemyGruntDriver : MonoBehaviour
         timeLastShot = Time.time;
         fireRight = true;
 
-        currentHealth = maxHealth;
+        health = 1000;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.DrawLine(firePointRight.position, player.position);
-        Debug.DrawLine(firePointLeft.position, player.position);
+        //Debug.DrawLine(firePointRight.position, player.position);
+        //Debug.DrawLine(firePointLeft.position, player.position);
         playerVector = player.position - transform.position;
 
         //print(player.position);
@@ -145,9 +140,11 @@ public class EnemyGruntDriver : MonoBehaviour
     {
         if (fireRight)
         {
-            Vector3 dir = (player.position - firePointRight.position).normalized;
+            
             GameObject newBullet = Instantiate(bullet, firePointRight.position, Quaternion.identity);
+            Vector3 dir = (player.position - newBullet.transform.position).normalized;
             newBullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed;
+            Debug.DrawRay(firePointRight.position, dir);
             fireRight = false;
         }
         else
@@ -155,19 +152,11 @@ public class EnemyGruntDriver : MonoBehaviour
             Vector3 dir = (player.position - firePointLeft.position).normalized;
             GameObject newBullet = Instantiate(bullet, firePointLeft.position, Quaternion.identity);
             newBullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed;
+            Debug.DrawRay(firePointLeft.position, dir);
             fireRight = true;
         }
     }
-    void TakeDamage(float damage)
-    {
-        currentHealth -= damage;
-        if(currentHealth <= 0)
-        {
-            currentHealth = 0;
-            Die();
-        }
-    }
-    void Die()
+    protected override void OnDeath()
     {
         Destroy(gameObject);
     }
