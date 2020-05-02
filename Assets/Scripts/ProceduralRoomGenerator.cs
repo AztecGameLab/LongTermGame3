@@ -18,8 +18,15 @@ public class ProceduralRoomGenerator : MonoBehaviour
     Transform roomLocation;
     public Transform map;
     public float brightness;
-    public GameObject[] potentialItemSpawns;
+
+    public int EnemySpawnRate; //enemies will have this spawn rate [0 - 100] scale, and guns and pick ups will be split between the rest of the rate
+
+
+    public GameObject[] potentialEnemySpawns;
+    public GameObject[] potentialGunSpawns;
+    public GameObject[] potentialPickUpSpawns;
     public GameObject exitTeleporter;
+
     [Range(20, 60)]
     public int numObstacles = 50;
     public bool rotateObstacles;
@@ -56,14 +63,16 @@ public class ProceduralRoomGenerator : MonoBehaviour
         }
         else if (data.start)
         {
-            data.objects.Add(AttemptSpawnObject(data, potentialItemSpawns[1], 0, roomLocation));
+            data.objects.Add(AttemptSpawnObject(data, potentialGunSpawns[0], 0, roomLocation));
 
         }
         else
         {
+         
             for (int i = 0; i < Random.Range(minObjs, maxObjs); i++)
             {
-                data.objects.Add(AttemptSpawnObject(data, potentialItemSpawns[Random.Range(0, potentialItemSpawns.Length)], 0, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
+                GameObject[] itemTypeSpawning = getSpawnItemType();
+                data.objects.Add(AttemptSpawnObject(data, itemTypeSpawning[Random.Range(0, itemTypeSpawning.Length)], 0, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
             }
             for (int i = 0; i < getVolume(data) / Random.Range(40, 50); i++) //obstacle number and obstacle spawning
             {
@@ -400,6 +409,25 @@ public class ProceduralRoomGenerator : MonoBehaviour
         }
         return wallTile;
     }
+
+    private GameObject[] getSpawnItemType()
+    {
+        int temp = Random.Range(0, 101);
+        if(temp > EnemySpawnRate)
+        {
+            int temp1 = Random.Range(0, 101);
+            if (temp1 > 50)
+                return potentialPickUpSpawns;
+            else
+                return potentialGunSpawns;
+        }
+        else
+        {
+            return potentialEnemySpawns;
+        }
+
+    }
+
     ////create the floor
     //private void Floor()
     //{

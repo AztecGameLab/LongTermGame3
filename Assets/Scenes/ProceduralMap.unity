@@ -419,6 +419,7 @@ MonoBehaviour:
       roomObj: {fileID: 0}
       obstacles: []
       final: 0
+      start: 0
     doors:
     - wall: {x: 1, y: 0, z: 0}
       wallPosition: {x: 1, y: 0}
@@ -428,18 +429,22 @@ MonoBehaviour:
     roomObj: {fileID: 0}
     obstacles: []
     final: 0
-  minObjs: 5
-  maxObjs: 6
+    start: 0
+  minObjs: 10
+  maxObjs: 11
   doorPrefab: {fileID: 3972723334067714794, guid: 05ca29923be4db9459eebb726a3bb530,
     type: 3}
   doorDimensions: {x: 1, y: 1}
   map: {fileID: 1670693425}
   brightness: 8
-  potentialItemSpawns:
-  - {fileID: 887129037396086608, guid: 66587e9fb9128ba44b2076a5e9b34553, type: 3}
-  - {fileID: 251583585353333960, guid: e4a066fd9a7e34e438d57c6b560eb041, type: 3}
-  - {fileID: 6787044273262382386, guid: 2ad758b9fe9539b4b8c476b9e786b119, type: 3}
+  EnemySpawnRate: 70
+  potentialEnemySpawns:
   - {fileID: 6983286057668968315, guid: e22152a9440d5324784c3fc277b8f929, type: 3}
+  - {fileID: 887129037396086608, guid: 66587e9fb9128ba44b2076a5e9b34553, type: 3}
+  potentialGunSpawns:
+  - {fileID: 251583585353333960, guid: e4a066fd9a7e34e438d57c6b560eb041, type: 3}
+  potentialPickUpSpawns:
+  - {fileID: 6787044273262382386, guid: 2ad758b9fe9539b4b8c476b9e786b119, type: 3}
   exitTeleporter: {fileID: 5297920626617760653, guid: 11c68885df028b34ebd1bfb82d6bfed5,
     type: 3}
   numObstacles: 50
@@ -511,6 +516,7 @@ MonoBehaviour:
     roomObj: {fileID: 0}
     obstacles: []
     final: 0
+    start: 0
   objectTemplate: {fileID: 6986889222746248364, guid: 8ccdd429b06e90d499eae52a6efffb71,
     type: 3}
   optimizationHitbox: {fileID: 521411398}
