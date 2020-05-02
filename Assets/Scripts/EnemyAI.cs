@@ -28,7 +28,7 @@ public class EnemyAI : Driver
     bool isVisible = false;
 
     //Visuals
-    public float timerBlink = .2f;
+    private float timerBlink = .05f;
     private bool detonateAnim = false;
     public GameObject Crater;
     public GameObject image;
