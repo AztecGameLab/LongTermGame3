@@ -68,18 +68,16 @@ public class ProceduralRoomGenerator : MonoBehaviour
         }
         else
         {
-         
+            for (int i = 0; i < getVolume(data) / Random.Range(40, 50); i++) //obstacle number and obstacle spawning
+            {
+                data.obstacles.Add(AttemptSpawnObstacle(data, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
+            }
             for (int i = 0; i < Random.Range(minObjs, maxObjs); i++)
             {
                 GameObject[] itemTypeSpawning = getSpawnItemType();
                 data.objects.Add(AttemptSpawnObject(data, itemTypeSpawning[Random.Range(0, itemTypeSpawning.Length)], 0, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
             }
-            for (int i = 0; i < getVolume(data) / Random.Range(40, 50); i++) //obstacle number and obstacle spawning
-            {
-                data.obstacles.Add(AttemptSpawnObstacle(data, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
-            }
-
-
+      
         }
         return roomLocation.gameObject;
         //Floor();
@@ -174,17 +172,17 @@ public class ProceduralRoomGenerator : MonoBehaviour
         GameObject temp;
         // find random 2d point on ceiling
         Vector3 roomCornerOffset = room.bounds.center - (room.bounds.size / 2);
-        int randomCX = (int)Random.Range(1, room.bounds.size.x);
+        int randomCX = (int)Random.Range(1, room.bounds.size.x );
         int randomCY = (int)Random.Range(1, room.bounds.size.z);
         Vector3 surfacePos;
         if (spawnSide == 0)
         {
             surfacePos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY); // make add from corner of position of room ceiling pos
-            while (!validSpawnPosition(surfacePos, room))
+            while (!validSpawnPosition(surfacePos, room) || tooClosetoDoors(room,surfacePos))  //            while (!validSpawnPosition(surfacePos, room) || tooClosetoDoors(room,surfacePos))
             {
 
-                randomCX = (int)Random.Range(1, room.bounds.size.x);
-                randomCY = (int)Random.Range(1, room.bounds.size.z);
+                randomCX = (int)Random.Range(1, room.bounds.size.x );
+                randomCY = (int)Random.Range(1, room.bounds.size.z );
                 surfacePos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY);
             }
         }
@@ -250,6 +248,59 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
     }
 
+    private void deleteObstaclesnearDoor(RoomData room)
+    {
+        foreach(DoorData door in room.doors)
+        {
+            Vector3 doorPos = room.bounds.center + Vector3.Scale(room.bounds.size / 2, -door.wall) - new Vector3(0, room.bounds.size.y / 2, 0);
+            doorPos *= ProceduralMapGenerator._mapScale;
+            Collider[] hitColliders = Physics.OverlapSphere(doorPos, 10);
+            foreach(Collider col in hitColliders)
+            {
+                if (col.gameObject.CompareTag("Obstacle"))
+                    GameObject.Destroy(col.gameObject);
+            }
+
+
+        }
+    }
+
+    private bool tooClosetoDoors(RoomData room, Vector3 objPos) // returns true if objPos is too close to one of the doors in room
+    {
+        objPos -= new Vector3(0, 3 * room.bounds.size.y / 4, 0);
+        objPos *= ProceduralMapGenerator._mapScale;
+        bool[] doors = new bool[room.doors.Count];
+        for(int i =0; i<doors.Length;i++)
+        {
+            Vector3 doorPos = room.bounds.center + Vector3.Scale(room.bounds.size / 2, -room.doors[i].wall) - new Vector3(0,room.bounds.size.y/2,0);
+            doorPos *= ProceduralMapGenerator._mapScale;
+
+
+            if (Vector3.Distance(objPos,doorPos ) <= 10)
+            {
+
+                doors[i] = true;
+            }
+   /*         else
+           {
+
+               GameObject temp1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+               GameObject temp2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+               temp1.transform.position = doorPos;
+               temp2.transform.position = objPos;
+               temp1.name = room.name + "door";
+               temp2.name = "obj";
+            }
+            */
+        }
+        for(int y=0; y < doors.Length; y++){
+            if (doors[y])
+                return true;
+        }
+        return false;
+    }
+    
+
 
     public GameObject buildPillar(RoomData room, bool isWall, int side)
     {
@@ -260,7 +311,8 @@ public class ProceduralRoomGenerator : MonoBehaviour
             for (int i = 0; i < Random.Range(2, room.bounds.size.y + 1); i++)
             {
                 GameObject pillarObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                if(side ==0)
+                pillarObj.tag = "Obstacle";
+                if (side ==0)
                     pillarObj.transform.position = new Vector3(0, .5f + .5f * i, 0);
                 else
                     pillarObj.transform.position = new Vector3(0, -.5f + -.5f * i, 0);
@@ -273,6 +325,8 @@ public class ProceduralRoomGenerator : MonoBehaviour
             for (int i = 0; i < room.bounds.size.y + 2; i++)
             {
                 GameObject pillarObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                pillarObj.tag = "Obstacle";
+
                 if (side == 0)
                     pillarObj.transform.position = new Vector3(0, .5f + .5f * i, 0);
                 else
@@ -280,7 +334,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
                 pillarObj.transform.parent = temp.transform;
             }
         }
-
+        temp.tag = "Obstacle";
         return temp;
     }
 
@@ -290,10 +344,15 @@ public class ProceduralRoomGenerator : MonoBehaviour
         int wallLength = (int)room.bounds.center.x + ((int)room.bounds.size.x / 2) - hitX;
         for (int i = 0; i < wallLength; i++)
         {
-            GameObject wallObj = buildPillar(room, true, side);
-            wallObj.transform.position = new Vector3(i * .5f, 0, 0);
-            wallObj.transform.parent = temp.transform;
+
+            if(!tooClosetoDoors(room, new Vector3(i * .5f, -room.bounds.size.y/2, 0)))
+            {
+                GameObject wallObj = buildPillar(room, true, side);
+                wallObj.transform.position = new Vector3(i * .5f, 0, 0);
+                wallObj.transform.parent = temp.transform;
+            }
         }
+        temp.tag = "Obstacle";
         return temp;
     }
 
@@ -428,6 +487,47 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
     }
 
+
+    /*    private bool tooClosetoDoors(RoomData room, Vector3 objPos) // returns true if objPos is too close to one of the doors in room
+    {
+        objPos -= new Vector3(0, 3 * room.bounds.size.y / 4, 0);
+        objPos *= ProceduralMapGenerator._mapScale;
+        bool[] doors = new bool[room.doors.Count];
+        for(int i =0; i<doors.Length;i++)
+        {
+            Vector3 doorPos = room.bounds.center + Vector3.Scale(room.bounds.size / 2, -room.doors[i].wall) - new Vector3(0,room.bounds.size.y/2,0);
+            doorPos *= ProceduralMapGenerator._mapScale;
+
+
+            if (Vector3.Distance(objPos,doorPos ) <= 10)
+            {
+
+                doors[i] = true;
+            }
+   /*         else
+           {
+
+               GameObject temp1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+               GameObject temp2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+               temp1.transform.position = doorPos;
+               temp2.transform.position = objPos;
+               temp1.name = room.name + "door";
+               temp2.name = "obj";
+            }
+            */
+}
+  /*      for(int y=0; y<doors.Length; y++){
+            if (doors[y])
+                return true;
+        }
+        return false;
+    }
+    
+    */
+
+
+       //    while (!validSpawnPosition(surfacePos, room) || (Mathf.Abs(randomCY - room.bounds.size.z/2) <= 10 && randomCX > room.bounds.center.x - room.bounds.size.x / 2 && randomCX < room.bounds.center.x + room.bounds.size.x / 2) || (Mathf.Abs(randomCX - room.bounds.size.x/2) <= 10 && randomCY > room.bounds.center.z - room.bounds.size.z / 2 && randomCY < room.bounds.center.z + room.bounds.size.z / 2))
+    //
     ////create the floor
     //private void Floor()
     //{
@@ -533,4 +633,4 @@ public class ProceduralRoomGenerator : MonoBehaviour
     //    }
     //}
 
-}
+

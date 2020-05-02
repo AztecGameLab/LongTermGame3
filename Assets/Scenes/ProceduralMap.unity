@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 43994784}
   - component: {fileID: 43994783}
   m_Layer: 14
-  m_Name: Directional Light (1)
+  m_Name: MiniMap Icon light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -206,13 +206,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 43994782}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.6830127, y: -0.18301266, z: 0.18301266, w: 0.6830127}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: -30, z: 0}
 --- !u!1001 &139587323
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -430,14 +430,14 @@ MonoBehaviour:
     obstacles: []
     final: 0
     start: 0
-  minObjs: 10
-  maxObjs: 11
+  minObjs: 20
+  maxObjs: 21
   doorPrefab: {fileID: 3972723334067714794, guid: 05ca29923be4db9459eebb726a3bb530,
     type: 3}
   doorDimensions: {x: 1, y: 1}
   map: {fileID: 1670693425}
   brightness: 8
-  EnemySpawnRate: 70
+  EnemySpawnRate: 100
   potentialEnemySpawns:
   - {fileID: 6983286057668968315, guid: e22152a9440d5324784c3fc277b8f929, type: 3}
   - {fileID: 887129037396086608, guid: 66587e9fb9128ba44b2076a5e9b34553, type: 3}

@@ -10,6 +10,7 @@ TagManager:
   - PlayerWeapon
   - Key
   - Teleporter
+  - Obstacle
   layers:
   - Default
   - TransparentFX
