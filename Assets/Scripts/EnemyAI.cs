@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyAI : Driver
 {
+    PlayerDriver playerScript;
     public Transform playerPos;
     public GameObject Enemy02;
     UnityEngine.AI.NavMeshAgent myNav;
@@ -35,11 +36,13 @@ public class EnemyAI : Driver
     public GameObject explode2;
     public GameObject explode3;
     public ParticleSystem pe;
+    public ParticleSystem pe1;
     
     void Start()
     {
         health = 50;    //Setting the enemy health
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
+        playerScript = playerPos.GetComponent<PlayerDriver>();
         myNav = gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>();        
         explode3.SetActive(false);
         explode2.SetActive(false);
@@ -153,14 +156,14 @@ public class EnemyAI : Driver
     protected override void OnDeath()
     {
         //Add particle death here to spray out particles
-        Destroy(Enemy02);
+        StartCoroutine(DeathAnim());
+        pe1.Emit(100);
     }
 
     //This is the enemy dealing damage
     void doDamage()
     {
-        Debug.Log("Damage done: " + damageToPlayer);
-        TakeDamage(10f);      
+        playerScript.TakeDamage(damageToPlayer);      
     }
 
     IEnumerator explosionCounter()  //Adds the delay to the counter
@@ -188,5 +191,11 @@ public class EnemyAI : Driver
             detonateAnim = true;
             Explode();
         }        
+    }
+
+    IEnumerator DeathAnim()
+    {       
+        yield return new WaitForSeconds(1);        
+        Destroy(Enemy02);
     }
 }
