@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -305,11 +305,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy02
-      objectReference: {fileID: 0}
-    - target: {fileID: 887129037396086608, guid: 66587e9fb9128ba44b2076a5e9b34553,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 887129037396086617, guid: 66587e9fb9128ba44b2076a5e9b34553,
         type: 3}
