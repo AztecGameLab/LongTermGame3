@@ -102,6 +102,22 @@ public class itemData
 
     }
 
+    public GameObject Spawn(Transform parent, Vector3 target)  //overloaded Spawn with specific rotation  Quaternion targetRotation Quaternion targetRotation
+    {
+        //Debug.Log(target.x + "," + target.y + "," + target.z);
+        GameObject roomObj = GameObject.Instantiate(obj, parent);
+        //roomObj.GetComponent<MeshRenderer>().material.color = typeColor;
+        roomObj.transform.position = pos; 
+        Vector3 target1 = new Vector3(target.x,roomObj.transform.position.y *ProceduralMapGenerator._mapScale, target.z);
+
+
+        roomObj.transform.rotation = Quaternion.LookRotation(roomObj.transform.position * ProceduralMapGenerator._mapScale - target1);
+        roomObj.transform.Rotate(new Vector3(0, 180, 0));
+        roomObj.transform.localScale /= ProceduralMapGenerator._mapScale;
+
+        return roomObj;
+    }
+
 
 
 

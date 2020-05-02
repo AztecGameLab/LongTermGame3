@@ -8,7 +8,11 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public bool defaultRoomData=false;
     public RoomData testData;
 
-    
+
+    public int minObjs;
+    public int maxObjs;
+
+
     public GameObject doorPrefab;
     public Vector2 doorDimensions;
     Transform roomLocation;
@@ -45,10 +49,14 @@ public class ProceduralRoomGenerator : MonoBehaviour
         CreateSurface(Vector3.forward, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.x, myRoom.bounds.extents.z);
         CreateSurface(Vector3.back, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.x, myRoom.bounds.extents.z);
         CreateLight(data,roomLocation);
-        if(data.final)
-            data.objects.Add(AttemptSpawnObject(data,exitTeleporter , 0,roomLocation));
-        else{
-            for (int i = 0; i < Random.Range(1, 4); i++)
+        if (data.final)
+        {
+            data.objects.Add(AttemptSpawnObject(data, exitTeleporter, 0, roomLocation,true));
+
+        }
+        else
+        {
+            for (int i = 0; i < Random.Range(minObjs, maxObjs); i++)
             {
                 data.objects.Add(AttemptSpawnObject(data, potentialItemSpawns[Random.Range(0,potentialItemSpawns.Length)], 0,roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
             }
@@ -92,6 +100,50 @@ public class ProceduralRoomGenerator : MonoBehaviour
         temp.name = "tempItem";
         //print(temp.name);
         temp.Spawn(parent);
+        return temp;
+
+
+        //when true, add gameObject to room objects list
+        //if for some reason can't find a space, return null
+
+    }
+
+    public itemData AttemptSpawnObject(RoomData room, GameObject obj, int ySpawnOffset, Transform parent, bool specificRotate) // Overload of AttemptSpawn Object with reference to an obj to orientate newly spawned bojects
+    {
+        // find random 2d point on ceiling
+        Vector3 roomCornerOffset = room.bounds.center - (room.bounds.size / 2);
+        int randomCX = (int)Random.Range(1, room.bounds.size.x);
+        int randomCY = (int)Random.Range(1, room.bounds.size.z);
+        Vector3 ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY); // make add from corner of position of room
+        while (!validSpawnPosition(ceilingPos, room))
+        {
+
+            randomCX = (int)Random.Range(1, room.bounds.size.x);
+            randomCY = (int)Random.Range(1, room.bounds.size.z);
+            ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY);
+        }
+
+        //  Ray ray = new Ray(ceilingPos, Vector3.down);
+        //    Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 10);
+
+        RaycastHit hit;
+        Ray ray1 = new Ray(ceilingPos, Vector3.down);
+        //  Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 100);
+        Physics.Raycast(ray1, out hit, room.bounds.size.y);
+
+        itemData temp = new itemData(obj); // make spawn off of prefab later TODOTDO
+        temp.pos = hit.point + new Vector3(0, ySpawnOffset, 0);
+
+        // temp.name =(room.name + " object: " + temp.transform.position);
+        temp.name = "tempItem";
+        //print(temp.name);
+
+        //find door position in world space
+        Vector3 doorPos = room.bounds.center + Vector3.Scale(room.bounds.size/2, -room.doors[0].wall);
+        doorPos *= ProceduralMapGenerator._mapScale;
+        Quaternion targetRotation = Quaternion.LookRotation(doorPos, Vector3.up);
+
+        temp.Spawn(parent,doorPos);
         return temp;
 
 
