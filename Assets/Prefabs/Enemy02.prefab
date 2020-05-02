@@ -1,5 +1,84 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1244110050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1244110051}
+  - component: {fileID: 1244110054}
+  - component: {fileID: 1244110053}
+  m_Layer: 0
+  m_Name: Crater
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1244110051
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244110050}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.012, y: -0.495, z: 0}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  m_Children: []
+  m_Father: {fileID: 887129037396086617}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &1244110054
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244110050}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1244110053
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244110050}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: f475c3aa376c3a3439fda264f5b2d688, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &887129037396086608
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,12 +89,12 @@ GameObject:
   m_Component:
   - component: {fileID: 887129037396086617}
   - component: {fileID: 887129037396086612}
+  - component: {fileID: 887129037396086623}
   - component: {fileID: 887129037396086613}
   - component: {fileID: 887129037396086615}
   - component: {fileID: 887129037396086616}
-  - component: {fileID: 887129037396086614}
-  - component: {fileID: 887129037396086623}
   - component: {fileID: 1557822223}
+  - component: {fileID: 887129037396086614}
   m_Layer: 0
   m_Name: Enemy02
   m_TagString: Enemy
@@ -38,6 +117,7 @@ Transform:
   - {fileID: 6790368553126374255}
   - {fileID: 2456697245058449049}
   - {fileID: 6261499881931625105}
+  - {fileID: 1244110051}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -52,7 +132,20 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.45
+  m_Center: {x: 0.02, y: -0.18, z: 0}
+--- !u!135 &887129037396086623
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887129037396086608}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 4
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &887129037396086613
 MonoBehaviour:
@@ -72,15 +165,15 @@ MonoBehaviour:
   Enemy02: {fileID: 887129037396086608}
   checkRate: 0.01
   nextCheck: 0
-  inRangeDuringExplosion: 0
+  killRange: 16
   agroRange: 300
   damageToPlayer: 50
   timerDuration: 3
-  radius: 5
-  power: 8000
   timerBlink: 0.15
+  Crater: {fileID: 1244110050}
   image: {fileID: 994543576153965878}
-  player: {fileID: 0}
+  explode1: {fileID: 994543576153965878}
+  explode2: {fileID: 3610194482077796640}
   explode3: {fileID: 8841436943089058422}
   pe: {fileID: 5900584610350439713}
 --- !u!195 &887129037396086615
@@ -169,6 +262,22 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!54 &1557822223
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887129037396086608}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!198 &887129037396086614
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -242,7 +351,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -252,7 +361,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -305,7 +414,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 20
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -4885,35 +4994,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!135 &887129037396086623
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 887129037396086608}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 4
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &1557822223
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 887129037396086608}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &3814691372704592627
 GameObject:
   m_ObjectHideFlags: 0
@@ -4927,7 +5007,7 @@ GameObject:
   - component: {fileID: 4138002246469408120}
   - component: {fileID: 8027085725864547706}
   m_Layer: 14
-  m_Name: Cylinder
+  m_Name: MiniMapMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9787,7 +9867,7 @@ PrefabInstance:
     - target: {fileID: 6790368552850445262, guid: eba178ecaf04bea4ea9028cab2b04e66,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.478
       objectReference: {fileID: 0}
     - target: {fileID: 6790368552850445262, guid: eba178ecaf04bea4ea9028cab2b04e66,
         type: 3}
@@ -9899,6 +9979,12 @@ PrefabInstance:
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eba178ecaf04bea4ea9028cab2b04e66, type: 3}
+--- !u!1 &3610194482077796640 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3610194481835700609, guid: eba178ecaf04bea4ea9028cab2b04e66,
+    type: 3}
+  m_PrefabInstance: {fileID: 297203873}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6790368553126374255 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6790368552850445262, guid: eba178ecaf04bea4ea9028cab2b04e66,
@@ -9925,7 +10011,7 @@ PrefabInstance:
     - target: {fileID: 6790368552850445262, guid: eba178ecaf04bea4ea9028cab2b04e66,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.478
       objectReference: {fileID: 0}
     - target: {fileID: 6790368552850445262, guid: eba178ecaf04bea4ea9028cab2b04e66,
         type: 3}
