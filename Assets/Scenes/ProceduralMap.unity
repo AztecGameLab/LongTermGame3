@@ -428,8 +428,8 @@ MonoBehaviour:
     roomObj: {fileID: 0}
     obstacles: []
     final: 0
-  minObjs: 0
-  maxObjs: 0
+  minObjs: 5
+  maxObjs: 6
   doorPrefab: {fileID: 3972723334067714794, guid: 05ca29923be4db9459eebb726a3bb530,
     type: 3}
   doorDimensions: {x: 1, y: 1}

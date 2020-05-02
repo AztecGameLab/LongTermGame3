@@ -105,11 +105,16 @@ public class ProceduralMapGenerator : MonoBehaviour
            prevRoom.final=true;
             return true;
         }
+
         RoomData roomTemp = new RoomData();
         roomTemp.doors = new List<DoorData>();
         roomTemp.objects = new List<itemData>();
         roomTemp.obstacles = new List<GameObject>();
         bool roomFits = true;
+        if (rooms.Count == 0)
+        {
+            roomTemp.start = true;
+        }
         Vector3[] shuffledDirections = ShuffleDirection();
         //This loop needs to iterate over every possible direction a new room could be in. Preferably, it would also try a variety of sizes for each direction
         for (int i = 0; i < shuffledDirections.Length; i++)

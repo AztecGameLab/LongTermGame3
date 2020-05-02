@@ -54,16 +54,23 @@ public class ProceduralRoomGenerator : MonoBehaviour
             data.objects.Add(AttemptSpawnObject(data, exitTeleporter, 0, roomLocation,true));
 
         }
+        else if (data.start)
+        {
+            data.objects.Add(AttemptSpawnObject(data, potentialItemSpawns[1], 0, roomLocation));
+
+        }
         else
         {
             for (int i = 0; i < Random.Range(minObjs, maxObjs); i++)
             {
-                data.objects.Add(AttemptSpawnObject(data, potentialItemSpawns[Random.Range(0,potentialItemSpawns.Length)], 0,roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
+                data.objects.Add(AttemptSpawnObject(data, potentialItemSpawns[Random.Range(0, potentialItemSpawns.Length)], 0, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
             }
             for (int i = 0; i < getVolume(data) / Random.Range(40, 50); i++) //obstacle number and obstacle spawning
             {
                 data.obstacles.Add(AttemptSpawnObstacle(data, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
             }
+
+
         }
         return roomLocation.gameObject;
         //Floor();
@@ -160,12 +167,23 @@ public class ProceduralRoomGenerator : MonoBehaviour
         Vector3 roomCornerOffset = room.bounds.center - (room.bounds.size / 2);
         int randomCX = (int)Random.Range(1, room.bounds.size.x);
         int randomCY = (int)Random.Range(1, room.bounds.size.z);
-
         Vector3 surfacePos;
-        if(spawnSide == 0)
+        if (spawnSide == 0)
+        {
             surfacePos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY); // make add from corner of position of room ceiling pos
+            while (!validSpawnPosition(surfacePos, room))
+            {
+
+                randomCX = (int)Random.Range(1, room.bounds.size.x);
+                randomCY = (int)Random.Range(1, room.bounds.size.z);
+                surfacePos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY);
+            }
+        }
         else
             surfacePos = roomCornerOffset + new Vector3(randomCX, (float)(1), randomCY); // make add from corner of position of room floor pos
+
+
+ 
 
 
         //  Ray ray = new Ray(ceilingPos, Vector3.down);
