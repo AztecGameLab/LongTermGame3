@@ -28,10 +28,29 @@ public class WeaponInfo : MonoBehaviour
 
     private ProjectileSpawner projectileSpawner;
 
+    private AudioSource levelTheme;
+    private AudioClip themeClip;
+    private bool alreadyPlayed;
+
     void Start()
     {
         bullet = (GameObject)Resources.Load<GameObject>("Bullet");
         projectileSpawner = gameObject.GetComponent<ProjectileSpawner>();
+
+        levelTheme = gameObject.AddComponent<AudioSource>();
+        themeClip = Resources.Load<AudioClip>("Audio/Level_Theme");
+        levelTheme.clip = themeClip;
+        levelTheme.loop = true;
+    }
+
+    private void LevelTheme()
+    {
+        if (!alreadyPlayed)
+        {
+            levelTheme.Play();
+            //Debug.Log("it works");
+            alreadyPlayed = true;
+        }
     }
 
     // Update is called once per frame
@@ -40,6 +59,11 @@ public class WeaponInfo : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             DisplayValuesTest();
+        }
+
+        if (isEquipped)
+        {
+            LevelTheme();
         }
 
         if (isEquipped && isAutomatic)
