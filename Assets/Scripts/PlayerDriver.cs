@@ -44,6 +44,9 @@ public class PlayerDriver : Driver
     float groundCheckDistance;
     // Number of keys being held
     //public int keys = 0;
+    // audio
+    public AudioClip teleporterClip;
+    private AudioSource clipSource;
 
     private void Awake()
     {
@@ -54,6 +57,8 @@ public class PlayerDriver : Driver
         var charController = GetComponent<CharacterController>();
         groundCheckDistance = charController.height/2;
         groundCheckRadius = charController.radius;
+
+        clipSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -174,8 +179,22 @@ public class PlayerDriver : Driver
                 keyCount += 1;
 
             }
+            /*else if (otherObject.tag.Equals("Teleporter"))
+            {
+                //next scene
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                // play audio
+                clipSource.PlayOneShot(teleporterClip);
+            }*/
             else if (otherObject.tag.Equals("Teleporter"))
             {
+                StartCoroutine(StartTeleportation());
+            }
+            IEnumerator StartTeleportation()
+            {
+                // play audio
+                clipSource.PlayOneShot(teleporterClip);
+                yield return new WaitForSecondsRealtime(2.17f);
                 //next scene
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
