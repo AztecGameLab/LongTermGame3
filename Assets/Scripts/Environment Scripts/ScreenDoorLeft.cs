@@ -24,7 +24,7 @@ public class ScreenDoorLeft : MonoBehaviour
     void Start()
     {
         start = transform.position;
-        end = transform.position - new Vector3(5f, 0, 0);
+        end = transform.position -transform.right;
 
         //initialization of coroutines. Edit: technically not needed anymore because calling with quotations
         openDoor = coroutineOpenDoor();
@@ -35,13 +35,16 @@ public class ScreenDoorLeft : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(Input.GetKeyDown("e"))
+        {
+            doorOpen();
+        }
     }
 
-    //coroutine to open the door
+    // COROUTINE TO OPEN THE DOOR. THIS IS THE ONE THAT WILL BE MAINLY USED
     IEnumerator coroutineOpenDoor()
     {
-        //keeps animating door opening til it's at open state(140 degrees)
+        //keeps animating door opening til it's completely open
         while (doorPosition < 1)
         {
             transform.position = Vector3.Lerp(start, end, doorPosition);
@@ -68,7 +71,7 @@ public class ScreenDoorLeft : MonoBehaviour
     }
 
 
-
+    // Won't really be used now since we only need to open the door
     IEnumerator coroutineDoorCycle()
     {
         //opens the dooor
@@ -82,10 +85,10 @@ public class ScreenDoorLeft : MonoBehaviour
         //terminates coroutine
         yield break;
     }
-    //The method to open and close the door and the reference for the trigger's unityEvent
-    public void doorCycle1()
+    //The method to open the door and the reference for the trigger's unityEvent
+    public void doorOpen()
     {
-        //Calls coroutine to open and close the door
-        StartCoroutine("coroutineDoorCycle");
+        //Calls coroutine to open the door
+        StartCoroutine("coroutineOpenDoor");
     }
 }
