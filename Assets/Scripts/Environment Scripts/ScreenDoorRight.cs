@@ -11,9 +11,11 @@ public class ScreenDoorRight : MonoBehaviour
     //VARIABLES NEEDED TO OPEN AND CLOSE DOORS
     //start rotation and the end rotation values. 
     //float is the start SLERP interpolation between start and end (0 and 140 degrees)
+    //distance scales how far the doors move when sliding open
     private Vector3 start;
     private Vector3 end;
     private float doorPosition = 0f;
+    private float distance = 2f;
 
     //List of coroutines needed. Edit: technically not needed anymore because calling with quotations
     private IEnumerator closeDoor;
@@ -24,7 +26,7 @@ public class ScreenDoorRight : MonoBehaviour
     void Start()
     {
         start = transform.position;
-        end = transform.position + transform.right;
+        end = transform.position + (transform.right*distance);
 
         //initialization of coroutines. Edit: technically not needed anymore because calling with quotations
         openDoor = coroutineOpenDoor();

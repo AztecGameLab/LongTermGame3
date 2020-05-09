@@ -14,6 +14,7 @@ public class ScreenDoorLeft : MonoBehaviour
     private Vector3 start;
     private Vector3 end;
     private float doorPosition = 0f;
+    private float distance = 2f;
 
     //List of coroutines needed. Edit: technically not needed anymore because calling with quotations
     private IEnumerator closeDoor;
@@ -24,7 +25,7 @@ public class ScreenDoorLeft : MonoBehaviour
     void Start()
     {
         start = transform.position;
-        end = transform.position -transform.right;
+        end = transform.position + transform.right*distance;
 
         //initialization of coroutines. Edit: technically not needed anymore because calling with quotations
         openDoor = coroutineOpenDoor();
