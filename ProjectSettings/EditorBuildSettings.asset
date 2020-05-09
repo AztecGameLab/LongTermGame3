@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Credits.unity
     guid: 8b081f39d9ee63b4eaf9ae03ffde6930
   - enabled: 1
+    path: Assets/Scenes/Prologue.unity
+    guid: 726eb1bc7384c6a44b893f4de77d7073
+  - enabled: 1
     path: Assets/Scenes/ProceduralMap.unity
     guid: a3c423c2c69a9f947b4f4a1ed9bd9de2
   m_configObjects: {}

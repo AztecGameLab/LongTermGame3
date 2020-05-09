@@ -22,7 +22,7 @@ public class MainMenuController : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("ProceduralMap");
+        SceneManager.LoadScene("Prologue");
     }
 
     public void EnterCredits()
