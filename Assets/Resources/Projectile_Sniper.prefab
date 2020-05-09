@@ -123,7 +123,8 @@ AudioSource:
   m_GameObject: {fileID: 3910625832201274459}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -870812792361628242, guid: d2e7fec13d58b444ca50d41775261716,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
@@ -227,7 +228,7 @@ MonoBehaviour:
   caliberToLength: 5
   soundOnFire: {fileID: 8300000, guid: 0589edad764c04670bc61c4a55d16fe4, type: 3}
   soundOnHitWall: {fileID: 8300000, guid: 2c1cb77264d374d7dba62357a56c3ea9, type: 3}
-  soundOnHitEnemy: {fileID: 8300000, guid: 002cb39e00ec947fb96720252097456e, type: 3}
+  soundOnHitEnemy: {fileID: 8300000, guid: 5172765903de4734f95e372c4c81f0cc, type: 3}
   soundOnReload: {fileID: 8300000, guid: df599c364fa044ed28626d19915d29c9, type: 3}
 --- !u!114 &3910625832201274458
 MonoBehaviour:

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 
 public class WeaponInfo : MonoBehaviour
@@ -28,26 +29,30 @@ public class WeaponInfo : MonoBehaviour
 
     private ProjectileSpawner projectileSpawner;
 
-    private AudioSource levelTheme;
+    private AudioSource musicSource;
     private AudioClip themeClip;
     private bool alreadyPlayed;
+    private AudioMixer masterMixer;
 
     void Start()
     {
         bullet = (GameObject)Resources.Load<GameObject>("Bullet");
         projectileSpawner = gameObject.GetComponent<ProjectileSpawner>();
 
-        levelTheme = gameObject.AddComponent<AudioSource>();
+        musicSource = gameObject.AddComponent<AudioSource>();
         themeClip = Resources.Load<AudioClip>("Audio/Level_Theme");
-        levelTheme.clip = themeClip;
-        levelTheme.loop = true;
+        musicSource.clip = themeClip;
+        musicSource.loop = true;
+        masterMixer = Resources.Load<AudioMixer>("Audio/Master") as AudioMixer;
+        string MusicMixerGroup = "Music";
+        musicSource.outputAudioMixerGroup = masterMixer.FindMatchingGroups(MusicMixerGroup)[0];
     }
 
     private void LevelTheme()
     {
         if (!alreadyPlayed)
         {
-            levelTheme.Play();
+            musicSource.Play();
             //Debug.Log("it works");
             alreadyPlayed = true;
         }

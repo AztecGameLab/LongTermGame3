@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class ProjectileSpawner : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class ProjectileSpawner : MonoBehaviour
 
     [System.NonSerialized]
     public WeaponStats weaponStats;         //Normalized per each weapon type from generated weaponInfo
+
+    private AudioMixer masterMixer;
+    private AudioSource sfxSource;
 
     public void InitWeaponStats(ProjectileInfo.Type _ammoType)
     {
@@ -50,6 +54,12 @@ public class ProjectileSpawner : MonoBehaviour
             projectilePool = new ProjectilePool();
             projectilePool.Create();
         }
+
+        //audio
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        masterMixer = Resources.Load<AudioMixer>("Audio/Master") as AudioMixer;
+        string SFXMixerGroup = "SFX";
+        sfxSource.outputAudioMixerGroup = this.masterMixer.FindMatchingGroups(SFXMixerGroup)[0];
     }
 
     void Start()
@@ -109,15 +119,17 @@ public class ProjectileSpawner : MonoBehaviour
         ProjectileInfo info = projectile.GetComponent<ProjectileInfo>();
         AmmoTypeInfo ammoTypeInfo = info.GetComponent<AmmoTypeInfo>();
 
-        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+        //AudioSource audioSource = gameObject.GetComponent<AudioSource>();
         AudioClip fireClip = ammoTypeInfo.soundOnReload;
-        audioSource.PlayOneShot(fireClip);
+        //audioSource.PlayOneShot(fireClip);
+        sfxSource.PlayOneShot(fireClip);
     }
 
     public void StopPlayRecharge()
     {
-        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
-        audioSource.Stop();
+        /*AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.Stop();*/
+        sfxSource.Stop();
     }
 
     public GameObject SpawnProjectile(Quaternion trajectory, Vector3 shootFrom, float projScale, bool playFireClip)
@@ -147,9 +159,10 @@ public class ProjectileSpawner : MonoBehaviour
 
         if (playFireClip)
         {
-            AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+            //AudioSource audioSource = gameObject.GetComponent<AudioSource>();
             AudioClip fireClip = ammoTypeInfo.soundOnFire;
-            audioSource.PlayOneShot(fireClip);
+            //audioSource.PlayOneShot(fireClip);
+            sfxSource.PlayOneShot(fireClip);
         }
 
         return projectile;

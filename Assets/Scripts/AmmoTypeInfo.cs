@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AmmoTypeInfo : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class AmmoTypeInfo : MonoBehaviour
     public AudioClip soundOnHitWall;
     public AudioClip soundOnHitEnemy;
     public AudioClip soundOnReload;
+    private AudioSource sfxSource;
 
     static public void DefaultAmmoType(AmmoTypeInfo info)
     {
@@ -51,6 +53,7 @@ public class AmmoTypeInfo : MonoBehaviour
 
     void Awake()
     {
+        sfxSource = GetComponent<AudioSource>();
     }
 
     void Start()

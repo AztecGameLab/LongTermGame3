@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuTheme : MonoBehaviour
 {
@@ -23,11 +24,5 @@ public class MenuTheme : MonoBehaviour
         musicSource.clip = menuClip;
         musicSource.Play();
         musicSource.loop = true;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

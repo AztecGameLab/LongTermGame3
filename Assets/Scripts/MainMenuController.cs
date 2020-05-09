@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public class MainMenuController : MonoBehaviour
 {
+    public AudioMixer masterMixer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,11 @@ public class MainMenuController : MonoBehaviour
     public void EnterCredits()
     {
         SceneManager.LoadScene("Credits");
+    }
+
+    public void SetVolLvl(float sliderValue)
+    {
+        masterMixer.SetFloat("MasterVol", Mathf.Log10(sliderValue) * 20);
     }
 
 

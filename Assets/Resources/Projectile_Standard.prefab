@@ -245,3 +245,4 @@ MonoBehaviour:
   soundOnHitWall: {fileID: 8300000, guid: 2c1cb77264d374d7dba62357a56c3ea9, type: 3}
   soundOnHitEnemy: {fileID: 8300000, guid: 5172765903de4734f95e372c4c81f0cc, type: 3}
   soundOnReload: {fileID: 8300000, guid: df599c364fa044ed28626d19915d29c9, type: 3}
+  masterMixer: {fileID: 24100000, guid: d2e7fec13d58b444ca50d41775261716, type: 2}
