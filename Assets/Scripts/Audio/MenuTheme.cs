@@ -24,15 +24,6 @@ public class MenuTheme : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        //musicSource1 = GetComponent<AudioSource>();
-        //musicSource2 = GetComponent<AudioSource>();
-        if (playMenuMusic != true)
-        {
-            /*
-            musicSource1.PlayOneShot(menuClips[0]);
-            StartCoroutine(Layer_1());
-            StartCoroutine(Layer_2());*/
-        }
         musicSource1.PlayOneShot(menuClips[0]);
         StartCoroutine(Layer_1());
         StartCoroutine(Layer_2());
@@ -66,10 +57,7 @@ public class MenuTheme : MonoBehaviour
 
     IEnumerator Layer_1()
     {
-        //playMenuMusic = true;
         yield return new WaitForSecondsRealtime(24.548f);
-
-        // make sure the loop volume starts at 0
         musicSource1.volume = 1;
         musicSource1.clip = menuClips[1];
         musicSource1.Play();
@@ -77,10 +65,7 @@ public class MenuTheme : MonoBehaviour
     }
     IEnumerator Layer_2()
     {
-        //playMenuMusic = true;
-        //yield return new WaitForSecondsRealtime(24.548f);
         yield return null;
-
         // make sure the loop volume starts at 0
         musicSource2.volume = 0;
         musicSource2.clip = menuClips[2];
