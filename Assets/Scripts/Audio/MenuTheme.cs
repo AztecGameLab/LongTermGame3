@@ -5,24 +5,86 @@ using UnityEngine.SceneManagement;
 
 public class MenuTheme : MonoBehaviour
 {
-    public AudioClip menuClip;
-    private AudioSource musicSource;
+    public AudioClip[] menuClips;
+    public AudioSource musicSource1;
+    public AudioSource musicSource2;
+    private Scene currentScene;
+    private bool playMenuMusic;
+    private static MenuTheme instance;
 
     // Start is called before the first frame update
     void Start()
     {
-        musicSource = GetComponent<AudioSource>();
-        StartCoroutine(MenuLoop());
+        DontDestroyOnLoad(this);
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        //musicSource1 = GetComponent<AudioSource>();
+        //musicSource2 = GetComponent<AudioSource>();
+        if (playMenuMusic != true)
+        {
+            /*
+            musicSource1.PlayOneShot(menuClips[0]);
+            StartCoroutine(Layer_1());
+            StartCoroutine(Layer_2());*/
+        }
+        musicSource1.PlayOneShot(menuClips[0]);
+        StartCoroutine(Layer_1());
+        StartCoroutine(Layer_2());
     }
 
-    IEnumerator MenuLoop()
+    private void Update()
     {
+        DestroyComponent();
+        PlayerLayer2();
+    }
+
+    private void DestroyComponent()
+    {
+        currentScene = SceneManager.GetActiveScene();
+        if (instance == this)
+        {
+            if (currentScene.name == "ProceduralMap")
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    private void PlayerLayer2()
+    {
+        if (currentScene.name == "Prologue")
+        {
+            musicSource2.volume = 1.0f;
+        }
+    }
+
+    IEnumerator Layer_1()
+    {
+        //playMenuMusic = true;
         yield return new WaitForSecondsRealtime(24.548f);
 
         // make sure the loop volume starts at 0
-        musicSource.volume = 1;
-        musicSource.clip = menuClip;
-        musicSource.Play();
-        musicSource.loop = true;
+        musicSource1.volume = 1;
+        musicSource1.clip = menuClips[1];
+        musicSource1.Play();
+        musicSource1.loop = true;
+    }
+    IEnumerator Layer_2()
+    {
+        //playMenuMusic = true;
+        //yield return new WaitForSecondsRealtime(24.548f);
+        yield return null;
+
+        // make sure the loop volume starts at 0
+        musicSource2.volume = 0;
+        musicSource2.clip = menuClips[2];
+        musicSource2.Play();
+        musicSource2.loop = true;
     }
 }
