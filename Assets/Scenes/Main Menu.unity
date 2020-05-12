@@ -1034,7 +1034,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 1584717802}
   m_HandleRect: {fileID: 2093839724}
   m_Direction: 2
-  m_MinValue: 0
+  m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 1
@@ -2103,3 +2103,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   masterMixer: {fileID: 24100000, guid: d2e7fec13d58b444ca50d41775261716, type: 2}
+  volumeSlider: {fileID: 1256340372}

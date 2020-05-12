@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
     public AudioMixer masterMixer;
+    public Slider volumeSlider;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +35,7 @@ public class MainMenuController : MonoBehaviour
     public void SetVolLvl(float sliderValue)
     {
         masterMixer.SetFloat("MasterVol", Mathf.Log10(sliderValue) * 20);
+        PlayerPrefs.SetFloat("Volume", sliderValue);
     }
 
 
