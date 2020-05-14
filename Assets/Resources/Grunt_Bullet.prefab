@@ -128,9 +128,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 25
   playerDamageClips:
-  - {fileID: 8300000, guid: ea21b96df15568747837c6992397ab95, type: 3}
-  - {fileID: 8300000, guid: 95acbc275e4396a4db3bd9b639f93cdd, type: 3}
-  - {fileID: 8300000, guid: 92676abcc1ba5ae4884a68a5fd5d182d, type: 3}
+  - {fileID: 8300000, guid: 461eb590047a1c5499bd12253fb952ad, type: 3}
+  - {fileID: 8300000, guid: f26133aa3fb2a1a46974dff1e3c1080f, type: 3}
+  - {fileID: 8300000, guid: 772a1b2e1d05b104e87e22feb8a44079, type: 3}
+  - {fileID: 8300000, guid: 20ab068d64597d54aa0a55da83ea3ff2, type: 3}
+  - {fileID: 8300000, guid: 52ec091eb3211174baa597c332b9ea60, type: 3}
+  - {fileID: 8300000, guid: d651a4826d90f6042bd47a9f87e1a181, type: 3}
+  - {fileID: 8300000, guid: 86d44d66ac39e794486575515f1aeb88, type: 3}
   pitchMin: 0.9
   pitchMax: 1
 --- !u!82 &6757059263218552253
@@ -142,7 +146,7 @@ AudioSource:
   m_GameObject: {fileID: 4570021277692409380}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -870812792361628242, guid: d2e7fec13d58b444ca50d41775261716,
+  OutputAudioMixerGroup: {fileID: 724427297833310146, guid: d2e7fec13d58b444ca50d41775261716,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1

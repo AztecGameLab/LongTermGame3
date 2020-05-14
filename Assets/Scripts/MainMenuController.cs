@@ -13,7 +13,7 @@ public class MainMenuController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+ 
     }
 
     // Update is called once per frame
@@ -37,7 +37,6 @@ public class MainMenuController : MonoBehaviour
         masterMixer.SetFloat("MasterVol", Mathf.Log10(sliderValue) * 20);
         PlayerPrefs.SetFloat("Volume", sliderValue);
     }
-
 
     public void ExitGame()
     {

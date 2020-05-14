@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 public class MenuTheme : MonoBehaviour
 {
     public AudioClip[] menuClips;
+    public AudioClip[] uiSFX;
     public AudioSource musicSource1;
     public AudioSource musicSource2;
+    public AudioSource sfxSource;
     private Scene currentScene;
     private bool playMenuMusic;
     private static MenuTheme instance;
@@ -71,5 +73,15 @@ public class MenuTheme : MonoBehaviour
         musicSource2.clip = menuClips[2];
         musicSource2.Play();
         musicSource2.loop = true;
+    }
+
+    public void PlayFirstSFX()
+    {
+        sfxSource.PlayOneShot(uiSFX[0]);
+    }
+
+    public void PlaySecondtSFX()
+    {
+        sfxSource.PlayOneShot(uiSFX[1]);
     }
 }

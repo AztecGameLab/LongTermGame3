@@ -43,6 +43,10 @@ public class EnemyGruntDriver : Driver
 
     private bool fireRight;
 
+    public AudioClip enemyWeaponClip;
+    private AudioSource sfxSource;
+    public float pitchMin, pitchMax;
+
     Transform player;
     NavMeshAgent agent;
     // Start is called before the first frame update
@@ -57,6 +61,8 @@ public class EnemyGruntDriver : Driver
         fireRight = true;
 
         health = 1000;
+
+        sfxSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -136,6 +142,13 @@ public class EnemyGruntDriver : Driver
         //print(isSighted);
         return isSighted;
     }
+    private void PlayWeaponSFX()
+    {
+        sfxSource.pitch = Random.Range(pitchMin, pitchMax);
+        sfxSource.volume = 0.8f;
+        sfxSource.clip = enemyWeaponClip;
+        sfxSource.Play();
+    }
     void Fire()
     {
         if (fireRight)
@@ -146,6 +159,8 @@ public class EnemyGruntDriver : Driver
             newBullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed;
             Debug.DrawRay(firePointRight.position, dir);
             fireRight = false;
+            // shoot sfx
+            PlayWeaponSFX();
         }
         else
         {
@@ -154,6 +169,8 @@ public class EnemyGruntDriver : Driver
             newBullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed;
             Debug.DrawRay(firePointLeft.position, dir);
             fireRight = true;
+            // shoot sfx
+            PlayWeaponSFX();
         }
     }
     protected override void OnDeath()
