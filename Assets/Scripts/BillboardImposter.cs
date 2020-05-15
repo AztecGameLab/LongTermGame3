@@ -20,7 +20,7 @@ public class BillboardImposter : MonoBehaviour
         try
         {
             player = GameObject.Find("Player").transform;
-            Debug.LogWarning("Need a better way to find player");
+            //Debug.LogWarning("Need a better way to find player");
         }
         catch
         {
