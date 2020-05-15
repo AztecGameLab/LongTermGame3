@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -799,7 +799,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 1
       - m_Target: {fileID: 1434033081}
-        m_MethodName: PlaySecondtSFX
+        m_MethodName: PlaySecondSFX
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -885,7 +885,7 @@ GameObject:
   - component: {fileID: 1434033082}
   - component: {fileID: 1434033081}
   m_Layer: 0
-  m_Name: UI Sounds
+  m_Name: UI SFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
