@@ -75,7 +75,7 @@ public class EnemyAI : Driver
         float distance = 1.5f;
 
         //draw ray in editor
-        Debug.DrawRay(start, direction * distance, Color.red, 2f, false);
+        //Debug.DrawRay(start, direction * distance, Color.red, 2f, false);
 
         RaycastHit sighttest;
 
