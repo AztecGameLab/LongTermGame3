@@ -26,7 +26,7 @@ public class GruntBullet : MonoBehaviour
     private void DamageSFX()
     {
         sfxSource.clip = playerDamageClips[Random.Range(0, playerDamageClips.Length)];
-        //sfxSource.pitch = Random.Range(pitchMin, pitchMax);
+        sfxSource.pitch = Random.Range(pitchMin, pitchMax);
         sfxSource.Play();
     }
     private void OnCollisionEnter(Collision collision)
