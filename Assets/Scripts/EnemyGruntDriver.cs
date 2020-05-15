@@ -73,7 +73,7 @@ public class EnemyGruntDriver : Driver
         playerVector = player.position - transform.position;
 
         //print(player.position);
-        print(firePointLeft.position);
+        //print(firePointLeft.position);
         if (!isAlerted)
             CheckForAlert();
 
