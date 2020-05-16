@@ -1540,7 +1540,7 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: To protect the remnants of humanity, their souls were digitized, and stored
-    in the Cloisters. These maximum-security supercomputers contained virtual worlds,
+    into Cloisters. These maximum-security supercomputers contained virtual worlds,
     and the genetic information of all life on Earth. They were the key to Earth's
     rebirth, and our ultimate victory.
 --- !u!222 &702319806
@@ -2251,7 +2251,7 @@ MonoBehaviour:
     impossible... but many impossible things have been achieved since mankind''s
     golden age.
 
-    It''s time for you to accomplish one more."'
+    Now it''s your time to do the impossible.'
 --- !u!222 &1157841109
 CanvasRenderer:
   m_ObjectHideFlags: 0
