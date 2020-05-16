@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ProjectileInfo : MonoBehaviour
 {
+    public GameObject hitPs;
     public Vector3 startPosition;
     public WeaponInfo weaponInfo;
     public float sqrMaxDistance;
@@ -27,6 +28,8 @@ public class ProjectileInfo : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Instantiate(hitPs, transform.position, Quaternion.identity);
+
         //  On all collision: set projectile to inactive
         GameObject target = collision.gameObject;
 
