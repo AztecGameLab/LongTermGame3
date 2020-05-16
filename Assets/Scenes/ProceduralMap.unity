@@ -449,7 +449,7 @@ MonoBehaviour:
     type: 3}
   numObstacles: 50
   rotateObstacles: 0
-  wallTile: {fileID: 6609555836500725476, guid: 9bd4e00193fd522428740a1631dfb072,
+  wallTile: {fileID: 6609555836500725476, guid: 6e3d7aae1a5cd8647b3a6bee2c7b75ff,
     type: 3}
   cielingTile: {fileID: 6609555836500725476, guid: 9bd4e00193fd522428740a1631dfb072,
     type: 3}

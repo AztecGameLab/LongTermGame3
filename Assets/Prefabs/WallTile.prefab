@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4274757052535582616}
   - component: {fileID: 4636291496539086432}
   m_Layer: 9
-  m_Name: SurfaceTile
+  m_Name: WallTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f3900c747ef043846aba51a6a2f0412f, type: 2}
+  - {fileID: 2100000, guid: a4547aba8502aa34bb8f53563bd153a8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
