@@ -55,7 +55,7 @@ public class PlayerDriver : Driver
         horizontalLook = transform.eulerAngles.y;
         verticalLook = transform.eulerAngles.x;
         var charController = GetComponent<CharacterController>();
-        groundCheckDistance = charController.height/2;
+        groundCheckDistance = charController.height / 2;
         groundCheckRadius = charController.radius;
 
         clipSource = GetComponent<AudioSource>();
@@ -69,7 +69,7 @@ public class PlayerDriver : Driver
 
     void Update()
     {
-
+        HudCanvas.instance.SetHealth(health);
     }
 
     public override Vector3 GetMovement()
@@ -85,7 +85,7 @@ public class PlayerDriver : Driver
         if (GroundCheck() && verticalVelocity.y < 0)
         {
             // Regular ground movement.
-            horizontalVelocity = Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1f) * speed * modifier; 
+            horizontalVelocity = Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1f) * speed * modifier;
 
             // Space key to jump, adds vertical velocity.
             if (Input.GetKeyDown(KeyCode.Space))
@@ -108,7 +108,7 @@ public class PlayerDriver : Driver
     private bool GroundCheck()
     {
         // Check an invisible sphere at the bottom of the controller and see if it collides with objects in the ground layer.
-        return Physics.CheckSphere(transform.position + Vector3.down*groundCheckDistance, groundCheckRadius, LayerMask.GetMask("Ground"));
+        return Physics.CheckSphere(transform.position + Vector3.down * groundCheckDistance, groundCheckRadius, LayerMask.GetMask("Ground"));
     }
 
     public override float GetHorizontalLook()
@@ -137,7 +137,7 @@ public class PlayerDriver : Driver
         return verticalLook;
     }
 
- 
+
 
     public override bool interact()
     {
@@ -159,8 +159,8 @@ public class PlayerDriver : Driver
                 Destroy(otherObject.GetComponent<BoxCollider>());
                 Transform otherTrans = otherObject.transform;
                 Transform camera = ec.childTransform;
-                
-                otherTrans.position = camera.position + camera.forward * 3f +  camera.right * 0.5f + camera.up * -0.5f;
+
+                otherTrans.position = camera.position + camera.forward * 3f + camera.right * 0.5f + camera.up * -0.5f;
                 otherTrans.rotation = camera.rotation;
                 otherTrans.SetParent(camera);
 
@@ -204,6 +204,7 @@ public class PlayerDriver : Driver
     //Called when health drops to 0
     protected override void OnDeath()
     {
-
+        HudCanvas.instance.Die();
     }
+
 }

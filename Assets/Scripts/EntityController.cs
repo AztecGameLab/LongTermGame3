@@ -56,6 +56,7 @@ public class EntityController : MonoBehaviour
 
     private void Die()
     {
+        HudCanvas.instance.Die();
         Debug.Log("Died");
     }
 

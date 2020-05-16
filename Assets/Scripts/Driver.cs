@@ -25,6 +25,11 @@ public class Driver : MonoBehaviour
 
     //Changed from protected to public
     public void TakeDamage(float damage){
+        if(gameObject.tag == "Player")
+        {
+            HudCanvas.instance.TakeDamage();
+        }
+
         health -= damage;
         if (health <= 0){
             health = 0;
