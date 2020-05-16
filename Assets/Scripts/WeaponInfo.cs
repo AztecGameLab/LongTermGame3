@@ -127,8 +127,8 @@ public class WeaponInfo : MonoBehaviour
     }
 
     //test methods to show weapon values and test firing
-    void DisplayValuesTest()
-    {
-        Debug.Log(JsonUtility.ToJson(this));
-    }
+    //void DisplayValuesTest()
+    //{
+    //    Debug.Log(JsonUtility.ToJson(this));
+    //}
 }

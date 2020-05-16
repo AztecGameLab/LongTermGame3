@@ -93,14 +93,15 @@ public class WeaponSpawner : MonoBehaviour
         if (other.gameObject.layer == 12) {
             //GetComponentInChildren<WeaponInfo>().isEquipped = true;
             GameObject.FindObjectOfType<PlayerWeapon>().EquipWeapon(weapon);
+            Destroy(this.transform.parent.gameObject);
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.gameObject.layer == 12)
-        {
-            GetComponentInChildren<WeaponInfo>().isEquipped = false;
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if(other.gameObject.layer == 12)
+    //    {
+    //        GetComponentInChildren<WeaponInfo>().isEquipped = false;
+    //    }
+    //}
 }
