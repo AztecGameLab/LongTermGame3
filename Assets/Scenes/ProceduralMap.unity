@@ -451,7 +451,7 @@ MonoBehaviour:
   rotateObstacles: 0
   wallTile: {fileID: 6609555836500725476, guid: 6e3d7aae1a5cd8647b3a6bee2c7b75ff,
     type: 3}
-  cielingTile: {fileID: 6609555836500725476, guid: 9bd4e00193fd522428740a1631dfb072,
+  cielingTile: {fileID: 6609555836500725476, guid: 5d3caaab8d483f544812ec85379d6acf,
     type: 3}
   floorTile: {fileID: 6609555836500725476, guid: 9bd4e00193fd522428740a1631dfb072,
     type: 3}
@@ -522,8 +522,8 @@ MonoBehaviour:
   optimizationHitbox: {fileID: 521411398}
   zUpperBound: 4
   zLowerBound: 10
-  yUpperBound: 4
-  yLowerBound: 6
+  yUpperBound: 2
+  yLowerBound: 3
   xUpperBound: 4
   xLowerBound: 10
   branchChance: 0.301
