@@ -241,6 +241,8 @@ MonoBehaviour:
   enemyWeaponClip: {fileID: 8300000, guid: 582919320ad13724d91a3a973b7da47d, type: 3}
   pitchMin: 0.8
   pitchMax: 1.1
+  deathEffect: {fileID: 6272439232536655075, guid: db5210f8db7614a4aa9d038b2dc68e97,
+    type: 3}
 --- !u!136 &6983286057668968316
 CapsuleCollider:
   m_ObjectHideFlags: 0

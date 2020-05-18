@@ -47,6 +47,8 @@ public class EnemyGruntDriver : Driver
     private AudioSource sfxSource;
     public float pitchMin, pitchMax;
 
+    public ParticleSystem deathEffect;
+
     Transform player;
     NavMeshAgent agent;
     // Start is called before the first frame update
@@ -175,6 +177,14 @@ public class EnemyGruntDriver : Driver
     }
     protected override void OnDeath()
     {
+        Debug.Log("Going to DeathAnimation");
+        DeathAnimation();
         Destroy(gameObject);
+       
+    }
+    public void DeathAnimation()
+    {
+        Debug.Log("In DeathAnimation");
+        Destroy(Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity) as GameObject, deathEffect.main.startLifetime.constant);
     }
 }
