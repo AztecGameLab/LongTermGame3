@@ -52,8 +52,8 @@ MonoBehaviour:
   newMagazine: {fileID: 0}
   testSpawnOnShift: 0
   spawnOnAwake: 1
-  testProgressModifier: 30
-  statGap: 50
+  testProgressModifier: 65.1
+  statGap: 24.9
 --- !u!65 &5239793
 BoxCollider:
   m_ObjectHideFlags: 0
