@@ -74,7 +74,7 @@ public class EnemyGhostDriver : Driver
         return lookHorizontal;
     }
 
-    public override bool GetMeleeWeapon()
+    public bool GetMeleeWeapon()
     {
         return shouldMelee;
     }
@@ -82,16 +82,6 @@ public class EnemyGhostDriver : Driver
     public override Vector3 GetMovement()
     {
         return move;
-    }
-
-    public override bool GetPrimaryWeapon()
-    {
-        return false;
-    }
-
-    public override bool GetSecondaryWeapon()
-    {
-        return false;
     }
 
     public override float GetVerticalLook()

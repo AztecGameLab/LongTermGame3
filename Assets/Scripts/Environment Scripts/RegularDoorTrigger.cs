@@ -5,8 +5,12 @@ using UnityEngine.Events;
 
 public class RegularDoorTrigger : MonoBehaviour
 {
-    public UnityEvent open = new UnityEvent();
-    public UnityEvent close = new UnityEvent();
+    public UnityEvent doorCycle = new UnityEvent();
+
+    //bool to check if door is opening or not
+    private bool opening = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,13 +23,20 @@ public class RegularDoorTrigger : MonoBehaviour
         
     }
 
+
+    //Runs door cycle
     private void OnTriggerEnter(Collider other)
     {
-        open.Invoke();
+        /*
+        if(opening == false)
+        {
+            opening = true;
+            doorCycle.Invoke();
+            opening = false;
+        }
+        */
+        doorCycle.Invoke();
+        
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        close.Invoke();
-    }
 }

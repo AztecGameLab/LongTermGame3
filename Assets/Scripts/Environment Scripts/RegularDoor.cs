@@ -3,64 +3,100 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class RegularDoor : Interactable
+public class RegularDoor : MonoBehaviour
 {
-    public UnityEvent door = new UnityEvent();
 
+    //essentially just the fields of the parent object or the "Hinge"
+    private Transform parent;
     private Vector3 parentPosition;
-    private Quaternion originalRotation;
 
+    //Need a boolean for whether the door is opening/cycling or closed
+    private bool opening  = false;
+
+
+    //VARIABLES NEEDED TO OPEN AND CLOSE DOORS
+    //start rotation and the end rotation values. 
+    //float is the start SLERP interpolation between start and end (0 and 140 degrees)
+    private Quaternion start;
+    private Quaternion end;
+    private float doorAngle = 0f;
+
+    //List of coroutines needed. Edit: technically not needed anymore because calling with quotations
+    private IEnumerator closeDoor;
+    private IEnumerator openDoor;
+    private IEnumerator doorCycle;
 
     // Start is called before the first frame update
     void Start()
-    {   
-        parentPosition = transform.parent.position;
-        originalRotation = transform.rotation;
+    {
+        //initialization of the fields of the parent object
+        parent = transform.parent;
+        parentPosition = parent.position;
+
+        //initialization of the rotation values needed to open and close doors
+        start = parent.rotation;
+        end = parent.rotation * Quaternion.Euler(0, 140, 0);
+
+        //initialization of coroutines. Edit: technically not needed anymore because calling with quotations
+        openDoor = coroutineOpenDoor();
+        closeDoor = coroutineCloseDoor();
+        doorCycle = coroutineDoorCycle();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //transform.RotateAround(parentPosition, Vector3.up, -30 * Time.deltaTime);
+
     }
 
-    //Function to open the door
-    public void openDoor()
+    //coroutine to open the door
+    IEnumerator coroutineOpenDoor()
     {
-        for (int i = 0; i < 85; i+=3)
+        //keeps animating door opening til it's at open state(140 degrees)
+        while (doorAngle < 1)
         {
-            transform.RotateAround(parentPosition, Vector3.up, 3);
-            print(transform.rotation.y);
+            parent.rotation = Quaternion.Slerp(start, end, doorAngle);
+            doorAngle += Time.deltaTime/2;
+
+            yield return null; 
         }
 
-        //InvokeRepeating("moveDoor(85f)", .5f, .1f);
-        //while(transform.rotation.y < 85f)
-        //{
-            //transform.RotateAround(parentPosition, Vector3.up, 3);
-        //}
     }
 
-    //Function to close the door
-    public void closeDoor()
+    //coroutine to close the door
+    IEnumerator coroutineCloseDoor()
     {
-        for (int i = 0; i < 85; i += 3)
+        //keeps animating door closing til it's at close state(0 degrees)
+        while (doorAngle > 0f)
         {
-            transform.RotateAround(parentPosition, Vector3.up, -3);
-            print(transform.rotation.y);
+            parent.rotation = Quaternion.Slerp(start, end, doorAngle);
+            doorAngle -= (Time.deltaTime/2);
+
+            yield return null;
         }
 
-        //while (transform.rotation.y != 0)
-        //{
-        //    transform.RotateAround(parentPosition, Vector3.up, -30 * Time.deltaTime);
-        //}
+        yield break;
     }
 
-    public void moveDoor(float angle)
+
+
+    IEnumerator coroutineDoorCycle()
     {
-        if (transform.rotation.y < 85f)
-        {
-            transform.RotateAround(parentPosition, Vector3.up, 3);
-        }
+        //opens the dooor
+        yield return StartCoroutine("coroutineOpenDoor");
+        //leaves it open for 5 seconds
+        yield return new WaitForSeconds(5f);
+        //closes the door
+        yield return StartCoroutine("coroutineCloseDoor");
+
+
+        //terminates coroutine
+        yield break;
     }
-    
+    //The method to open and close the door and the reference for the trigger's unityEvent
+    public void doorCycle1()
+    { 
+        //Calls coroutine to open and close the door
+        StartCoroutine("coroutineDoorCycle");
+    }
 }

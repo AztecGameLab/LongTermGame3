@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Health
+  - Weapon
+  - PlayerWeapon
+  - Key
+  - Teleporter
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -15,12 +22,13 @@ TagManager:
   - 
   - PostProcessing
   - Ground
-  - ' Ceiling'
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ceiling
+  - Pickup
+  - Projectiles
+  - Player
+  - PlayerWeapon
+  - MiniMap
+  - Obstacles
   - 
   - 
   - 

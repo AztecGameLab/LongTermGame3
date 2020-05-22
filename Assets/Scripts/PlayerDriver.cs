@@ -1,16 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class PlayerDriver : Driver
 {
+    EntityController ec;
+
+    GameObject weapon;
+
     // Represent movement values for horizontal and vertical axes.
     private float x, z;
-
-    [SerializeField]
-    private AnimationCurve curve;
-
-    private bool coroutineRunning;
 
     private Vector3 horizontalVelocity;
     private Vector3 verticalVelocity;
@@ -41,12 +40,36 @@ public class PlayerDriver : Driver
     [SerializeField]
     private float sensitivity = 100f;
 
+    float groundCheckRadius;
+    float groundCheckDistance;
+    // Number of keys being held
+    //public int keys = 0;
+    // audio
+    public AudioClip teleporterClip;
+    private AudioSource clipSource;
+
     private void Awake()
     {
         horizontalVelocity = new Vector3();
         verticalVelocity = new Vector3();
         horizontalLook = transform.eulerAngles.y;
         verticalLook = transform.eulerAngles.x;
+        var charController = GetComponent<CharacterController>();
+        groundCheckDistance = charController.height / 2;
+        groundCheckRadius = charController.radius;
+
+        clipSource = GetComponent<AudioSource>();
+    }
+
+    private void Start()
+    {
+        ec = gameObject.GetComponent<EntityController>();
+        health = 100;
+    }
+
+    void Update()
+    {
+        HudCanvas.instance.SetHealth(health);
     }
 
     public override Vector3 GetMovement()
@@ -62,19 +85,7 @@ public class PlayerDriver : Driver
         if (GroundCheck() && verticalVelocity.y < 0)
         {
             // Regular ground movement.
-            //horizontalVelocity = Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1f) * speed * modifier;
-            
-            if (!coroutineRunning && z > -0.01f && z < 0.01f && x > -0.01f && x < 0.01f)
-            {
-                StartCoroutine(Decelerate());
-            }
-            else
-            {
-                StopAllCoroutines();
-                horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity / speed / modifier + transform.right * x * 0.35f + transform.forward * z * 0.35f, 1f) * speed * modifier;
-            }
-                
-
+            horizontalVelocity = Vector3.ClampMagnitude(transform.right * x + transform.forward * z, 1f) * speed * modifier;
 
             // Space key to jump, adds vertical velocity.
             if (Input.GetKeyDown(KeyCode.Space))
@@ -87,34 +98,23 @@ public class PlayerDriver : Driver
 
         // Modified air movement, maintains velocity but accepts small influence from input. Cannot go faster than on the ground. 
         else
-            horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity / speed / modifier + transform.right * x * 0.025f + transform.forward * z * 0.025f, 1f) * speed * modifier;
+            horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity / speed / modifier + transform.right * x * 0.01f + transform.forward * z * 0.01f, 1f) * speed * modifier;
 
         // Combine our vertical and horizontal velocities.
         return verticalVelocity + horizontalVelocity;
-    }
-
-    private IEnumerator Decelerate()
-    {
-        float time = 0f;
-        for (; ;)
-        {
-            time += Time.deltaTime;
-            horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity / speed / modifier, curve.Evaluate(time)) * speed * modifier;
-            yield return null;
-        }
     }
 
     // Returns true if player is grounded, false otherwise.
     private bool GroundCheck()
     {
         // Check an invisible sphere at the bottom of the controller and see if it collides with objects in the ground layer.
-        return Physics.CheckSphere(transform.position + Vector3.down, .4f, LayerMask.GetMask("Ground"));
+        return Physics.CheckSphere(transform.position + Vector3.down * groundCheckDistance, groundCheckRadius, LayerMask.GetMask("Ground"));
     }
 
     public override float GetHorizontalLook()
     {
         // Modifying mouse position based on sensitivity and accounting for framerate.
-        mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+        mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime * 2;
 
         horizontalLook += mouseX;
         if (horizontalLook > 360)
@@ -127,7 +127,7 @@ public class PlayerDriver : Driver
     public override float GetVerticalLook()
     {
         // Modifying mouse position based on sensitivity and accounting for framerate.
-        mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+        mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime * 2;
 
         verticalLook -= mouseY;
         if (verticalLook > 90)
@@ -137,23 +137,74 @@ public class PlayerDriver : Driver
         return verticalLook;
     }
 
-    public override bool GetPrimaryWeapon()
-    {
-        return true;
-    }
 
-    public override bool GetSecondaryWeapon()
-    {
-        return true;
-    }
-
-    public override bool GetMeleeWeapon()
-    {
-        return true;
-    }
 
     public override bool interact()
     {
         return true;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        GameObject otherObject = other.gameObject;
+        if (otherObject.layer == LayerMask.NameToLayer("Pickup"))
+        {
+            if (otherObject.tag.Equals("Health"))
+            {
+                Destroy(otherObject);
+                ec.Heal(10);
+            }
+            else if (otherObject.tag.Equals("Weapon"))
+            {
+                Destroy(otherObject.GetComponent<BoxCollider>());
+                Transform otherTrans = otherObject.transform;
+                Transform camera = ec.childTransform;
+
+                otherTrans.position = camera.position + camera.forward * 3f + camera.right * 0.5f + camera.up * -0.5f;
+                otherTrans.rotation = camera.rotation;
+                otherTrans.SetParent(camera);
+
+                weapon = other.gameObject;
+
+            }
+            else if (otherObject.tag.Equals("Ammo"))
+            {
+
+
+
+            }
+            else if (otherObject.tag.Equals("Key"))
+            {
+                Destroy(otherObject);
+                keyCount += 1;
+
+            }
+            /*else if (otherObject.tag.Equals("Teleporter"))
+            {
+                //next scene
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                // play audio
+                clipSource.PlayOneShot(teleporterClip);
+            }*/
+            else if (otherObject.tag.Equals("Teleporter"))
+            {
+                StartCoroutine(StartTeleportation());
+            }
+            IEnumerator StartTeleportation()
+            {
+                // play audio
+                clipSource.PlayOneShot(teleporterClip);
+                yield return new WaitForSecondsRealtime(2.17f);
+                //next scene
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
+    }
+
+    //Called when health drops to 0
+    protected override void OnDeath()
+    {
+        HudCanvas.instance.Die();
+    }
+
 }

@@ -6,7 +6,7 @@ public class EntityController : MonoBehaviour
 {
     private Driver driver;
     private CharacterController characterController;
-    private Transform childTransform;
+    public Transform childTransform;
 
     private void Awake()
     {
@@ -25,6 +25,8 @@ public class EntityController : MonoBehaviour
     {
         Aim();
         Movement();
+        if (Input.GetKeyDown("e"))
+            Interact();
     }
 
     private void Aim()
@@ -38,51 +40,50 @@ public class EntityController : MonoBehaviour
         characterController.Move(driver.GetMovement() * Time.deltaTime);
     }
 
-    private void PrimaryWeapon()
-    {
-
-    }
-
-    private void SecondaryWeapon()
-    {
-
-    }
-
-    private void MeleeWeapon()
-    {
-
-    }
-
     private void SetLife(float value)
     {
+        if (value <= 0)
+        {
+            Die();
+            return;
+        }
 
+        if (value < Driver.maxHealth)
+            driver.health = value;
+        else
+            driver.health = Driver.maxHealth;
     }
 
     private void Die()
     {
-
+        HudCanvas.instance.Die();
+        Debug.Log("Died");
     }
 
     public void TakeDamage(float damage)
     {
-
+        SetLife(driver.health - damage);
+        Debug.Log("Damaged");
     }
 
     public void Heal(float health)
     {
-
+        SetLife(health + driver.health);
+        Debug.Log("Healed");
     }
 
     public void Interact()
     {
         RaycastHit hit;
-        if(!Physics.Raycast(this.transform.position, this.transform.forward, out hit, 5)){
+        if(!Physics.Raycast(transform.position, transform.forward, out hit, 5)){
             return;
         }
         Interactable interact = hit.transform.gameObject.GetComponent<Interactable>();
+        //Adding a reference of the player so the interactable object can access player fields
+
         if(interact == null)
             return;
 
-        interact.OnInteract();
+        interact.OnInteract(driver);
     } 
 }
