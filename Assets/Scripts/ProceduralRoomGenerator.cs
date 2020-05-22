@@ -33,6 +33,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public GameObject wallTile;
     public GameObject cielingTile;
     public GameObject floorTile;
+    public GameObject obstaclePrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -199,38 +200,38 @@ public class ProceduralRoomGenerator : MonoBehaviour
         //  Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 100);
         Physics.Raycast(ray1, out hit, room.bounds.size.y);
 
-        int randomObstacle = (int)Random.Range(0, 3); //maybe add a weighted system for obstacles
-        if (randomObstacle == 0)
-        {
+        // int randomObstacle = (int)Random.Range(0, 3); //maybe add a weighted system for obstacles
+        // if (randomObstacle == 0)
+        // {
             temp = buildPillar(room, false,spawnSide);
             temp.transform.position = hit.point;
             if(rotateObstacles)
                 temp.transform.Rotate(0, Random.Range(0, 361), 0); //rotates obstacles, has possibility of blocking doors so do not implement yet
 
-        }
-        else if (randomObstacle == 1)
-        {
-            temp = GameObject.CreatePrimitive(PrimitiveType.Cube); // make spawn off of prefab later TODOTDO
-            if (spawnSide == 0)
-                temp.transform.position = hit.point + new Vector3(0, .5f, 0);
+        // }
+        // else if (randomObstacle == 1)
+        // {
+        //     temp = GameObject.CreatePrimitive(PrimitiveType.Cube); // make spawn off of prefab later TODOTDO
+        //     if (spawnSide == 0)
+        //         temp.transform.position = hit.point + new Vector3(0, .5f, 0);
 
-            else
-                temp.transform.position = hit.point + new Vector3(0, -.5f, 0);
+        //     else
+        //         temp.transform.position = hit.point + new Vector3(0, -.5f, 0);
 
-            if (rotateObstacles)
-                temp.transform.Rotate(0, Random.Range(0, 361), 0); //rotates obstacles, has possibility of blocking doors so do not implement yet
+        //     if (rotateObstacles)
+        //         temp.transform.Rotate(0, Random.Range(0, 361), 0); //rotates obstacles, has possibility of blocking doors so do not implement yet
 
           
-        }
-        else
-        {
-            temp = buildWall(room, (int)hit.point.x, spawnSide);
-            temp.transform.position = hit.point;
-            if (rotateObstacles)
-                temp.transform.Rotate(0, Random.Range(0, 361), 0); //rotates obstacles, has possibility of blocking doors so do not implement yet
+        // }
+        // else
+        // {
+        //     temp = buildWall(room, (int)hit.point.x, spawnSide);
+        //     temp.transform.position = hit.point;
+        //     if (rotateObstacles)
+        //         temp.transform.Rotate(0, Random.Range(0, 361), 0); //rotates obstacles, has possibility of blocking doors so do not implement yet
 
 
-        }
+        // }
 
         // temp.name =(room.name + " object: " + temp.transform.position);
         temp.name = "tempObstacle";
@@ -318,36 +319,8 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public GameObject buildPillar(RoomData room, bool isWall, int side)
     {
 
-        GameObject temp = new GameObject();
-        if (!isWall)
-        {
-            for (int i = 0; i < Random.Range(2, room.bounds.size.y + 1); i++)
-            {
-                GameObject pillarObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                pillarObj.tag = "Obstacle";
-                if (side ==0)
-                    pillarObj.transform.position = new Vector3(0, .5f + .5f * i, 0);
-                else
-                    pillarObj.transform.position = new Vector3(0, -.5f + -.5f * i, 0);
-
-                pillarObj.transform.parent = temp.transform;
-            }
-        }
-        else
-        {
-            for (int i = 0; i < room.bounds.size.y + 2; i++)
-            {
-                GameObject pillarObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                pillarObj.tag = "Obstacle";
-
-                if (side == 0)
-                    pillarObj.transform.position = new Vector3(0, .5f + .5f * i, 0);
-                else
-                    pillarObj.transform.position = new Vector3(0, -.5f + -.5f * i, 0);
-                pillarObj.transform.parent = temp.transform;
-            }
-        }
-        temp.tag = "Obstacle";
+        GameObject temp = Instantiate(obstaclePrefab);
+        temp.transform.localScale=new Vector3(temp.transform.localScale.x,Random.Range(2, room.bounds.size.y + 1),temp.transform.localScale.z);
         return temp;
     }
 
