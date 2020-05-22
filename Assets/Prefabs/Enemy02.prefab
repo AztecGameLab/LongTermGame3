@@ -4981,7 +4981,7 @@ MonoBehaviour:
   nextCheck: 0
   killRange: 8
   agroRange: 300
-  damageToPlayer: 50
+  damageToPlayer: 20
   timerDuration: 3
   Crater: {fileID: 1244110050}
   image: {fileID: 994543576153965878}

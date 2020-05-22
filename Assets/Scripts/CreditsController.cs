@@ -17,8 +17,8 @@ public class CreditsController : MonoBehaviour
     private String[] namesByGroup =
         {"Kain Shepard\n",
         "Brittany Hughes\n Daniel Kenton\n Elizabeth Newgard\n Joseph Hartman\n Katrina Javier\n Mitchell Kim\n Mustafa Alrubaiee\n Naseem Tahbaz\n",
-        "Byron\n",
-        "Alexander M\n Archer\n Lauryn Jefferson\n Kyle M.K.\n Jacob G-N\n Ryan Wright\n Timothy\n",
+        "Byron Beasley\n",
+        "Alexander Miller\n Archer Hovey\n Lauryn Jefferson\n Kyle McLain Kane\n Jacob Golden-Needham\n Ryan Wright\n Timothy Lieu\n",
         "Carter Andrews\n Christian Hong\n Dan Blackford\n Jacob Barger\n Logan Wang\n",
         ""};
     

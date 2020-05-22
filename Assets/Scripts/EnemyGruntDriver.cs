@@ -62,7 +62,7 @@ public class EnemyGruntDriver : Driver
         timeLastShot = Time.time;
         fireRight = true;
 
-        health = 1000;
+        health = 500;
 
         sfxSource = GetComponent<AudioSource>();
     }
