@@ -150,6 +150,8 @@ GameObject:
   - component: {fileID: 5171408293383905755}
   - component: {fileID: 7950526381799471479}
   - component: {fileID: 552775953050047657}
+  - component: {fileID: 3664518366316527775}
+  - component: {fileID: 5411150065656419958}
   m_Layer: 0
   m_Name: Frame
   m_TagString: Untagged
@@ -218,6 +220,56 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &3664518366316527775
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7267626213980857162}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 8.329242, y: 3.096871, z: 4.280254}
+  m_Center: {x: -0.5641935, y: -0.13567126, z: 0.14365935}
+--- !u!114 &5411150065656419958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7267626213980857162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de5bd1340c9a1f34385e63448e88e320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doorOpen:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1795571674596094775}
+        m_MethodName: doorOpen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 131784992497735522}
+        m_MethodName: doorOpen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7292596799261610588
 GameObject:
   m_ObjectHideFlags: 0

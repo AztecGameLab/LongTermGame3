@@ -37,10 +37,12 @@ public class ScreenDoorRight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (Input.GetKeyDown("e"))
         {
             doorOpen();
         }
+        */
     }
 
     // COROUTINE TO OPEN THE DOOR. THIS IS THE ONE THAT WILL BE MAINLY USED
