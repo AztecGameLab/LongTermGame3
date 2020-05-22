@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class ScreenDoorTrigger : MonoBehaviour
 {
     public UnityEvent doorOpen = new UnityEvent();
+    public UnityEvent doorClose = new UnityEvent();
 
     // Start is called before the first frame update
     void Start()
@@ -21,16 +22,20 @@ public class ScreenDoorTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        /*
-        if(opening == false)
+        if(other.tag == "Player")
         {
-            opening = true;
-            doorCycle.Invoke();
-            opening = false;
+            doorOpen.Invoke();
         }
-        */
-        doorOpen.Invoke();
+        
 
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            doorClose.Invoke();
+        }
     }
 
 }

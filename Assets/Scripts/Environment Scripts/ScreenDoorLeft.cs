@@ -94,4 +94,9 @@ public class ScreenDoorLeft : MonoBehaviour
         //Calls coroutine to open the door
         StartCoroutine("coroutineOpenDoor");
     }
+    public void doorClose()
+    {
+        //Calls coroutine to close the door
+        StartCoroutine("coroutineCloseDoor");
+    }
 }
