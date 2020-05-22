@@ -4957,7 +4957,7 @@ SphereCollider:
   m_GameObject: {fileID: 887129037396086608}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 4
   m_Center: {x: 0, y: 0.53, z: 0}
@@ -4979,7 +4979,7 @@ MonoBehaviour:
   Enemy02: {fileID: 887129037396086608}
   checkRate: 0.01
   nextCheck: 0
-  killRange: 16
+  killRange: 8
   agroRange: 300
   damageToPlayer: 50
   timerDuration: 3
@@ -14883,7 +14883,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0

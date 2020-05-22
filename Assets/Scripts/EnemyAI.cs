@@ -21,11 +21,12 @@ public class EnemyAI : Driver
     [SerializeField]
     private float agroRange = 1500;        //How far until the player agros the enemy
     [SerializeField]
-    private float damageToPlayer = 50;   
+    private float damageToPlayer = 50;
     [SerializeField]
     private float timerDuration = .15f;        //How long the bomb will blow up
     bool explosion = false;
     bool isVisible = false;
+    bool isDead = false;
 
     //Visuals
     private float timerBlink = .05f;
@@ -37,13 +38,13 @@ public class EnemyAI : Driver
     public GameObject explode3;
     public ParticleSystem pe;
     public ParticleSystem pe1;
-    
+
     void Start()
     {
         health = 50;    //Setting the enemy health
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         playerScript = playerPos.GetComponent<PlayerDriver>();
-        myNav = gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>();        
+        myNav = gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>();
         explode3.SetActive(false);
         explode2.SetActive(false);
     }
@@ -63,9 +64,11 @@ public class EnemyAI : Driver
                 playerFollower();   //Called to follow the player 
             }
         }
+
+        ExplosionEnter();
     }
 
-    
+
     void FixedUpdate()
     {
         //precompute raysettings
@@ -79,7 +82,7 @@ public class EnemyAI : Driver
 
         RaycastHit sighttest;
 
-        if (Physics.Raycast(start, direction, out sighttest,  100))
+        if (Physics.Raycast(start, direction, out sighttest, 100))
         {
             //Checks if nothing is in the way of the player
             if (sighttest.transform.CompareTag("Player"))
@@ -105,16 +108,26 @@ public class EnemyAI : Driver
         myNav.SetDestination(playerPos.position);
     }
 
-    //If the enemy collides with the player
-    private void OnTriggerEnter(Collider other) 
+    void ExplosionEnter()
     {
-        if(other.tag == "Player" && explosion == false && isVisible == true)
+        if (isVisible && Distance() < 10)
         {
             explosion = true;
             myNav.isStopped = true;
             detonate();
-        }       
+        }
     }
+
+    // //If the enemy collides with the player
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.tag == "Player" && explosion == false && isVisible == true)
+    //     {
+    //         explosion = true;
+    //         myNav.isStopped = true;
+    //         detonate();
+    //     }
+    // }
 
     //Starts the detonation sequence
     void detonate()
@@ -133,15 +146,15 @@ public class EnemyAI : Driver
         explode2.SetActive(false);
         Crater.gameObject.transform.localScale += new Vector3(3, 3, 3);
         //Destroys the image 
-        Destroy(image);       
-        
+        Destroy(image);
+
         if (Distance() < killRange && checkOne == false && isVisible == true)
         {
             checkOne = true;
             //Add explosion audio here       
             doDamage();       //Damages the player     
         }
-                     
+
         Destroy(Enemy02, 3);        //Destroys the enemy gameobject after death
     }
 
@@ -155,6 +168,11 @@ public class EnemyAI : Driver
     //The Enemy Dies
     protected override void OnDeath()
     {
+        if(!isDead)
+            return;
+
+        isDead = true;
+        
         //Add particle death here to spray out particles
         StartCoroutine(DeathAnim());
         pe1.Emit(100);
@@ -163,7 +181,7 @@ public class EnemyAI : Driver
     //This is the enemy dealing damage
     void doDamage()
     {
-        playerScript.TakeDamage(damageToPlayer);      
+        playerScript.TakeDamage(damageToPlayer);
     }
 
     IEnumerator explosionCounter()  //Adds the delay to the counter
@@ -175,7 +193,7 @@ public class EnemyAI : Driver
 
         for (int i = 0; i < 15; i++)
         {
-            explode1.SetActive(false);            
+            explode1.SetActive(false);
             explode2.SetActive(true);
             yield return new WaitForSeconds(timerBlink);
             explode1.SetActive(true);
@@ -184,18 +202,18 @@ public class EnemyAI : Driver
         }
 
         //yield return new WaitForSeconds(timerDuration);
-        if(detonateAnim == false)
+        if (detonateAnim == false)
         {
             //Calls the exploding sequence
             explode3.SetActive(false);
             detonateAnim = true;
             Explode();
-        }        
+        }
     }
 
     IEnumerator DeathAnim()
-    {       
-        yield return new WaitForSeconds(1);        
+    {
+        yield return new WaitForSeconds(1);
         Destroy(Enemy02);
     }
 }
