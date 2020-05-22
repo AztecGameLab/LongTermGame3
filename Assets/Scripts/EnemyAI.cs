@@ -41,7 +41,7 @@ public class EnemyAI : Driver
 
     void Start()
     {
-        health = 50;    //Setting the enemy health
+        health = 200;    //Setting the enemy health
         playerPos = GameObject.FindGameObjectWithTag("Player").transform;
         playerScript = playerPos.GetComponent<PlayerDriver>();
         myNav = gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>();
