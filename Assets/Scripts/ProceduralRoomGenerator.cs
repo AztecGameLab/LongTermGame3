@@ -412,10 +412,10 @@ public class ProceduralRoomGenerator : MonoBehaviour
                 //check if a door should be here
                 
                 //if there was no door make a wall
-                
-                tile = Instantiate(tile, surface.transform);
-                tile.transform.localPosition = new Vector3(i - (height / 2.0f) + 0.5f, j - width / 2.0f + 0.5f);
-                
+                if(tile!=null){
+                    tile = Instantiate(tile, surface.transform);
+                    tile.transform.localPosition = new Vector3(i - (height / 2.0f) + 0.5f, j - width / 2.0f + 0.5f);
+                }
             }
         }
         
@@ -450,8 +450,10 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
             if (d.wall == direction && d.wallPosition == new Vector2Int(y, x))
             {
+                if(d.spawn)
                 return doorPrefab;
-                
+                else
+                return null;
             }
         }
         return wallTile;
