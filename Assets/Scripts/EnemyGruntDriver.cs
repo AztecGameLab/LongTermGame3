@@ -159,6 +159,7 @@ public class EnemyGruntDriver : Driver
             GameObject newBullet = Instantiate(bullet, firePointRight.position, Quaternion.identity);
             Vector3 dir = (player.position - newBullet.transform.position).normalized;
             newBullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed;
+            newBullet.GetComponent<GruntBullet>().playerPos = player;
             Debug.DrawRay(firePointRight.position, dir);
             fireRight = false;
             // shoot sfx
@@ -169,6 +170,7 @@ public class EnemyGruntDriver : Driver
             Vector3 dir = (player.position - firePointLeft.position).normalized;
             GameObject newBullet = Instantiate(bullet, firePointLeft.position, Quaternion.identity);
             newBullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed;
+            newBullet.GetComponent<GruntBullet>().playerPos = player;
             Debug.DrawRay(firePointLeft.position, dir);
             fireRight = true;
             // shoot sfx

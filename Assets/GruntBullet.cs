@@ -12,6 +12,8 @@ public class GruntBullet : MonoBehaviour
     public AudioClip[] playerDamageClips;
     public float pitchMin, pitchMax;
 
+    public Transform playerPos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +23,7 @@ public class GruntBullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        gameObject.transform.rotation = Quaternion.LookRotation(playerPos.transform.position - gameObject.transform.position);
     }
     private void DamageSFX()
     {
@@ -35,10 +37,11 @@ public class GruntBullet : MonoBehaviour
         {
             collision.gameObject.GetComponent<PlayerDriver>().TakeDamage(damage);
             DamageSFX();
+            Destroy(gameObject);
         }
         else if(collision.gameObject.tag == "Enemy")
         {
-            
+            Destroy(gameObject);
         }
         else
         {
