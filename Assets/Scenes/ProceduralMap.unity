@@ -212,6 +212,18 @@ PrefabInstance:
       propertyPath: m_RenderPostProcessing
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 521411402, guid: 2ad0dce4d4a995768a976139c26cdd92, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 153.644
+      objectReference: {fileID: 0}
+    - target: {fileID: 521411402, guid: 2ad0dce4d4a995768a976139c26cdd92, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 153.644
+      objectReference: {fileID: 0}
+    - target: {fileID: 521411402, guid: 2ad0dce4d4a995768a976139c26cdd92, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 153.644
+      objectReference: {fileID: 0}
     - target: {fileID: 7482406497995980636, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -405,8 +417,10 @@ MonoBehaviour:
     doors:
     - wall: {x: 1, y: 0, z: 0}
       wallPosition: {x: 1, y: 0}
+      spawn: 0
     - wall: {x: -1, y: 0, z: 0}
       wallPosition: {x: 1, y: 0}
+      spawn: 0
     type: 
     roomObj: {fileID: 0}
     obstacles: []

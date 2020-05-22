@@ -109,8 +109,10 @@ public class ProceduralRoomGenerator : MonoBehaviour
         Physics.Raycast(ray1, out hit, room.bounds.size.y);
 
         itemData temp = new itemData(obj); // make spawn off of prefab later TODOTDO
+        if(!room.start)
         temp.pos = hit.point + new Vector3(0, ySpawnOffset, 0);
-
+        else
+        temp.pos=room.bounds.center-new Vector3(0,room.bounds.extents.y,0)-Vector3.Scale(room.doors[0].wall,room.bounds.extents);
         // temp.name =(room.name + " object: " + temp.transform.position);
         temp.name = "tempItem";
         //print(temp.name);
