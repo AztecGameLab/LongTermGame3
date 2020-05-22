@@ -433,7 +433,7 @@ MonoBehaviour:
   doorDimensions: {x: 1, y: 1}
   map: {fileID: 1670693425}
   brightness: 8
-  EnemySpawnRate: 100
+  EnemySpawnRate: 50
   potentialEnemySpawns:
   - {fileID: 6983286057668968315, guid: e22152a9440d5324784c3fc277b8f929, type: 3}
   - {fileID: 887129037396086608, guid: 66587e9fb9128ba44b2076a5e9b34553, type: 3}
