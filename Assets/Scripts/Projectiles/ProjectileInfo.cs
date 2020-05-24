@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProjectileInfo : MonoBehaviour
 {
     public GameObject hitPs;
+    public Transform hitPosition;
     public Vector3 startPosition;
     public WeaponInfo weaponInfo;
     public float sqrMaxDistance;
@@ -28,7 +29,10 @@ public class ProjectileInfo : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Instantiate(hitPs, transform.position, Quaternion.identity);
+        if (hitPosition != null)
+            Instantiate(hitPs, hitPosition.position, Quaternion.identity);
+        else
+            Debug.LogWarning("Missing particle system position");
 
         //  On all collision: set projectile to inactive
         GameObject target = collision.gameObject;
