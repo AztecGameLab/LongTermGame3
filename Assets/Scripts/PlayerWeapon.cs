@@ -42,6 +42,16 @@ public class PlayerWeapon : MonoBehaviour
 
     private int ammoCount;
 
+    public int GetAmmoCurrent()
+    {
+        return ammoCount;
+    }
+
+    public int GetAmmoMax()
+    {
+        return spawner.weaponStats.ammoMaxCount;
+    }
+
     public void EquipWeapon(GameObject newWeapon)
     {
         if (weapon != null)
