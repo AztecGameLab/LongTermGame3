@@ -20,13 +20,13 @@ public class ProjectileSpawner : MonoBehaviour
     private AudioMixer masterMixer;
     private AudioSource sfxSource;
 
-    public void InitWeaponStats(ProjectileInfo.Type _ammoType)
+    public void InitWeaponStats()
     {
-        //To do:  Grab ammoType from weapon info (needs to be added)
-        //  Then remove parameter...
-        //ammoType = weaponInfo.ammoType;
+        string type = weaponInfo.reciverType;
 
-        ammoType = _ammoType;
+        ammoType = (type == "Sniper") ? ProjectileInfo.Type.Sniper :
+            (type == "Automatic") ? ProjectileInfo.Type.Assault :
+            (type == "Shotgun") ? ProjectileInfo.Type.Shotgun : ProjectileInfo.Type.Standard;
 
         if (ammoType == ProjectileInfo.Type.Sniper)
         {

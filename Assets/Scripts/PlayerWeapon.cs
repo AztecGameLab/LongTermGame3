@@ -14,7 +14,7 @@ public class PlayerWeapon : MonoBehaviour
     public float recoilMaxOffsetZ = 1.5f;
 
     //Temporary, should come from weapon game object
-    public ProjectileInfo.Type ammoType = ProjectileInfo.Type.Standard;
+    //public ProjectileInfo.Type ammoType = ProjectileInfo.Type.Standard;
 
     private GameObject weapon;
     private GameObject envelope;
@@ -63,7 +63,6 @@ public class PlayerWeapon : MonoBehaviour
             weapon = null;
         }
         
-
         envelope = gameObject.transform.GetChild(0).gameObject;
 
         weapon = newWeapon;
@@ -74,7 +73,7 @@ public class PlayerWeapon : MonoBehaviour
         weapon.GetComponent<WeaponInfo>().isEquipped = true;
 
         spawner = weapon.GetComponent<ProjectileSpawner>();
-        spawner.InitWeaponStats(ammoType);
+        spawner.InitWeaponStats();
 
         HudCanvas.instance.SetAmmo(ammoCount);
 
@@ -85,7 +84,7 @@ public class PlayerWeapon : MonoBehaviour
     }
 
     //Temporary for testing
-    public void SetProjectile(ProjectileInfo.Type type)
+/*    public void SetProjectile(ProjectileInfo.Type type)
     {
         ammoType = type;
 
@@ -93,7 +92,7 @@ public class PlayerWeapon : MonoBehaviour
         weapon = null;
 
         EquipWeapon(newWeapon);
-    }
+    }*/
 
     Quaternion GetAimRotation()
     {

@@ -74,7 +74,7 @@ public class TestPlayer : MonoBehaviour
     {
         GameObject weapon = GameObject.FindGameObjectWithTag("PlayerWeapon");
 
-        weapon.GetComponent<PlayerWeapon>().SetProjectile(ammoType);
+        //weapon.GetComponent<PlayerWeapon>().SetProjectile(ammoType);
     }
 
     void TestCreateWeapon()
