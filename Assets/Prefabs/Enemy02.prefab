@@ -4886,7 +4886,7 @@ MonoBehaviour:
   rigid: {fileID: 887129037396086612}
   isVisible: 0
   killRange: 8
-  agroRange: 300
+  agroRange: 20
   detonationRange: 5
   isDead: 0
   image: {fileID: 2450931575511721192}

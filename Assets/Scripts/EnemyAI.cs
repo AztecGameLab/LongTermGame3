@@ -21,11 +21,11 @@ public class EnemyAI : Driver
 
     //Ranges
     public float killRange = 10f;
-    public float agroRange = 1500;        //How far until the player agros the enemy
+    public float agroRange = 20;        //How far until the player agros the enemy
     public float detonationRange = 10f;
 
     //Explosions
-    private float damageToPlayer = 50;
+    private float damageToPlayer = 20;
     private float timerDuration = .15f;        //How long the bomb will blow up
     bool explosion = false;
     public bool isDead = false;
@@ -83,11 +83,11 @@ public class EnemyAI : Driver
 
         RaycastHit sighttest;
 
-        if (Physics.Raycast(start, direction, out sighttest, 100))
+        if (Physics.Raycast(start, direction, out sighttest, 500))
         {
             //Checks if nothing is in the way of the player
             if (sighttest.transform.CompareTag("Player"))
-            {
+            {                
                 isVisible = true;
                 if (!explosion && explosion == false)
                 {
@@ -133,8 +133,6 @@ public class EnemyAI : Driver
             
             exp.Emit(100);
             Destroy(rigid);
-            // Crater.SetActive(true);
-            // Crater.gameObject.transform.localScale += new Vector3(3, 3, 3);
             dot.SetActive(false);
             Instantiate(Crater,Enemy02.transform.position, Quaternion.identity);
             if (Distance() < killRange && checkOne == false && isVisible == true)
