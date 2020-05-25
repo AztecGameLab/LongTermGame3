@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerWeapon : MonoBehaviour
 {
+    const int layerPlayer = 13;
+
     public float targetDistance = 50.0f;            //Distance to crosshair
     public float timeToRecenter = 0.5f;             //Time to recenter shot
     public float timeToRecover = 0.4f;              //Max recoil recovery time
@@ -70,14 +72,16 @@ public class PlayerWeapon : MonoBehaviour
         weapon.transform.GetChild(0).localPosition = new Vector3(0, 0, 0);
         weapon.transform.localRotation = Quaternion.identity;
         weapon.GetComponent<WeaponInfo>().isEquipped = true;
-        spawner = weapon.GetComponent<ProjectileSpawner>();
 
+        spawner = weapon.GetComponent<ProjectileSpawner>();
         spawner.InitWeaponStats(ammoType);
+
+        HudCanvas.instance.SetAmmo(ammoCount);
 
         InitCenterAim();
 
-        gameObject.layer = 13;
-        SetLayerRecursive(weapon, 13);
+        gameObject.layer = layerPlayer;
+        SetLayerRecursive(weapon, layerPlayer);
     }
 
     //Temporary for testing
@@ -198,6 +202,8 @@ public class PlayerWeapon : MonoBehaviour
 
             ammoCount--;
 
+            HudCanvas.instance.SetAmmo(ammoCount);
+
             if (ammoCount == 0)
             {
                 SetReloading();
@@ -229,9 +235,11 @@ public class PlayerWeapon : MonoBehaviour
 
         //Stop sound
         spawner.StopPlayRecharge();
+
+        HudCanvas.instance.SetAmmo(ammoCount);
     }
 
- 
+
     private void Start()
     {
     }
@@ -239,7 +247,7 @@ public class PlayerWeapon : MonoBehaviour
     private void Update()
     {
         //TODO Temporary fix!
-        if (gameObject.transform.childCount > 1)
+/*        if (gameObject.transform.childCount > 1)
         {
             for(int i = 0; i < gameObject.transform.childCount; i++)
             {
@@ -250,7 +258,7 @@ public class PlayerWeapon : MonoBehaviour
                     Destroy(child);
                 }
             }
-        }
+        }*/
 
         bool aimSet = false;
         bool needSetRecoil = false;
