@@ -14,10 +14,14 @@ public class GruntBullet : MonoBehaviour
 
     public Transform playerPos;
 
+    float startTime;
+    public float enemyCollisionGracePeriod = 1f;
+
     // Start is called before the first frame update
     void Start()
     {
         sfxSource = GetComponent<AudioSource>();
+        startTime = Time.time;
     }
 
     // Update is called once per frame
@@ -39,11 +43,11 @@ public class GruntBullet : MonoBehaviour
             DamageSFX();
             Destroy(gameObject);
         }
-        else if(collision.gameObject.tag == "Enemy")
+        else if(collision.gameObject.tag == "Enemy" && Time.time - startTime > enemyCollisionGracePeriod)
         {
             Destroy(gameObject);
         }
-        else
+        else if (Time.time - startTime > enemyCollisionGracePeriod)
         {
             Destroy(gameObject);
         }

@@ -49,13 +49,13 @@ public class EnemyGruntDriver : Driver
 
     public ParticleSystem deathEffect;
 
-    Transform player;
+    Vector3 originOffset;
+    
     NavMeshAgent agent;
     // Start is called before the first frame update
     void Start()
     {
-        //player = GameObject.FindObjectOfType<PlayerDriver>().transform;
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        
         agent = GetComponent<NavMeshAgent>();
         
         isAlerted = false;
@@ -63,6 +63,8 @@ public class EnemyGruntDriver : Driver
         fireRight = true;
 
         health = 500;
+
+        originOffset = new Vector3(0, 2, 0);
 
         sfxSource = GetComponent<AudioSource>();
     }
@@ -72,8 +74,8 @@ public class EnemyGruntDriver : Driver
     {
         //Debug.DrawLine(firePointRight.position, player.position);
         //Debug.DrawLine(firePointLeft.position, player.position);
-        playerVector = player.position - transform.position;
-
+        playerVector = player.position - (transform.position + originOffset);
+        Debug.DrawRay(transform.position + originOffset, playerVector);
         //print(player.position);
         //print(firePointLeft.position);
         if (!isAlerted)
@@ -139,10 +141,10 @@ public class EnemyGruntDriver : Driver
     {
         bool isSighted;
         //layermask that ignores the player layer
-        int layerMask = LayerMask.GetMask("Player");
-        isSighted = Physics.Raycast(transform.position, playerVector, playerVector.magnitude, layerMask) && Vector3.Angle(transform.forward, playerVector) <= 0.5 * fieldOfView;
+        int layerMask = LayerMask.GetMask("Projectiles");
+        isSighted = Physics.Raycast(transform.position, playerVector, playerVector.magnitude, layerMask); //&& Vector3.Angle(transform.forward, playerVector) <= 0.5 * fieldOfView;
         //print(isSighted);
-        return isSighted;
+        return true;
     }
     private void PlayWeaponSFX()
     {
@@ -157,7 +159,7 @@ public class EnemyGruntDriver : Driver
         {
             
             GameObject newBullet = Instantiate(bullet, firePointRight.position, Quaternion.identity);
-            Vector3 dir = (player.position - newBullet.transform.position).normalized;
+            Vector3 dir = (player.position - newBullet.transform.position + new Vector3(0, -1, 0)).normalized;
             newBullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed;
             newBullet.GetComponent<GruntBullet>().playerPos = player;
             Debug.DrawRay(firePointRight.position, dir);
@@ -167,7 +169,7 @@ public class EnemyGruntDriver : Driver
         }
         else
         {
-            Vector3 dir = (player.position - firePointLeft.position).normalized;
+            Vector3 dir = (player.position - firePointLeft.position + new Vector3(0,-1,0)).normalized;
             GameObject newBullet = Instantiate(bullet, firePointLeft.position, Quaternion.identity);
             newBullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed;
             newBullet.GetComponent<GruntBullet>().playerPos = player;
