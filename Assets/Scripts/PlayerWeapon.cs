@@ -72,6 +72,11 @@ public class PlayerWeapon : MonoBehaviour
         weapon.transform.localRotation = Quaternion.identity;
         weapon.GetComponent<WeaponInfo>().isEquipped = true;
 
+        Vector3 newPosition = new Vector3(0, 0, weapon.GetComponent<WeaponInfo>().weaponCenter.y * 6.25f - 0.8f);
+
+        Debug.Log($"Weapon Center: {newPosition}");
+        envelope.transform.localPosition = newPosition;
+
         spawner = weapon.GetComponent<ProjectileSpawner>();
         spawner.InitWeaponStats();
 
@@ -245,8 +250,9 @@ public class PlayerWeapon : MonoBehaviour
 
     private void Update()
     {
-        //TODO Temporary fix!
-/*        if (gameObject.transform.childCount > 1)
+        //TODO Temporary fix! (still needed)
+        //  Where is the Weapon coming from on Startup being put in the wrong place!  I cannot find the related code...
+        if (gameObject.transform.childCount > 1)
         {
             for(int i = 0; i < gameObject.transform.childCount; i++)
             {
@@ -257,7 +263,7 @@ public class PlayerWeapon : MonoBehaviour
                     Destroy(child);
                 }
             }
-        }*/
+        }
 
         bool aimSet = false;
         bool needSetRecoil = false;
