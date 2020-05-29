@@ -24,7 +24,7 @@ public class ScreenDoorTrigger : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            doorOpen.Invoke();
+            //doorOpen.Invoke();
         }
         
 
@@ -34,7 +34,7 @@ public class ScreenDoorTrigger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            doorClose.Invoke();
+            //doorClose.Invoke();
         }
     }
 

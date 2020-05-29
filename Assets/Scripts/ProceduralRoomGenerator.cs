@@ -49,13 +49,15 @@ public class ProceduralRoomGenerator : MonoBehaviour
         roomLocation = new GameObject(myRoom.name).transform;
         roomLocation.position = myRoom.bounds.center / 2;
         roomLocation.parent = map;
+        RoomManager spawnManager= roomLocation.gameObject.AddComponent<RoomManager>();
+        spawnManager.enemies=new List<GameObject>();
         //six surfaces for a basic room
-        CreateSurface(Vector3.up, (int) myRoom.bounds.size.z, (int)myRoom.bounds.size.x, myRoom.bounds.extents.y);
-        CreateSurface(Vector3.down, (int)myRoom.bounds.size.z, (int)myRoom.bounds.size.x, myRoom.bounds.extents.y);
-        CreateSurface(Vector3.left, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.z, myRoom.bounds.extents.x);
-        CreateSurface(Vector3.right, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.z, myRoom.bounds.extents.x);
-        CreateSurface(Vector3.forward, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.x, myRoom.bounds.extents.z);
-        CreateSurface(Vector3.back, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.x, myRoom.bounds.extents.z);
+        CreateSurface(Vector3.up, (int) myRoom.bounds.size.z, (int)myRoom.bounds.size.x, myRoom.bounds.extents.y,spawnManager);
+        CreateSurface(Vector3.down, (int)myRoom.bounds.size.z, (int)myRoom.bounds.size.x, myRoom.bounds.extents.y,spawnManager);
+        CreateSurface(Vector3.left, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.z, myRoom.bounds.extents.x,spawnManager);
+        CreateSurface(Vector3.right, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.z, myRoom.bounds.extents.x,spawnManager);
+        CreateSurface(Vector3.forward, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.x, myRoom.bounds.extents.z,spawnManager);
+        CreateSurface(Vector3.back, (int)myRoom.bounds.size.y, (int)myRoom.bounds.size.x, myRoom.bounds.extents.z,spawnManager);
         CreateLight(data,roomLocation);
         if (data.final)
         {
@@ -64,7 +66,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         }
         else if (data.start)
         {
-            data.objects.Add(AttemptSpawnObject(data, potentialGunSpawns[0], 0, roomLocation));
+            data.objects.Add(AttemptSpawnObject(data, potentialGunSpawns[0], 0, roomLocation,spawnManager,false));
 
         }
         else
@@ -76,16 +78,19 @@ public class ProceduralRoomGenerator : MonoBehaviour
             for (int i = 0; i < Random.Range(minObjs, maxObjs); i++)
             {
                 GameObject[] itemTypeSpawning = getSpawnItemType();
-                data.objects.Add(AttemptSpawnObject(data, itemTypeSpawning[Random.Range(0, itemTypeSpawning.Length)], 0, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
+                bool e=itemTypeSpawning==potentialEnemySpawns;
+                itemData spawned=AttemptSpawnObject(data, itemTypeSpawning[Random.Range(0, itemTypeSpawning.Length)], 0, roomLocation,spawnManager,e);
+                data.objects.Add(spawned); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
             }
       
         }
+        
         return roomLocation.gameObject;
         //Floor();
         //Walls();
         //Ceiling();
     }
-    public itemData AttemptSpawnObject(RoomData room, GameObject obj, int ySpawnOffset,Transform parent) // tries to spawn object in random position of a room
+    public itemData AttemptSpawnObject(RoomData room, GameObject obj, int ySpawnOffset,Transform parent,RoomManager spawnManager,bool enemy) // tries to spawn object in random position of a room
     {
         // find random 2d point on ceiling
         Vector3 roomCornerOffset = room.bounds.center - (room.bounds.size / 2);
@@ -116,7 +121,12 @@ public class ProceduralRoomGenerator : MonoBehaviour
         // temp.name =(room.name + " object: " + temp.transform.position);
         temp.name = "tempItem";
         //print(temp.name);
-        temp.Spawn(parent);
+        if(enemy){
+            spawnManager.enemies.Add(temp.Spawn(parent));
+        }
+        else{
+            temp.Spawn(parent);
+        }
         return temp;
 
 
@@ -390,7 +400,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         light.transform.parent = room;
     }
     //creates a surface facing the <dir> direction sized <width> x <height> and <distance> away from the center
-    private void CreateSurface(Vector3 dir , int width, int height, float distance)
+    private void CreateSurface(Vector3 dir , int width, int height, float distance,RoomManager doorController)
     {
         //create an object to hold all the tiles in the wall
         GameObject surface = new GameObject("surface");
@@ -415,7 +425,14 @@ public class ProceduralRoomGenerator : MonoBehaviour
                 
                 //if there was no door make a wall
                 if(tile!=null){
-                    tile = Instantiate(tile, surface.transform);
+                    
+                    if(tile==doorPrefab){
+                        tile = Instantiate(tile, surface.transform);
+                        doorController.doorOpen=tile.GetComponentInChildren<ScreenDoorTrigger>().doorOpen;
+                    }
+                    else{
+                        tile = Instantiate(tile, surface.transform);
+                    }
                     tile.transform.localPosition = new Vector3(i - (height / 2.0f) + 0.5f, j - width / 2.0f + 0.5f);
                 }
             }
