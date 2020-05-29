@@ -15,7 +15,6 @@ public class RoomManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(enemies.Count);
         foreach(GameObject enemy in enemies){
             if(enemy==null){
                 enemies.Remove(enemy);
