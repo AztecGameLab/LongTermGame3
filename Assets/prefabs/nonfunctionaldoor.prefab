@@ -46,12 +46,13 @@ GameObject:
   - component: {fileID: 7150620675665598907}
   - component: {fileID: 5435276731996379904}
   - component: {fileID: 131784992497735522}
+  - component: {fileID: 2412548253222119369}
   m_Layer: 0
   m_Name: RightDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &3410313012812760447
 Transform:
@@ -139,6 +140,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 988a1405de701a64381da88493211f32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &2412548253222119369
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5581843556785247703}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.2080001, y: 0.97700006, z: 0.127}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.37, y: 0, z: 0.127}
+  m_TimeToStationary: 0.5
 --- !u!1 &7267626213980857162
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,12 +325,13 @@ GameObject:
   - component: {fileID: 8035238886192445211}
   - component: {fileID: 2984662284466628263}
   - component: {fileID: 1795571674596094775}
+  - component: {fileID: 4080872053532994316}
   m_Layer: 0
   m_Name: LeftDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &2570991744988407701
 Transform:
@@ -401,3 +419,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c66fb9724d8434f48bfb2f549e1abbca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!208 &4080872053532994316
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7292596799261610588}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 1.2290001, y: 0.97700006, z: 0.127}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.39100003, y: 0, z: 0.127}
+  m_TimeToStationary: 0.5
