@@ -33,11 +33,13 @@ public class WeaponInfo : MonoBehaviour
     private AudioClip themeClip;
     private bool alreadyPlayed;
     private AudioMixer masterMixer;
+    private GameObject audioObject;
 
     void Start()
     {
         bullet = (GameObject)Resources.Load<GameObject>("Bullet");
         projectileSpawner = gameObject.GetComponent<ProjectileSpawner>();
+
 
         musicSource = gameObject.AddComponent<AudioSource>();
         themeClip = Resources.Load<AudioClip>("Audio/Level_Theme");
@@ -48,7 +50,7 @@ public class WeaponInfo : MonoBehaviour
         musicSource.outputAudioMixerGroup = masterMixer.FindMatchingGroups(MusicMixerGroup)[0];
     }
 
-    private void LevelTheme()
+    /*private void LevelTheme()
     {
         if (!alreadyPlayed)
         {
@@ -56,14 +58,14 @@ public class WeaponInfo : MonoBehaviour
             //Debug.Log("it works");
             alreadyPlayed = true;
         }
-    }
+    }*/
 
     // Update is called once per frame
     void Update()
     {
         if (isEquipped)
         {
-            LevelTheme();
+            //LevelTheme();
         }
 
         if (isEquipped && isAutomatic)

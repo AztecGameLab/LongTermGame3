@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public class Pause : MonoBehaviour
 {
     public static bool isGamePaused = false;
     public GameObject pauseButton;
     bool flagDelete = false;
+
+    public AudioMixer masterMixer;
 
     // Update is called once per frame
     void Update()
@@ -18,12 +21,24 @@ public class Pause : MonoBehaviour
             if (isGamePaused == true)
             {
                 Resume();
+                MusicLowPassOff();
             }
             else
             {
                 freeze();
+                MusicLowPassOn();
             }
         }
+    }
+
+    public void MusicLowPassOn()
+    {
+        masterMixer.SetFloat("LowpassLvl", 0);
+    }
+
+    public void MusicLowPassOff()
+    {
+        masterMixer.SetFloat("LowpassLvl", -80);
     }
 
     //Resumes the player from the pause menu
