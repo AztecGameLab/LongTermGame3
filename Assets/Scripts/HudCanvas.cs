@@ -39,17 +39,18 @@ public class HudCanvas : MonoBehaviour
 
     public void TakeDamage()
     {
-        if(dead)
+        if (dead)
             return;
-            
+
         StartCoroutine(Blood());
     }
 
     IEnumerator Blood()
     {
         blood.enabled = true;
-        yield return new WaitForSeconds(0.05f);
-        blood.enabled = false;
+        yield return new WaitForSeconds(0.075f);
+        if (!dead)
+            blood.enabled = false;
     }
 
     public void Die()
@@ -62,7 +63,7 @@ public class HudCanvas : MonoBehaviour
     {
         blood.enabled = true;
         yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(0);
     }
 
 }
