@@ -24,10 +24,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: e05c608a210774e45afbbdbd0202de3c,
         type: 3}
+    - target: {fileID: 1008945579, guid: dd52cb1360160994584b6171017b05a2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 84781941489633416, guid: dd52cb1360160994584b6171017b05a2,
         type: 3}
       propertyPath: m_Name
-      value: BillboardImposter
+      value: BillboardImposterShooting Variant
       objectReference: {fileID: 0}
     - target: {fileID: 5511774869613681861, guid: dd52cb1360160994584b6171017b05a2,
         type: 3}
