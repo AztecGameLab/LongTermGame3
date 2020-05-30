@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1008945579, guid: dd52cb1360160994584b6171017b05a2, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1008945580, guid: dd52cb1360160994584b6171017b05a2, type: 3}
       propertyPath: m_SizeDelta.x
       value: 3

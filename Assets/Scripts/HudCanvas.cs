@@ -34,7 +34,7 @@ public class HudCanvas : MonoBehaviour
 
     public void SetAmmo(float a)
     {
-        ammo.text = "Ammo: " + a;
+        ammo.text = a.ToString();
     }
 
     public void TakeDamage()
