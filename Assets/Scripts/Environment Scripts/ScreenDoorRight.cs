@@ -15,7 +15,8 @@ public class ScreenDoorRight : MonoBehaviour
     private Vector3 start;
     private Vector3 end;
     private float doorPosition = 0f;
-    private float distance = 2f;
+    //private float distance = 2f;
+    private float distance = 0.7734f;
 
     //List of coroutines needed. Edit: technically not needed anymore because calling with quotations
     private IEnumerator closeDoor;
