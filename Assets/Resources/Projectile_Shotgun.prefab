@@ -55,7 +55,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -223,13 +223,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec06cee7613ddf4983014081ac9c794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseDamage: 200
+  baseDamage: 500
   caliber: 1
   caliberToLength: 1.5
   soundOnFire: {fileID: 8300000, guid: 70ac120014d1f430dbe2134fac46f760, type: 3}
   soundOnHitWall: {fileID: 0}
   soundOnHitEnemy: {fileID: 8300000, guid: e62e137bde1994342845e50ea9d958a6, type: 3}
   soundOnReload: {fileID: 8300000, guid: 9388e3c53fc954a75955b615e3cbbd13, type: 3}
+  scaledDamage: 0
 --- !u!114 &1470226463730753243
 MonoBehaviour:
   m_ObjectHideFlags: 0

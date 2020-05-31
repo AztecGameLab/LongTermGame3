@@ -115,7 +115,7 @@ public class ProjectileSpawner : MonoBehaviour
 
         Vector3 shootFrom = GetBarrel().position;
 
-        SpawnProjectile(gameObject.transform.rotation, shootFrom, projScale, true);
+        SpawnProjectile(gameObject.transform.rotation, shootFrom, projScale, true, 1.0f);
     }
 
     public void StartPlayRecharge()
@@ -137,7 +137,7 @@ public class ProjectileSpawner : MonoBehaviour
         sfxSource.Stop();
     }
 
-    public GameObject SpawnProjectile(Quaternion trajectory, Vector3 shootFrom, float projScale, bool playFireClip)
+    public GameObject SpawnProjectile(Quaternion trajectory, Vector3 shootFrom, float projScale, bool playFireClip, float damageScale)
     {
         GameObject projectile = projectilePool.GetNext(ammoType);
 
@@ -146,6 +146,8 @@ public class ProjectileSpawner : MonoBehaviour
         info.weaponInfo = weaponInfo;
 
         AmmoTypeInfo ammoTypeInfo = info.GetComponent<AmmoTypeInfo>();
+
+        ammoTypeInfo.scaledDamage = ammoTypeInfo.baseDamage * damageScale;
 
         //Projectile dimensions
         float projDiameter = ammoTypeInfo.caliber * projScale;

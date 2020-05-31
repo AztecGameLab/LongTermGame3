@@ -94,9 +94,9 @@ public class ProjectileInfo : MonoBehaviour
         //  'startPosition' is for determining effect of damage falloff
         AmmoTypeInfo ammoType = gameObject.GetComponent<AmmoTypeInfo>();
 
-        float damage = ammoType.baseDamage * damageLevel;
+        float damage = ammoType.scaledDamage * damageLevel;
 
-        Debug.Log($"Damage Info:  Base={ammoType.baseDamage}, Level={damageLevel}, Final={damage}");
+        Debug.Log($"Damage Info:  Base={ammoType.scaledDamage}, Level={damageLevel}, Final={damage}");
 
         return (int)damage;
     }

@@ -48,6 +48,9 @@ public class PlayerDriver : Driver
     public AudioClip teleporterClip;
     private AudioSource clipSource;
 
+    //To keep from triggering the teleport sequence twice
+    private bool teleporting = false;
+
     private void Awake()
     {
         horizontalVelocity = new Vector3();
@@ -151,11 +154,16 @@ public class PlayerDriver : Driver
         {
             if (otherObject.tag.Equals("Health"))
             {
-                Destroy(otherObject);
-                ec.Heal(10);
+                if (health < maxHealth)
+                {
+                    Destroy(otherObject);
+                    ec.Heal(10);
+                }
             }
             else if (otherObject.tag.Equals("Weapon"))
             {
+                //Weapon pickups are detected / handled by the WeaponSpawner
+                /*
                 Destroy(otherObject.GetComponent<BoxCollider>());
                 Transform otherTrans = otherObject.transform;
                 Transform camera = ec.childTransform;
@@ -165,6 +173,7 @@ public class PlayerDriver : Driver
                 otherTrans.SetParent(camera);
 
                 weapon = other.gameObject;
+                */
 
             }
             else if (otherObject.tag.Equals("Ammo"))
@@ -188,13 +197,22 @@ public class PlayerDriver : Driver
             }*/
             else if (otherObject.tag.Equals("Teleporter"))
             {
-                StartCoroutine(StartTeleportation());
+                if (!teleporting)
+                {
+                    teleporting = true;
+                    StartCoroutine(StartTeleportation());
+                }
             }
             IEnumerator StartTeleportation()
             {
                 // play audio
-                clipSource.PlayOneShot(teleporterClip);
-                yield return new WaitForSecondsRealtime(2.17f);
+                //clipSource.PlayOneShot(teleporterClip);
+
+                AudioSource portalSource = otherObject.GetComponent<AudioSource>();
+                portalSource.PlayOneShot(teleporterClip);
+
+                //yield return new WaitForSecondsRealtime(2.17f);
+                yield return new WaitForSecondsRealtime(1.5f);
                 //next scene
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }

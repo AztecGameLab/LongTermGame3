@@ -728,7 +728,7 @@ MonoBehaviour:
   gravity: 10
   jumpHeight: 2
   sensitivity: 100
-  teleporterClip: {fileID: 8300000, guid: a987c5e84d2cbae49a129ebbe46d58b5, type: 3}
+  teleporterClip: {fileID: 8300000, guid: 850708e7d4278430a8d90aa98575fc08, type: 3}
 --- !u!65 &7482406497995980634
 BoxCollider:
   m_ObjectHideFlags: 0

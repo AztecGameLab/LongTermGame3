@@ -38,7 +38,10 @@ public class AmmoTypeInfo : MonoBehaviour
     public AudioClip soundOnReload;
     private AudioSource sfxSource;
 
-    static public void DefaultAmmoType(AmmoTypeInfo info)
+    [HideInInspector]
+    public float scaledDamage;    //baseDamage with damage scale applied (not the same as the damageLevel from velocity stat)
+
+/*    static public void DefaultAmmoType(AmmoTypeInfo info)
     {
         info.baseDamage = 10.0f;
         info.caliber = 0.2f + Random.value * 0.6f;
@@ -49,7 +52,7 @@ public class AmmoTypeInfo : MonoBehaviour
     {
         //return (weaponInfo.baseDamage + baseDamage) * damageTypeFactor[damageType];
         return (weaponInfo.muzzleVelocity * caliber * 0.05f + baseDamage);
-    }
+    }*/
 
     void Awake()
     {
