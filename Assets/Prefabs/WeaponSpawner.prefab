@@ -111,5 +111,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dec3d7d4751e44b6b9ebfaf6db60b3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  degreesPerSecond: 220
+  degreesPerSecond: 225
   isWeapon: 1

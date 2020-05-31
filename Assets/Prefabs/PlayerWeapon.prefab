@@ -75,13 +75,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 150f3b819f29a4c43a8beb63607471b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetDistance: 50
+  targetDistance: 20
   timeToRecenter: 0.5
   timeToRecover: 0.4
   recoilTime: 0.1
   recoilMaxTilt: 30
   recoilMaxOffsetZ: 1.5
-  ammoType: 0
 --- !u!114 &3307278325576138107
 MonoBehaviour:
   m_ObjectHideFlags: 0
