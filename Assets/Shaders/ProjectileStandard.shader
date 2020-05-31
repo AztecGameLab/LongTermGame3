@@ -38,7 +38,7 @@
 			v2f vert(appdata v)
 			{
 				v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex * (sqrt(v.uv.y) * 0.8 + 0.2));
+				o.vertex = UnityObjectToClipPos(v.vertex * (v.uv.y * v.uv.y * 0.5 + 0.5));
                 o.uv = v.uv;
 
 				return o;
@@ -46,15 +46,17 @@
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-                float2 rootXY = sqrt(i.uv);
+                float2 rootXY = sqrt(abs(i.uv));
                 float sqrX = i.uv.x * i.uv.x;
-                float ax = i.uv.y;
-         		fixed4 result = (i.uv.y > 0.15) ? fixed4(0.9 + 0.1 * rootXY.x, sqrX * 0.2 + (0.3 - 0.3 * rootXY.y), sqrX * 0.05, 2.0 * ax)
+                float ax = abs(i.uv.y) * 2.0; 
+         		fixed4 result = (i.uv.y > 0.15) ? fixed4(0.9 + 0.1 * rootXY.x, sqrX * 0.2 + (0.3 - 0.3 * rootXY.y), sqrX * 0.05, ax)
                     : fixed4(1.0, 0.2, 0.0, 0.4);
 
-				result = min(result, fixed4(3.0, 2.0, 3.0, 2.0));
+				float w = 1.5;
 
-		        return fixed4(result.x, result.z, result.y, result.w);
+				result = fixed4(result.r * w, result.b * w, result.g * w, result.a);
+
+                return result;
 			}
 			ENDCG
 		}

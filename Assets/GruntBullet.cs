@@ -17,11 +17,22 @@ public class GruntBullet : MonoBehaviour
     float startTime;
     public float enemyCollisionGracePeriod = 1f;
 
+    private const float maxExistTime = 5.0f;
+
     // Start is called before the first frame update
     void Start()
     {
         sfxSource = GetComponent<AudioSource>();
         startTime = Time.time;
+    }
+
+    void FixedUpdate()
+    {
+        //So many stray foo fighters, harmless until one blocked my doorway
+        if ((Time.time - startTime) > maxExistTime)
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Update is called once per frame

@@ -46,15 +46,18 @@ public class ProjectileInfo : MonoBehaviour
 
             if (testTarget != null)
             {
-                testTarget.TakeDamage(GetDamage());
+                float damageLevel = weaponInfo.muzzleVelocity * 0.005f + 0.5f;
+
+                testTarget.TakeDamage(GetDamage(damageLevel));
             }
 
             hitClip = ammoType.soundOnHitEnemy;
         }
-        else
+        //Commented out:  SoundOnWall is always set to None, but the following will kick a warning
+/*        else
         {
             hitClip = ammoType.soundOnHitWall;
-        }
+        }*/
 
         TerminateWithSound(hitClip);
     }
@@ -85,11 +88,17 @@ public class ProjectileInfo : MonoBehaviour
         return true;
     }
 
-    virtual public int GetDamage()
+    virtual public int GetDamage(float damageLevel)
     {
         //To do:  If hit enemy: calculate damage from weaponInfo, ammoTypeInfo, and enemy stats
         //  'startPosition' is for determining effect of damage falloff
-        return 100;
+        AmmoTypeInfo ammoType = gameObject.GetComponent<AmmoTypeInfo>();
+
+        float damage = ammoType.baseDamage * damageLevel;
+
+        Debug.Log($"Damage Info:  Base={ammoType.baseDamage}, Level={damageLevel}, Final={damage}");
+
+        return (int)damage;
     }
 
     virtual public void ResetState()
@@ -109,7 +118,14 @@ public class ProjectileInfo : MonoBehaviour
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         gameObject.GetComponent<CapsuleCollider>().enabled = false;
 
-        StartCoroutine(DelaySetActive(sound.length));
+        if (sound != null)
+        {
+            StartCoroutine(DelaySetActive(sound.length));
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     IEnumerator DelaySetActive(float delay)

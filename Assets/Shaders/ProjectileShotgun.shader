@@ -46,15 +46,17 @@
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-                float2 rootXY = sqrt(i.uv);
+                float2 rootXY = sqrt(abs(i.uv));
                 float sqrX = i.uv.x * i.uv.x;
-                float ax = i.uv.y; 
-				fixed4 result = (i.uv.y > 0.15) ? fixed4(0.9 + 0.1 * rootXY.x, sqrX * 0.2 + (0.3 - 0.3 * rootXY.y), sqrX * 0.05, 2.0 * ax)
+                float ax = abs(i.uv.y) * 2.0; 
+				fixed4 result = (i.uv.y > 0.15) ? fixed4(0.9 + 0.1 * rootXY.x, sqrX * 0.2 + (0.3 - 0.3 * rootXY.y), sqrX * 0.05, ax)
                     : fixed4(1.0, 0.2, 0.0, 0.4);
 
-				result = min(result, fixed4(3.0, 2.0, 2.0, 2.0));
+				float w = 2.2;
 
-                return fixed4(result.x, result.y, result.z, result.w);
+				result = fixed4(result.r * w, result.g * w, result.b * w, result.a);
+
+                return result;
 			}
 			ENDCG
 		}

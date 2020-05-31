@@ -11,8 +11,8 @@ public class ProjectileStandard : ProjectileInfo
         stats.SetRPM(info.fireRate, 80.0f, 250.0f);     
         stats.SetShotRecoil(info.recoil, 40.0f, 5.0f);
         stats.SetVelocity(info.muzzleVelocity, 50.0f, 180.0f);
-        stats.SetRangePerStage(info.effectiveRange, 50.0f, 250.0f);
-        stats.SetReloadSeconds(info.reloadSpeed, 2.0f, 0.5f);
+        stats.SetRangePerStage(info.effectiveRange, 8.0f, 20.0f);
+        stats.SetReloadSeconds(info.reloadSpeed, 2.2f, 0.7f);
 
         stats.SetReloadMethod(0.2f, 0.6f, 1.0f, 10.0f, 0.5f);
     }

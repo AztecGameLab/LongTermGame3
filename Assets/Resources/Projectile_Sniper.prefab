@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec06cee7613ddf4983014081ac9c794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseDamage: 500
+  baseDamage: 750
   caliber: 0.4
   caliberToLength: 5
   soundOnFire: {fileID: 8300000, guid: 0589edad764c04670bc61c4a55d16fe4, type: 3}
