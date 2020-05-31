@@ -49,7 +49,11 @@ public class WeaponComponentGenerator : MonoBehaviour
 
     public void SetReciever(WeaponInfo weapon)
     {
-        recieverChoice = (int)Random.Range(0.0f, 3.0f);
+        recieverChoice = (int)Random.Range(0.0f, 4.0f);
+
+        //Uncomment to force receiver type for play balancing
+        //recieverChoice = 0;
+
         choice = recievers[recieverChoice];
 
         if (recieverChoice == 3) // Sniper

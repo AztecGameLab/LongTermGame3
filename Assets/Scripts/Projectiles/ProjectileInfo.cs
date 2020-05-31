@@ -100,8 +100,11 @@ public class ProjectileInfo : MonoBehaviour
 
     void TerminateWithSound(AudioClip sound)
     {
-        AudioSource audioSource = gameObject.GetComponent<AudioSource>();
-        audioSource.PlayOneShot(sound);
+        if (sound != null)
+        {
+            AudioSource audioSource = gameObject.GetComponent<AudioSource>();
+            audioSource.PlayOneShot(sound);
+        }
 
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         gameObject.GetComponent<CapsuleCollider>().enabled = false;

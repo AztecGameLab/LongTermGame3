@@ -14,16 +14,6 @@ public class ProjectileSniper : ProjectileInfo
         stats.SetRangePerStage(info.effectiveRange, 200.0f, 200.0f);
         stats.SetReloadSeconds(info.reloadSpeed, 1.8f, 1.8f);
 
-        /*
-        stats.SetAimDrift(info.accuracy, 10.0f);
-        stats.SetRPM(info.fireRate, 5.0f);
-        stats.SetShotRecoil(info.recoil, 0.2f);
-
-        //To do:  Base on stats
-        stats.SetVelocity(info.muzzleVelocity, 100.0f);
-        stats.SetRangePerStage(info.effectiveRange, 120.0f);
-        stats.SetReloadSeconds(info.reloadSpeed, 2.0f);*/
-
         stats.SetReloadMethod(0.25f, 0.55f, 0.95f, -15, 0f);
     }
 

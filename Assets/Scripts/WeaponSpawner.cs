@@ -52,6 +52,10 @@ public class WeaponSpawner : MonoBehaviour
     //Spawn new weapon, add weapon info component, and set values according to player progress
     public GameObject SpawnWeapon()
     {
+        //Dan B - Disable 'progress modifier'
+        testProgressModifier = 100;
+        statGap = 100;
+
         weaponCount++;
         GameObject newWeapon = new GameObject();
         newWeapon.transform.SetParent(this.transform);

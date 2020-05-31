@@ -46,6 +46,11 @@ public class ProjectileSpawner : MonoBehaviour
         }
     }
 
+    void OnDestroy()
+    {
+       // projectilePool = null;    
+    }
+
     void Awake()
     {
         if (projectilePool == null)
