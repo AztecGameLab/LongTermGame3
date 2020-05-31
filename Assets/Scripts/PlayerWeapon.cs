@@ -241,6 +241,11 @@ public class PlayerWeapon : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (!isReloading && (ammoCount < GetAmmoMax())) SetReloading();
+        }
+
         //TODO Temporary fix! (still needed)
         //  Where is the Weapon coming from on Startup being put in the wrong place!  I cannot find the related code...
         if (gameObject.transform.childCount > 1)

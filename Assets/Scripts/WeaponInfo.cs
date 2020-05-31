@@ -66,38 +66,22 @@ public class WeaponInfo : MonoBehaviour
         if (isEquipped)
         {
             //LevelTheme();
-        }
 
-        if (isEquipped && isAutomatic)
-        {
-            if (Input.GetMouseButton(0))
+            if (isAutomatic)
             {
-                if (projectileSpawner != null)
+                if (Input.GetMouseButton(0))
                 {
                     projectileSpawner.OnWeaponTrigger();
                 }
-                else
-                {
-                    //WeaponAttack();                    
-                }
             }
-        }
-        
-        else if (isEquipped && !isAutomatic)
-        {
-            if (Input.GetMouseButtonDown(0)) //Left Click
+            else
             {
-                if (projectileSpawner != null)
+                if (Input.GetMouseButtonDown(0)) //Left Click
                 {
                     projectileSpawner.OnWeaponTrigger();
                 }
-                else
-                {
-                    //WeaponAttack();
-                }
             }
         }
-        
     }
 
     //Sets the initial values based on a range of the player's progress
