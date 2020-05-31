@@ -21,6 +21,6 @@ public class ProjectileSniper : ProjectileInfo
     {
         //To do:  Increase damage per distance to "full effect" distance
         //  Projectile can also accelerate to full effect
-        return 100;
+        return 500;
     }
 }

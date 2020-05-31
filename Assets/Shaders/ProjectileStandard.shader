@@ -49,8 +49,10 @@
                 float2 rootXY = sqrt(i.uv);
                 float sqrX = i.uv.x * i.uv.x;
                 float ax = i.uv.y;
-         		fixed4 result = (i.uv.y > 0.15) ? fixed4(0.9 + 0.1 * rootXY.x, sqrX * 0.2 + (0.3 - 0.3 * rootXY.y), sqrX * 0.05, ax * 2.0)
+         		fixed4 result = (i.uv.y > 0.15) ? fixed4(0.9 + 0.1 * rootXY.x, sqrX * 0.2 + (0.3 - 0.3 * rootXY.y), sqrX * 0.05, 2.0 * ax)
                     : fixed4(1.0, 0.2, 0.0, 0.4);
+
+				result = min(result, fixed4(3.0, 2.0, 3.0, 2.0));
 
 		        return fixed4(result.x, result.z, result.y, result.w);
 			}

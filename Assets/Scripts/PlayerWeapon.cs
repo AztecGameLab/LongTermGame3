@@ -13,9 +13,6 @@ public class PlayerWeapon : MonoBehaviour
     public float recoilMaxTilt = 30.0f;
     public float recoilMaxOffsetZ = 1.5f;
 
-    //Temporary, should come from weapon game object
-    //public ProjectileInfo.Type ammoType = ProjectileInfo.Type.Standard;
-
     private GameObject weapon;
     private GameObject envelope;
     private ProjectileSpawner spawner;
@@ -87,17 +84,6 @@ public class PlayerWeapon : MonoBehaviour
         gameObject.layer = layerPlayer;
         SetLayerRecursive(weapon, layerPlayer);
     }
-
-    //Temporary for testing
-/*    public void SetProjectile(ProjectileInfo.Type type)
-    {
-        ammoType = type;
-
-        GameObject newWeapon = weapon;
-        weapon = null;
-
-        EquipWeapon(newWeapon);
-    }*/
 
     Quaternion GetAimRotation()
     {
@@ -248,13 +234,18 @@ public class PlayerWeapon : MonoBehaviour
     {
     }
 
-    private void Update()
+    private void OnDestroy()
+    {
+        ProjectileSpawner.ResetProjectilePool();
+    }
+
+    private void FixedUpdate()
     {
         //TODO Temporary fix! (still needed)
         //  Where is the Weapon coming from on Startup being put in the wrong place!  I cannot find the related code...
         if (gameObject.transform.childCount > 1)
         {
-            for(int i = 0; i < gameObject.transform.childCount; i++)
+            for (int i = 0; i < gameObject.transform.childCount; i++)
             {
                 GameObject child = gameObject.transform.GetChild(i).gameObject;
 
@@ -265,6 +256,10 @@ public class PlayerWeapon : MonoBehaviour
             }
         }
 
+    }
+
+    private void Update()
+    {
         bool aimSet = false;
         bool needSetRecoil = false;
 
