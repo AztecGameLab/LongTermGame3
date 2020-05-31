@@ -51,10 +51,10 @@ public class ProjectileInfo : MonoBehaviour
 
             hitClip = ammoType.soundOnHitEnemy;
         }
-        /*else
+        else
         {
             hitClip = ammoType.soundOnHitWall;
-        }*/
+        }
 
         TerminateWithSound(hitClip);
     }

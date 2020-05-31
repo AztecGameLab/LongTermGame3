@@ -83,6 +83,9 @@ public class PlayerWeapon : MonoBehaviour
 
         gameObject.layer = layerPlayer;
         SetLayerRecursive(weapon, layerPlayer);
+
+        ammoCount = GetAmmoMax();
+        HudCanvas.instance.SetAmmo(ammoCount);
     }
 
     Quaternion GetAimRotation()
