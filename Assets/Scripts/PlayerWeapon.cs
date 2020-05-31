@@ -69,7 +69,7 @@ public class PlayerWeapon : MonoBehaviour
         weapon.transform.localRotation = Quaternion.identity;
         weapon.GetComponent<WeaponInfo>().isEquipped = true;
 
-        Vector3 newPosition = new Vector3(0, 0, weapon.GetComponent<WeaponInfo>().weaponCenter.y * 6.25f - 0.8f);
+        Vector3 newPosition = new Vector3(0, 0, -weapon.GetComponent<WeaponInfo>().weaponCenter.x + 0.5f);
 
         Debug.Log($"Weapon Center: {newPosition}");
         envelope.transform.localPosition = newPosition;
