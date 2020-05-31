@@ -227,8 +227,8 @@ MonoBehaviour:
   caliber: 1
   caliberToLength: 1.5
   soundOnFire: {fileID: 8300000, guid: 70ac120014d1f430dbe2134fac46f760, type: 3}
-  soundOnHitWall: {fileID: 8300000, guid: 2c1cb77264d374d7dba62357a56c3ea9, type: 3}
-  soundOnHitEnemy: {fileID: 8300000, guid: 5172765903de4734f95e372c4c81f0cc, type: 3}
+  soundOnHitWall: {fileID: 0}
+  soundOnHitEnemy: {fileID: 8300000, guid: e62e137bde1994342845e50ea9d958a6, type: 3}
   soundOnReload: {fileID: 8300000, guid: 9388e3c53fc954a75955b615e3cbbd13, type: 3}
 --- !u!114 &1470226463730753243
 MonoBehaviour:
@@ -242,6 +242,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e91d2106d614f40a0a2acd24a27c4d7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitPs: {fileID: 0}
+  hitPosition: {fileID: 0}
   startPosition: {x: 0, y: 0, z: 0}
   weaponInfo: {fileID: 0}
   sqrMaxDistance: 0

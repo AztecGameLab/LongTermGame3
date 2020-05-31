@@ -24,7 +24,7 @@ public class CutsceneManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Escape))
         {
-            NextCutscene();
+            SceneManager.LoadScene("ProceduralMap");
         }
     }
 

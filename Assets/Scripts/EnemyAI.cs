@@ -47,6 +47,8 @@ public class EnemyAI : Driver
     public GameObject shadow;
     public GameObject Crater;
 
+    private AudioSource sfxSource;
+
     void Start()
     {
         health = 300;    //Setting the enemy health
@@ -55,6 +57,8 @@ public class EnemyAI : Driver
         myNav = gameObject.GetComponent<UnityEngine.AI.NavMeshAgent>();
         explode3.SetActive(false);
         explode2.SetActive(false);
+
+        sfxSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -115,6 +119,8 @@ public class EnemyAI : Driver
         {
             explosion = true;
             myNav.isStopped = true;
+
+            sfxSource.Play();
 
             //Add audio for detonation beeping here 
             if (!isDead)
