@@ -37,6 +37,8 @@ public class AmmoTypeInfo : MonoBehaviour
     public AudioClip soundOnHitEnemy;
     public AudioClip soundOnReload;
     private AudioSource sfxSource;
+    [SerializeField]
+    private float pitchMin = 0.9f, pitchMax = 1.1f;
 
     [HideInInspector]
     public float scaledDamage;    //baseDamage with damage scale applied (not the same as the damageLevel from velocity stat)
@@ -65,6 +67,6 @@ public class AmmoTypeInfo : MonoBehaviour
 
     void Update()
     {
-
+        sfxSource.pitch = Random.Range(pitchMin, pitchMax);
     }
 }

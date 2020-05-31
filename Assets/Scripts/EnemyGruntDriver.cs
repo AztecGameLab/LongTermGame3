@@ -45,7 +45,7 @@ public class EnemyGruntDriver : Driver
 
     public AudioClip enemyWeaponClip;
     private AudioSource sfxSource;
-    public float pitchMin, pitchMax;
+    public float pitchMin = 0.8f, pitchMax = 1.0f;
 
     public ParticleSystem deathEffect;
 

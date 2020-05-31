@@ -47,6 +47,7 @@ public class PlayerDriver : Driver
     // audio
     public AudioClip teleporterClip;
     private AudioSource clipSource;
+    public AudioSource healthSource;
 
     //To keep from triggering the teleport sequence twice
     private bool teleporting = false;
@@ -61,7 +62,7 @@ public class PlayerDriver : Driver
         groundCheckDistance = charController.height / 2;
         groundCheckRadius = charController.radius;
 
-        clipSource = GetComponent<AudioSource>();
+        //clipSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -158,6 +159,7 @@ public class PlayerDriver : Driver
                 {
                     Destroy(otherObject);
                     ec.Heal(10);
+                    healthSource.Play();
                 }
             }
             else if (otherObject.tag.Equals("Weapon"))
@@ -174,7 +176,6 @@ public class PlayerDriver : Driver
 
                 weapon = other.gameObject;
                 */
-
             }
             else if (otherObject.tag.Equals("Ammo"))
             {

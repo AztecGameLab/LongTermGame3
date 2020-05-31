@@ -29,43 +29,38 @@ public class WeaponInfo : MonoBehaviour
 
     private ProjectileSpawner projectileSpawner;
 
-    private AudioSource musicSource;
-    private AudioClip themeClip;
-    private bool alreadyPlayed;
+    private AudioSource sfxSource;
+    public AudioClip gunPickup;
     private AudioMixer masterMixer;
-    private GameObject audioObject;
+    private bool alreadyPlayed;
+
+    private void GunPickupSFX()
+    {
+        if (!alreadyPlayed)
+        {
+            sfxSource.PlayOneShot(gunPickup);
+            alreadyPlayed = true;
+        }
+    }
 
     void Start()
     {
         bullet = (GameObject)Resources.Load<GameObject>("Bullet");
         projectileSpawner = gameObject.GetComponent<ProjectileSpawner>();
 
-
-        musicSource = gameObject.AddComponent<AudioSource>();
-        themeClip = Resources.Load<AudioClip>("Audio/Level_Theme");
-        musicSource.clip = themeClip;
-        musicSource.loop = true;
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        gunPickup = Resources.Load<AudioClip>("Audio/GunPickup");
         masterMixer = Resources.Load<AudioMixer>("Audio/Master") as AudioMixer;
-        string MusicMixerGroup = "Music";
-        musicSource.outputAudioMixerGroup = masterMixer.FindMatchingGroups(MusicMixerGroup)[0];
+        string SFXMixerGroup = "SFX";
+        sfxSource.outputAudioMixerGroup = masterMixer.FindMatchingGroups(SFXMixerGroup)[0];
     }
-
-    /*private void LevelTheme()
-    {
-        if (!alreadyPlayed)
-        {
-            musicSource.Play();
-            //Debug.Log("it works");
-            alreadyPlayed = true;
-        }
-    }*/
 
     // Update is called once per frame
     void Update()
     {
         if (isEquipped)
         {
-            //LevelTheme();
+            GunPickupSFX();
 
             if (isAutomatic)
             {

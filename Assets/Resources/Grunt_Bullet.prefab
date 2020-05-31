@@ -138,6 +138,7 @@ MonoBehaviour:
   pitchMin: 0.9
   pitchMax: 1
   playerPos: {fileID: 0}
+  enemyCollisionGracePeriod: 1
 --- !u!82 &6757059263218552253
 AudioSource:
   m_ObjectHideFlags: 0
@@ -150,7 +151,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 724427297833310146, guid: d2e7fec13d58b444ca50d41775261716,
     type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

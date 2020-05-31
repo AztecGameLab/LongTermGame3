@@ -449,6 +449,16 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 0.14097545
       objectReference: {fileID: 0}
+    - target: {fileID: 2867697128572973632, guid: 2ad0dce4d4a995768a976139c26cdd92,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867697128572973632, guid: 2ad0dce4d4a995768a976139c26cdd92,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: c92d9c89a6fb6d44397cb480525d58f6, type: 3}
     - target: {fileID: 3426590856175745946, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -509,6 +519,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7482406497995980638, guid: 2ad0dce4d4a995768a976139c26cdd92,
+        type: 3}
+      propertyPath: healthSource
+      value: 
+      objectReference: {fileID: 848630518}
+    - target: {fileID: 7482406497995980638, guid: 2ad0dce4d4a995768a976139c26cdd92,
+        type: 3}
+      propertyPath: gunPickUp
+      value: 
+      objectReference: {fileID: 8300000, guid: 219c3c770dc2c504184012cd8aafac90, type: 3}
     - target: {fileID: 7482406497995980639, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
       propertyPath: m_Name
@@ -803,6 +823,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 795328055}
   m_CullTransparentMesh: 0
+--- !u!82 &848630518 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2867697128572973632, guid: 2ad0dce4d4a995768a976139c26cdd92,
+    type: 3}
+  m_PrefabInstance: {fileID: 422252098}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1008516145
 GameObject:
   m_ObjectHideFlags: 0
