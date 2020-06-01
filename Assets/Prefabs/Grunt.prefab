@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 4541995487615889346}
   m_Layer: 14
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,8 +106,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6912540082067362934}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 15, z: 0}
-  m_LocalScale: {x: 2, y: 0.2, z: 2}
+  m_LocalPosition: {x: 0, y: 29.56, z: 0}
+  m_LocalScale: {x: 3.3333333, y: 0.3333333, z: 3.3333333}
   m_Children: []
   m_Father: {fileID: 6983286057668968319}
   m_RootOrder: 3
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 6983286057360684932}
   m_Layer: 0
   m_Name: FirePointRight
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -197,7 +197,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6983286057360684933}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.407, y: 2.628, z: 0}
+  m_LocalPosition: {x: 0.407, y: 2.588, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6983286057668968319}
@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 6983286057393339653}
   m_Layer: 0
   m_Name: FirePointLeft
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -227,7 +227,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6983286057393339650}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.33, y: 2.628, z: 0}
+  m_LocalPosition: {x: -0.33, y: 2.588, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6983286057668968319}
@@ -261,8 +261,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6983286057668968315}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.48, y: 1.601, z: -6.98}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -13.48, y: 2.985, z: -6.98}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_Children:
   - {fileID: 1718796294358381075}
   - {fileID: 6983286057393339653}
@@ -312,11 +312,11 @@ MonoBehaviour:
   firePointRight: {fileID: 6983286057360684932}
   bullet: {fileID: 4570021277692409380, guid: 70704eea13d872b4ea031ba3dae29bb0, type: 3}
   bulletSpeed: 20
-  fireRate: 1
+  fireRate: 3
   alertRadius: 30
   targetPlayerDistance: 7
-  fieldOfView: 120
-  rotationSpeed: 2
+  fieldOfView: 360
+  rotationSpeed: 3.5
   alertCountdown: 1
   enemyWeaponClip: {fileID: 8300000, guid: 582919320ad13724d91a3a973b7da47d, type: 3}
   pitchMin: 0.8

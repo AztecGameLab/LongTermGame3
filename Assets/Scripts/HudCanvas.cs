@@ -12,9 +12,13 @@ public class HudCanvas : MonoBehaviour
     public Image blood;
     public Text ammo;
 
+    private AudioSource sfxSource;
+    public AudioClip[] playerDamageClips;
+
     private void Awake()
     {
         instance = this;
+        sfxSource = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -25,6 +29,11 @@ public class HudCanvas : MonoBehaviour
     void Update()
     {
 
+    }
+
+    public void TakeDangeSFX()
+    {
+        sfxSource.PlayOneShot(playerDamageClips[Random.Range(0, playerDamageClips.Length)]);
     }
 
     public void SetHealth(float h)

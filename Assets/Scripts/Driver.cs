@@ -28,6 +28,8 @@ public class Driver : MonoBehaviour
         if(gameObject.tag == "Player")
         {
             HudCanvas.instance.TakeDamage();
+            HudCanvas.instance.TakeDangeSFX();
+            print("it hurts");
         }
 
         health -= damage;
