@@ -67,7 +67,6 @@ public class PlayerDriver : Driver
 
     private void Start()
     {
-        Cursor.visible = false;
         ec = gameObject.GetComponent<EntityController>();
         health = 100;
     }
