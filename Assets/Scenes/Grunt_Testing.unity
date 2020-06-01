@@ -128,6 +128,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5821898779457240769, guid: 2ad0dce4d4a995768a976139c26cdd92,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7482406497995980636, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1025,25 +1030,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 2105925194}
-    - target: {fileID: 6983286057360684932, guid: e22152a9440d5324784c3fc277b8f929,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.588
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983286057393339653, guid: e22152a9440d5324784c3fc277b8f929,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.588
-      objectReference: {fileID: 0}
     - target: {fileID: 6983286057668968315, guid: e22152a9440d5324784c3fc277b8f929,
         type: 3}
       propertyPath: m_Name
       value: Grunt
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983286057668968317, guid: e22152a9440d5324784c3fc277b8f929,
-        type: 3}
-      propertyPath: fieldOfView
-      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 6983286057668968319, guid: e22152a9440d5324784c3fc277b8f929,
         type: 3}
@@ -1053,7 +1043,7 @@ PrefabInstance:
     - target: {fileID: 6983286057668968319, guid: e22152a9440d5324784c3fc277b8f929,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.601
+      value: 0.11
       objectReference: {fileID: 0}
     - target: {fileID: 6983286057668968319, guid: e22152a9440d5324784c3fc277b8f929,
         type: 3}

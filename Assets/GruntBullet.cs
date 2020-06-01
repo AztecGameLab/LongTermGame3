@@ -15,7 +15,7 @@ public class GruntBullet : MonoBehaviour
     public Transform playerPos;
 
     float startTime;
-    public float enemyCollisionGracePeriod = 1f;
+    float enemyCollisionGracePeriod = 0.03f;
 
     private const float maxExistTime = 5.0f;
 
@@ -54,12 +54,14 @@ public class GruntBullet : MonoBehaviour
             DamageSFX();
             Destroy(gameObject);
         }
-        else if(collision.gameObject.tag == "Enemy" && Time.time - startTime > enemyCollisionGracePeriod)
+        else if(collision.gameObject.tag == "Enemy")
         {
+            if(Time.time - startTime > enemyCollisionGracePeriod)
             Destroy(gameObject);
         }
-        else if (Time.time - startTime > enemyCollisionGracePeriod)
+        else //if (Time.time - startTime > enemyCollisionGracePeriod)
         {
+            print(collision.gameObject.name);
             Destroy(gameObject);
         }
     }
