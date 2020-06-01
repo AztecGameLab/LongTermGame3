@@ -34,6 +34,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
     public GameObject cielingTile;
     public GameObject floorTile;
     public GameObject obstaclePrefab;
+    public GameObject robot;
     // Start is called before the first frame update
     void Start()
     {
@@ -67,7 +68,10 @@ public class ProceduralRoomGenerator : MonoBehaviour
         else if (data.start)
         {
             data.objects.Add(AttemptSpawnObject(data, potentialGunSpawns[0], 0, roomLocation,spawnManager,false));
-
+            GameObject rb=Instantiate(robot,data.bounds.center-new Vector3(0,data.bounds.extents.y,0)-Vector3.Scale(data.doors[0].wall,data.bounds.extents)/2,robot.transform.rotation);
+            rb.transform.parent=roomLocation;
+            rb.transform.localScale/=ProceduralMapGenerator._mapScale;
+            rb.transform.LookAt(Vector3.down*2.5f);
         }
         else
         {
@@ -114,18 +118,23 @@ public class ProceduralRoomGenerator : MonoBehaviour
         Physics.Raycast(ray1, out hit, room.bounds.size.y);
 
         itemData temp = new itemData(obj); // make spawn off of prefab later TODOTDO
-        if(!room.start)
-        temp.pos = hit.point + new Vector3(0, ySpawnOffset, 0);
-        else
-        temp.pos=room.bounds.center-new Vector3(0,room.bounds.extents.y,0)-Vector3.Scale(room.doors[0].wall,room.bounds.extents);
-        // temp.name =(room.name + " object: " + temp.transform.position);
-        temp.name = "tempItem";
-        //print(temp.name);
-        if(enemy){
+        if(room.start){
+            
+            temp.pos=room.bounds.center-new Vector3(0,room.bounds.extents.y,0)-Vector3.Scale(room.doors[0].wall,room.bounds.extents)/2;
             spawnManager.enemies.Add(temp.Spawn(parent));
         }
         else{
-            temp.Spawn(parent);
+           temp.pos = hit.point + new Vector3(0, ySpawnOffset, 0);
+        
+        // temp.name =(room.name + " object: " + temp.transform.position);
+            temp.name = "tempItem";
+            //print(temp.name);
+            if(enemy){
+                spawnManager.enemies.Add(temp.Spawn(parent));
+            }
+            else{
+                temp.Spawn(parent);
+            }
         }
         return temp;
 
@@ -330,9 +339,14 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
     public GameObject buildPillar(RoomData room, bool isWall, int side)
     {
-
-        GameObject temp = Instantiate(obstaclePrefab);
-        temp.transform.localScale=new Vector3(temp.transform.localScale.x,Random.Range(2, room.bounds.size.y + 1),temp.transform.localScale.z);
+        GameObject temp = new GameObject();
+        temp.name="obstacleStack";
+        int height=Random.Range(2, (int) room.bounds.size.y + 1);
+        for(int i=0;i<height;i++){
+            GameObject Cube=Instantiate(obstaclePrefab);
+            Cube.transform.parent=temp.transform;
+            Cube.transform.position+=Vector3.up*i;
+        }
         return temp;
     }
 

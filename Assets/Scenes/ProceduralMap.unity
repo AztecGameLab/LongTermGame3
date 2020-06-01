@@ -503,7 +503,7 @@ PrefabInstance:
     - target: {fileID: 7482406497995980636, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: -3.4
       objectReference: {fileID: 0}
     - target: {fileID: 7482406497995980636, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
@@ -1484,6 +1484,7 @@ MonoBehaviour:
     type: 3}
   obstaclePrefab: {fileID: 422612857789004623, guid: 6d081999d5b2d0445afc60ec0d1a62ca,
     type: 3}
+  robot: {fileID: 1538523455973316865, guid: 708239c5e27822f43a8a1b7a46208263, type: 3}
 --- !u!4 &1008516147
 Transform:
   m_ObjectHideFlags: 0
