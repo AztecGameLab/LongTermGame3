@@ -52,6 +52,9 @@ public class PlayerDriver : Driver
     //To keep from triggering the teleport sequence twice
     private bool teleporting = false;
 
+    //Invert Mouse Y
+    private float flippedYmult = 1;
+
     private void Awake()
     {
         horizontalVelocity = new Vector3();
@@ -69,6 +72,11 @@ public class PlayerDriver : Driver
     {
         ec = gameObject.GetComponent<EntityController>();
         health = 100;
+
+        float mouseSensitivity = PlayerPrefs.GetFloat("Sensitivity", 0.5f);
+        Debug.Log($"Sensitivity = {mouseSensitivity}");
+        SetMouseSensitivity(mouseSensitivity);
+        flippedYmult = PlayerPrefs.GetFloat("InvertMouseY", 1.0f);
     }
 
     void Update()
@@ -79,12 +87,15 @@ public class PlayerDriver : Driver
     public void SetMouseSensitivity(float sensitivity)
     {
         this.sensitivity = 100 + ((sensitivity - 0.5f) * 2 * 90);
+
+        PlayerPrefs.SetFloat("Sensitivity", sensitivity);
     }
 
-    float flippedYmult = 1;
     public void FlipYAxis(bool flipped)
     {
         flippedYmult = flipped ? -1 : 1;
+
+        PlayerPrefs.SetFloat("InvertMouseY", flippedYmult);
     }
 
     public override Vector3 GetMovement()
