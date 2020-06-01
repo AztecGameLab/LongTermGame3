@@ -61,25 +61,26 @@ public class PlayerWeapon : MonoBehaviour
         }
         
         envelope = gameObject.transform.GetChild(0).gameObject;
-
         weapon = newWeapon;
+
+        WeaponInfo info = weapon.GetComponent<WeaponInfo>();
+
+        const float weaponHeldOffsetFromCenterZ = 0.5f;
+        Vector3 newPosition = new Vector3(0, 0, -info.weaponCenter.x + weaponHeldOffsetFromCenterZ);
+        envelope.transform.localPosition = newPosition;
+
         weapon.transform.parent = envelope.transform;
         weapon.transform.localPosition = new Vector3(0, 0, 0);
         weapon.transform.GetChild(0).localPosition = new Vector3(0, 0, 0);
         weapon.transform.localRotation = Quaternion.identity;
-        weapon.GetComponent<WeaponInfo>().isEquipped = true;
-
-        Vector3 newPosition = new Vector3(0, 0, -weapon.GetComponent<WeaponInfo>().weaponCenter.x + 0.5f);
-
-        Debug.Log($"Weapon Center: {newPosition}");
-        envelope.transform.localPosition = newPosition;
+        info.isEquipped = true;
 
         spawner = weapon.GetComponent<ProjectileSpawner>();
         spawner.InitWeaponStats();
 
-        HudCanvas.instance.SetAmmo(ammoCount);
-
         InitCenterAim();
+
+        HudCanvas.instance.SetAmmo(ammoCount);
 
         gameObject.layer = layerPlayer;
         SetLayerRecursive(weapon, layerPlayer);
@@ -157,7 +158,7 @@ public class PlayerWeapon : MonoBehaviour
         lastFireTime = 0;
         fireOffset = Vector2.zero;
         aimOffset = Vector2.zero;
-        recoilMin = new Vector2(0, gameObject.transform.localPosition.z);
+        recoilMin = Vector2.zero;
         recoilMax = recoilMin + new Vector2(recoilMaxTilt, -recoilMaxOffsetZ);
         reloadMax = recoilMin + new Vector2(spawner.weaponStats.reloadMaxTilt, -spawner.weaponStats.reloadMaxOffsetZ);
         recoilSet = 0;

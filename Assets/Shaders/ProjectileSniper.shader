@@ -54,7 +54,7 @@
 
 				float w = 3.0;
 
-				result = fixed4(result.g * w, result.b * w, result.r * w, result.a);
+				result = fixed4(result.g * 0.8f * w, result.b * w, result.r * 1.2 * w, result.a);
 
                 return result;
 			}

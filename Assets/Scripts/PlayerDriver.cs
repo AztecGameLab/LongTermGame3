@@ -74,7 +74,6 @@ public class PlayerDriver : Driver
         health = 100;
 
         float mouseSensitivity = PlayerPrefs.GetFloat("Sensitivity", 0.5f);
-        Debug.Log($"Sensitivity = {mouseSensitivity}");
         SetMouseSensitivity(mouseSensitivity);
         flippedYmult = PlayerPrefs.GetFloat("InvertMouseY", 1.0f);
     }
