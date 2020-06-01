@@ -212,6 +212,31 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 422252099}
+    - target: {fileID: 7397125691059642021, guid: 76554821a3b3da2429d7e965a4dfc7ac,
+        type: 3}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7397125691059642021, guid: 76554821a3b3da2429d7e965a4dfc7ac,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.104708076
+      objectReference: {fileID: 0}
+    - target: {fileID: 7397125691059642021, guid: 76554821a3b3da2429d7e965a4dfc7ac,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.11644683
+      objectReference: {fileID: 0}
+    - target: {fileID: 7397125691059642021, guid: 76554821a3b3da2429d7e965a4dfc7ac,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.122641504
+      objectReference: {fileID: 0}
+    - target: {fileID: 7397125691059642021, guid: 76554821a3b3da2429d7e965a4dfc7ac,
+        type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7397125691392769602, guid: 76554821a3b3da2429d7e965a4dfc7ac,
         type: 3}
       propertyPath: m_Name
