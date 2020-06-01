@@ -76,6 +76,17 @@ public class PlayerDriver : Driver
         HudCanvas.instance.SetHealth(health);
     }
 
+    public void SetMouseSensitivity(float sensitivity)
+    {
+        this.sensitivity = 100 + ((sensitivity - 0.5f) * 2 * 90);
+    }
+
+    float flippedYmult = 1;
+    public void FlipYAxis(bool flipped)
+    {
+        flippedYmult = flipped ? -1 : 1;
+    }
+
     public override Vector3 GetMovement()
     {
         // Getting Horizontal and Vertical inputs.
@@ -133,7 +144,7 @@ public class PlayerDriver : Driver
         // Modifying mouse position based on sensitivity and accounting for framerate.
         mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime * 2;
 
-        verticalLook -= mouseY;
+        verticalLook -= mouseY * flippedYmult;
         if (verticalLook > 90)
             verticalLook = 90;
         else if (verticalLook < -90)
