@@ -27,12 +27,12 @@ public class DifficultyManager : MonoBehaviour
         else{
             enemyCount=2;
         }
-        print(enemyCount);
-        roofEmiss.SetColor("_EmissionColor", 1.5f * roofGrad.Evaluate(enemyCount/10));
+        roofEmiss.SetColor("_EmissionColor", 1.5f * roofGrad.Evaluate(enemyCount/10.0f));
     }
     // Update is called once per frame
     void Update()
     {
+        print(enemyCount);
         
     }
     void OnDestroy(){
