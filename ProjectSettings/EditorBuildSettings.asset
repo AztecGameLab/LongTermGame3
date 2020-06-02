@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Prologue.unity
     guid: 726eb1bc7384c6a44b893f4de77d7073
   - enabled: 1
+    path: Assets/Scenes/LoadScene.unity
+    guid: c10e59bd31f5bb242a19de06d6df4e27
+  - enabled: 1
     path: Assets/Scenes/ProceduralMap.unity
     guid: a3c423c2c69a9f947b4f4a1ed9bd9de2
   m_configObjects: {}

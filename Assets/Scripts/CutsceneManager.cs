@@ -39,7 +39,7 @@ public class CutsceneManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("ProceduralMap");
+            SceneManager.LoadScene("LoadScene");
         }
 
 
