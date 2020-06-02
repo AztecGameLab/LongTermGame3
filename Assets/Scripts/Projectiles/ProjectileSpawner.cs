@@ -64,8 +64,7 @@ public class ProjectileSpawner : MonoBehaviour
         sfxSource = gameObject.AddComponent<AudioSource>();
         masterMixer = Resources.Load<AudioMixer>("Audio/Master") as AudioMixer;
         string SFXMixerGroup = "SFX";
-        if(this.masterMixer.FindMatchingGroups(SFXMixerGroup)[0] != null)
-            sfxSource.outputAudioMixerGroup = this.masterMixer.FindMatchingGroups(SFXMixerGroup)[0];
+        sfxSource.outputAudioMixerGroup = this.masterMixer.FindMatchingGroups(SFXMixerGroup)[0];
     }
 
     void Start()
