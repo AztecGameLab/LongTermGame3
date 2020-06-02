@@ -32,6 +32,7 @@ public class ProceduralMapGenerator : MonoBehaviour
     public NavMeshSurface surface;
     public float MapScale;
     public static float _mapScale;
+    public Transform player;
     Vector3[] directions =
     {
         Vector3.left,
@@ -69,6 +70,11 @@ public class ProceduralMapGenerator : MonoBehaviour
             room.bounds.extents *= _mapScale;
         }
         surface.BuildNavMesh();
+        RoomData spawn=rooms[0];
+        player.position=new Vector3(spawn.bounds.center.x,spawn.bounds.center.y- spawn.bounds.extents.y+1,spawn.bounds.center.z);
+        Vector3 doorDirection=player.position+Vector3.Scale(spawn.doors[0].wall,spawn.bounds.extents)/2;
+        player.LookAt(doorDirection);
+        print(player.rotation);
         //foreach(RoomData room in rooms)
         //{
         //    for(int i =0; i < Random.Range(1, maxItems); i++)
@@ -125,11 +131,12 @@ public class ProceduralMapGenerator : MonoBehaviour
             b.size = GetRandomSize();
             if (prevRoom != null)
             {
-                b.center = prevRoom.bounds.center - Vector3.Scale(prevRoom.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(shuffledDirections[i], prevRoom.bounds.size / 2) + Vector3.Scale(b.size / 2, shuffledDirections[i]) + Vector3.Scale(b.size / 2, new Vector3(0, 1, 0)); // TODO
+                b.center = prevRoom.bounds.center - Vector3.Scale(prevRoom.bounds.size / 2, new Vector3(0, 1, 0)) + Vector3.Scale(shuffledDirections[newDirection], prevRoom.bounds.size / 2) + Vector3.Scale(b.size / 2, shuffledDirections[newDirection]) + Vector3.Scale(b.size / 2, new Vector3(0, 1, 0)); // TODO
             }
             else
             {
                 b.center = Vector3.zero;
+                newDirection=2;
             }
             roomTemp.bounds = b;
             roomTemp.name = "room " + rooms.Count.ToString();
@@ -145,14 +152,14 @@ public class ProceduralMapGenerator : MonoBehaviour
                 {
 
                     DoorData currDoor = new DoorData(); //currDoor references the door being made in the current room leading to the previous room
-                    currDoor.wall = shuffledDirections[i]; //MIGHT BE BACKWARDS
-                    currDoor.wallPosition = new Vector2Int(halfWallLength(roomTemp, shuffledDirections[i]), 0);
+                    currDoor.wall = shuffledDirections[newDirection]; //MIGHT BE BACKWARDS
+                    currDoor.wallPosition = new Vector2Int(halfWallLength(roomTemp, shuffledDirections[newDirection]), 0);
                     currDoor.spawn=false;
                     roomTemp.doors.Add(currDoor);
 
                     DoorData backDoor = new DoorData();
-                    backDoor.wall = -shuffledDirections[i];
-                    backDoor.wallPosition = new Vector2Int(halfWallLength(roomTemp.prev, shuffledDirections[i]), 0);
+                    backDoor.wall = -shuffledDirections[newDirection];
+                    backDoor.wallPosition = new Vector2Int(halfWallLength(roomTemp.prev, shuffledDirections[newDirection]), 0);
                     backDoor.spawn=true;
                     roomTemp.prev.doors.Add(backDoor);
                 }

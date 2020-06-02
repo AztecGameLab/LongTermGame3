@@ -82,7 +82,9 @@ public class ProceduralRoomGenerator : MonoBehaviour
         {
             for (int i = 0; i < getVolume(data) / Random.Range(30, 40); i++) //obstacle number and obstacle spawning
             {
-                data.obstacles.Add(AttemptSpawnObstacle(data, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
+                GameObject pillar=AttemptSpawnObstacle(data, roomLocation);
+                if(pillar!=null)
+                    data.obstacles.Add(pillar); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
             }
             int RandomExtraEnemies=Random.Range(0,DifficultyManager.enemyCount/2+1);
             for (int i = 0; i < DifficultyManager.enemyCount+RandomExtraEnemies; i++)
@@ -183,7 +185,6 @@ public class ProceduralRoomGenerator : MonoBehaviour
         //when true, add gameObject to room objects list
         //if for some reason can't find a space, return null
     }
-
     public GameObject AttemptSpawnObstacle(RoomData room, Transform parent) // tries to spawn object in random position of a room
     {
         int spawnSide = Random.Range(0, 1);
@@ -197,71 +198,32 @@ public class ProceduralRoomGenerator : MonoBehaviour
         {
             surfacePos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY); // make add from corner of position of room ceiling pos
             surfacePos = foundObstacleSpace(surfacePos, room, roomCornerOffset);
+            if(surfacePos==Vector3.zero){
+                return null;
+            }
         }
         else
             surfacePos = roomCornerOffset + new Vector3(randomCX, (float)(1), randomCY); // make add from corner of position of room floor pos
-
-
- 
-
-
-        //  Ray ray = new Ray(ceilingPos, Vector3.down);
-        //    Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 10);
-
+        //print(surfacePos);
         RaycastHit hit;
         Ray ray1;
         if (spawnSide == 0)
             ray1 = new Ray(surfacePos, Vector3.down);
         else
             ray1 = new Ray(surfacePos, Vector3.up);
-        //  Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 100);
-        Physics.Raycast(ray1, out hit, room.bounds.size.y);
-
-        // int randomObstacle = (int)Random.Range(0, 3); //maybe add a weighted system for obstacles
-        // if (randomObstacle == 0)
-        // {
+        if(Physics.Raycast(ray1, out hit, room.bounds.size.y)){   
             temp = buildPillar(room, false,spawnSide);
             temp.transform.position = hit.point;
             if(rotateObstacles)
                 temp.transform.Rotate(0, Random.Range(0, 361), 0); //rotates obstacles, has possibility of blocking doors so do not implement yet
-
-        // }
-        // else if (randomObstacle == 1)
-        // {
-        //     temp = GameObject.CreatePrimitive(PrimitiveType.Cube); // make spawn off of prefab later TODOTDO
-        //     if (spawnSide == 0)
-        //         temp.transform.position = hit.point + new Vector3(0, .5f, 0);
-
-        //     else
-        //         temp.transform.position = hit.point + new Vector3(0, -.5f, 0);
-
-        //     if (rotateObstacles)
-        //         temp.transform.Rotate(0, Random.Range(0, 361), 0); //rotates obstacles, has possibility of blocking doors so do not implement yet
-
-          
-        // }
-        // else
-        // {
-        //     temp = buildWall(room, (int)hit.point.x, spawnSide);
-        //     temp.transform.position = hit.point;
-        //     if (rotateObstacles)
-        //         temp.transform.Rotate(0, Random.Range(0, 361), 0); //rotates obstacles, has possibility of blocking doors so do not implement yet
-
-
-        // }
-
-        // temp.name =(room.name + " object: " + temp.transform.position);
-        temp.name = "tempObstacle";
-        //print(temp.name);
-        temp.transform.parent = parent;
-        return temp;
-
-
-        //when true, add gameObject to room objects list
-        //if for some reason can't find a space, return null
-
+            temp.name = "tempObstacle";
+            temp.transform.parent = parent;
+            return temp;
+        }
+        else{
+            return null;
+        }
     }
-
     private Vector3 foundObstacleSpace(Vector3 surfacePos, RoomData room, Vector3 roomCornerOffset)
     {
         int randomCX;

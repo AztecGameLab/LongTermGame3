@@ -18,7 +18,7 @@ public class DifficultyManager : MonoBehaviour
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        print("SCENE LOADED:"+scene.name+" enemy count: "+enemyCount);
+        //print("SCENE LOADED:"+scene.name+" enemy count: "+enemyCount);
         if(scene.name=="ProceduralMap"){
             enemyCount++;
         }

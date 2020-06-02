@@ -503,7 +503,7 @@ PrefabInstance:
     - target: {fileID: 7482406497995980636, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.4
+      value: -2.4
       objectReference: {fileID: 0}
     - target: {fileID: 7482406497995980636, guid: 2ad0dce4d4a995768a976139c26cdd92,
         type: 3}
@@ -1937,7 +1937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6863977a8ed2f4547baf674f688b7972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingCount: 0
+  startingCount: 2
 --- !u!4 &1638046490
 Transform:
   m_ObjectHideFlags: 0
@@ -2006,7 +2006,7 @@ MonoBehaviour:
   zUpperBound: 15
   zLowerBound: 3
   yUpperBound: 8
-  yLowerBound: 2
+  yLowerBound: 3
   xUpperBound: 15
   xLowerBound: 3
   branchChance: 0.301
@@ -2016,6 +2016,7 @@ MonoBehaviour:
   isGenerateInterior: 1
   surface: {fileID: 1670693426}
   MapScale: 3
+  player: {fileID: 422252099}
 --- !u!4 &1670693425
 Transform:
   m_ObjectHideFlags: 0

@@ -15,12 +15,13 @@ public class RoomManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool enemiesGone=true;
         foreach(GameObject enemy in enemies){
-            if(enemy==null){
-                enemies.Remove(enemy);
+            if(enemy!=null){
+                enemiesGone=false;
             }
         }
-        if(enemies.Count==0){
+        if(enemiesGone){
             OpenSesame();
             
         }
