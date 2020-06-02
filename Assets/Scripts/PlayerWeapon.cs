@@ -305,8 +305,7 @@ public class PlayerWeapon : MonoBehaviour
             {
                 float f = delta / recoilTime;
 
-                //TODO Switch to quarter sinusoid
-                recoilCurrent = Mathf.Lerp(recoilFire, recoilSet, f);
+                recoilCurrent = EigthSinLerp(recoilFire, recoilSet, f);
             }
 
             needSetRecoil = true;
@@ -333,8 +332,8 @@ public class PlayerWeapon : MonoBehaviour
             {
                 float f = delta / timeToRecover;
 
-                //To do: Switch to half sinusoid
-                recoilCurrent = Mathf.Lerp(recoilFire, recoilSet, f);
+                //Lerp using half sinusoid
+                recoilCurrent = HalfSinLerp(recoilFire, recoilSet, f);
             }
 
             needSetRecoil = true;
@@ -355,6 +354,7 @@ public class PlayerWeapon : MonoBehaviour
                 if (frame < spawner.weaponStats.reloadGunLowerEnd)
                 {
                     reloadCurrent = frame / spawner.weaponStats.reloadGunLowerEnd;
+                    reloadCurrent = HalfSinLerp(0.0f, 1.0f, reloadCurrent);
 
                 }
                 else if (frame < spawner.weaponStats.reloadGunRaiseEnd)
@@ -366,7 +366,8 @@ public class PlayerWeapon : MonoBehaviour
 
                     if (frame >= spawner.weaponStats.reloadArmReturnStart)
                     {
-                        reloadCurrent = (spawner.weaponStats.reloadGunRaiseEnd - frame) / (spawner.weaponStats.reloadGunRaiseEnd - spawner.weaponStats.reloadArmReturnStart);
+                        reloadCurrent = 1.0f - (spawner.weaponStats.reloadGunRaiseEnd - frame) / (spawner.weaponStats.reloadGunRaiseEnd - spawner.weaponStats.reloadArmReturnStart);
+                        reloadCurrent = QuarterSinLerp(1.0f, 0.0f, reloadCurrent);
                     }
                 }
                 else
@@ -383,4 +384,29 @@ public class PlayerWeapon : MonoBehaviour
             SetRecoil(aimSet);
         }
     }
+
+    private float EigthSinLerp(float a, float b, float f)
+    {
+        float angle = Mathf.Lerp(Mathf.PI / -2.0f, Mathf.PI / -4.0f, f);
+        float g = Mathf.Cos(angle) * 2.0f;
+
+        return Mathf.Lerp(a, b, g);
+    }
+
+    private float HalfSinLerp(float a, float b, float f)
+    {
+        float angle = Mathf.Lerp(-Mathf.PI, 0, f);
+        float g = (Mathf.Cos(angle) + 1.0f) * 0.5f;
+
+        return Mathf.Lerp(a, b, g);
+    }
+
+    private float QuarterSinLerp(float a, float b, float f)
+    {
+        float angle = Mathf.Lerp(Mathf.PI / -2.0f, 0, f);
+        float g = Mathf.Cos(angle);
+
+        return Mathf.Lerp(a, b, g);
+    }
+
 }

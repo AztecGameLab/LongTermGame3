@@ -13,7 +13,7 @@ public class ProjectileShotgun : ProjectileInfo
         stats.SetAmmoMaxCount(info.ammoSize, 2, 8);
         stats.SetAimDrift(info.accuracy, 20.0f, 5.0f);
         stats.SetRPM(info.fireRate, 60.0f, 210.0f);
-        stats.SetShotRecoil(info.recoil, 60.0f, 10.0f);
+        stats.SetShotRecoil(info.recoil, 80.0f, 10.0f);
         stats.SetVelocity(info.muzzleVelocity, 15.0f, 70.0f);
         stats.SetRangePerStage(info.effectiveRange, 1.0f, 5.0f);
         stats.SetReloadSeconds(info.reloadSpeed, 4.0f, 1.5f);
