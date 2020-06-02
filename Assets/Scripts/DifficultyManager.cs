@@ -6,6 +6,8 @@ public class DifficultyManager : MonoBehaviour
 {
     public static int enemyCount=2;
     public int startingCount;
+    public Material roofEmiss;
+    public Gradient roofGrad;
     void OnEnable()
     {
         if(FindObjectsOfType<DifficultyManager>().Length!=1){
@@ -25,6 +27,8 @@ public class DifficultyManager : MonoBehaviour
         else{
             enemyCount=2;
         }
+        print(enemyCount);
+        roofEmiss.SetColor("_EmissionColor", 1.5f * roofGrad.Evaluate(enemyCount/10));
     }
     // Update is called once per frame
     void Update()

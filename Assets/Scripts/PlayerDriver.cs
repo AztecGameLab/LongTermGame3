@@ -168,8 +168,6 @@ public class PlayerDriver : Driver
 
     public override float GetVerticalLook()
     {
-print("killme");
-
         // Modifying mouse position based on sensitivity and accounting for framerate.
         mouseY = Input.GetAxisRaw("Mouse Y") * sensitivity * Time.deltaTime * 2;
 
