@@ -39,8 +39,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
     void Start()
     {
         if (defaultRoomData)
-        {
-            
+        {         
             CreateRoom(testData);
         }
     }
@@ -62,22 +61,36 @@ public class ProceduralRoomGenerator : MonoBehaviour
         CreateLight(data,roomLocation);
         if (data.final)
         {
-            data.objects.Add(AttemptSpawnObject(data, exitTeleporter, 0, roomLocation,true));
+            GameObject rb=Instantiate(exitTeleporter,new Vector3(data.bounds.center.x,data.bounds.center.y-data.bounds.extents.y,data.bounds.center.z),robot.transform.rotation);
 
+            rb.transform.parent=roomLocation;
+            rb.transform.localScale/=ProceduralMapGenerator._mapScale;
+            Vector3 doorDirection=rb.transform.position-Vector3.Scale(data.doors[0].wall,data.bounds.extents)/2;
+            rb.transform.LookAt(doorDirection);
         }
         else if (data.start)
         {
             data.objects.Add(AttemptSpawnObject(data, potentialGunSpawns[0], 0, roomLocation,spawnManager,false));
-            GameObject rb=Instantiate(robot,data.bounds.center-new Vector3(0,data.bounds.extents.y,0)-Vector3.Scale(data.doors[0].wall,data.bounds.extents)/2,robot.transform.rotation);
-            rb.transform.parent=roomLocation;
-            rb.transform.localScale/=ProceduralMapGenerator._mapScale;
-            rb.transform.LookAt(Vector3.down*2.5f);
+            if(DifficultyManager.enemyCount==FindObjectOfType<DifficultyManager>().startingCount){
+                GameObject rb=Instantiate(robot,data.bounds.center-new Vector3(0,data.bounds.extents.y,0)-Vector3.Scale(data.doors[0].wall,data.bounds.extents)/2,robot.transform.rotation);
+                rb.transform.parent=roomLocation;
+                rb.transform.localScale/=ProceduralMapGenerator._mapScale;
+                rb.transform.LookAt(Vector3.down*2.5f);
+            }
         }
         else
         {
             for (int i = 0; i < getVolume(data) / Random.Range(30, 40); i++) //obstacle number and obstacle spawning
             {
                 data.obstacles.Add(AttemptSpawnObstacle(data, roomLocation)); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
+            }
+            int RandomExtraEnemies=Random.Range(0,DifficultyManager.enemyCount/2+1);
+            for (int i = 0; i < DifficultyManager.enemyCount+RandomExtraEnemies; i++)
+            {
+                GameObject[] itemTypeSpawning = potentialEnemySpawns;
+                bool e=itemTypeSpawning==potentialEnemySpawns;
+                itemData spawned=AttemptSpawnObject(data, itemTypeSpawning[Random.Range(0, itemTypeSpawning.Length)], 0, roomLocation,spawnManager,e);
+                data.objects.Add(spawned); //here you can randomize between power up, gun, key, enemy if you want with a helper method later
             }
             for (int i = 0; i < Random.Range(minObjs, maxObjs); i++)
             {
@@ -103,20 +116,16 @@ public class ProceduralRoomGenerator : MonoBehaviour
         Vector3 ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY); // make add from corner of position of room
         while (!validSpawnPosition(ceilingPos, room))
         {
-
             randomCX = (int)Random.Range(1, room.bounds.size.x);
             randomCY = (int)Random.Range(1, room.bounds.size.z);
             ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY);
         }
-
         //  Ray ray = new Ray(ceilingPos, Vector3.down);
         //    Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 10);
-
         RaycastHit hit;
         Ray ray1 = new Ray(ceilingPos, Vector3.down);
         //  Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 100);
         Physics.Raycast(ray1, out hit, room.bounds.size.y);
-
         itemData temp = new itemData(obj); // make spawn off of prefab later TODOTDO
         if(room.start){
             
@@ -137,13 +146,9 @@ public class ProceduralRoomGenerator : MonoBehaviour
             }
         }
         return temp;
-
-
         //when true, add gameObject to room objects list
         //if for some reason can't find a space, return null
-
     }
-
     public itemData AttemptSpawnObject(RoomData room, GameObject obj, int ySpawnOffset, Transform parent, bool specificRotate) // Overload of AttemptSpawn Object with reference to an obj to orientate newly spawned bojects
     {
         // find random 2d point on ceiling
@@ -158,34 +163,25 @@ public class ProceduralRoomGenerator : MonoBehaviour
             randomCY = (int)Random.Range(1, room.bounds.size.z);
             ceilingPos = roomCornerOffset + new Vector3(randomCX, (float)(room.bounds.size.y - 1), randomCY);
         }
-
         //  Ray ray = new Ray(ceilingPos, Vector3.down);
         //    Debug.DrawRay(ray.origin, ray.direction * 10, Color.red, 10);
-
         RaycastHit hit;
         Ray ray1 = new Ray(ceilingPos, Vector3.down);
         //  Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 100);
         Physics.Raycast(ray1, out hit, room.bounds.size.y);
-
         itemData temp = new itemData(obj); // make spawn off of prefab later TODOTDO
         temp.pos = hit.point + new Vector3(0, ySpawnOffset, 0);
-
         // temp.name =(room.name + " object: " + temp.transform.position);
         temp.name = "tempItem";
         //print(temp.name);
-
         //find door position in world space
         Vector3 doorPos = room.bounds.center + Vector3.Scale(room.bounds.size/2, -room.doors[0].wall);
         doorPos *= ProceduralMapGenerator._mapScale;
         Quaternion targetRotation = Quaternion.LookRotation(doorPos, Vector3.up);
-
         temp.Spawn(parent,doorPos);
         return temp;
-
-
         //when true, add gameObject to room objects list
         //if for some reason can't find a space, return null
-
     }
 
     public GameObject AttemptSpawnObstacle(RoomData room, Transform parent) // tries to spawn object in random position of a room
@@ -494,20 +490,11 @@ public class ProceduralRoomGenerator : MonoBehaviour
 
     private GameObject[] getSpawnItemType()
     {
-        int temp = Random.Range(0, 101);
-        if(temp > EnemySpawnRate)
-        {
             int temp1 = Random.Range(0, 101);
             if (temp1 > 50)
                 return potentialPickUpSpawns;
             else
                 return potentialGunSpawns;
-        }
-        else
-        {
-            return potentialEnemySpawns;
-        }
-
     }
 
 

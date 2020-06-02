@@ -1457,8 +1457,8 @@ MonoBehaviour:
     obstacles: []
     final: 0
     start: 0
-  minObjs: 3
-  maxObjs: 8
+  minObjs: 1
+  maxObjs: 4
   doorPrefab: {fileID: 3155017759152816283, guid: 498edd5c357fcd74184cf02c63c42310,
     type: 3}
   doorDimensions: {x: 1, y: 1}
@@ -1908,6 +1908,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1354410939}
   m_CullTransparentMesh: 0
+--- !u!1 &1638046488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1638046490}
+  - component: {fileID: 1638046489}
+  m_Layer: 0
+  m_Name: DifficultyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1638046489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638046488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6863977a8ed2f4547baf674f688b7972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingCount: 0
+--- !u!4 &1638046490
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638046488}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -21.817877, y: -11.5465975, z: -26.486614}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1670693423
 GameObject:
   m_ObjectHideFlags: 0
@@ -1941,8 +1985,8 @@ MonoBehaviour:
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  maxSize: 5
-  maxItems: 5
+  maxSize: 7
+  maxItems: 3
   numAttempts: 4
   currRoom:
     bounds:
@@ -1959,12 +2003,12 @@ MonoBehaviour:
   objectTemplate: {fileID: 6986889222746248364, guid: 8ccdd429b06e90d499eae52a6efffb71,
     type: 3}
   optimizationHitbox: {fileID: 521411398}
-  zUpperBound: 4
-  zLowerBound: 10
-  yUpperBound: 2
-  yLowerBound: 3
-  xUpperBound: 4
-  xLowerBound: 10
+  zUpperBound: 15
+  zLowerBound: 3
+  yUpperBound: 8
+  yLowerBound: 2
+  xUpperBound: 15
+  xLowerBound: 3
   branchChance: 0.301
   roomTemplate: {fileID: 6986889222746248364, guid: 8ccdd429b06e90d499eae52a6efffb71,
     type: 3}

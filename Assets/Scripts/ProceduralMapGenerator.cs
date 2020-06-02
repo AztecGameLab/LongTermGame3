@@ -101,7 +101,7 @@ public class ProceduralMapGenerator : MonoBehaviour
 
     private bool AttemptSpawnRoom(RoomData prevRoom)
     {
-        if (rooms.Count >= maxSize){
+        if (rooms.Count >= maxSize+DifficultyManager.enemyCount){
            prevRoom.final=true;
             return true;
         }
