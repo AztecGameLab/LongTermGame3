@@ -16,7 +16,7 @@ public class Pause : MonoBehaviour
     void Update()
     {
         //Making sure the player only pauses in the right scenes
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
         {
             if (isGamePaused == true)
             {

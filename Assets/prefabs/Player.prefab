@@ -403,9 +403,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 5295238166723417067}
-  - {fileID: 5132302994742787720}
   - {fileID: 2758813351399747575}
   - {fileID: 3426590856175745946}
+  - {fileID: 5132302994742787720}
   m_Father: {fileID: 7482406497995980636}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -489,6 +489,7 @@ MonoBehaviour:
   health: {fileID: 2468247700180471644}
   blood: {fileID: 9105285137758792874}
   ammo: {fileID: 8730374603575364070}
+  playerDamageClips: []
 --- !u!1 &3840859550083803213
 GameObject:
   m_ObjectHideFlags: 0
@@ -519,7 +520,7 @@ RectTransform:
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 5821898779457240769}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -596,7 +597,7 @@ RectTransform:
   m_LocalScale: {x: 1.120448, y: 1.120448, z: 1.120448}
   m_Children: []
   m_Father: {fileID: 5821898779457240769}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -729,6 +730,7 @@ MonoBehaviour:
   jumpHeight: 2
   sensitivity: 100
   teleporterClip: {fileID: 8300000, guid: 850708e7d4278430a8d90aa98575fc08, type: 3}
+  healthSource: {fileID: 0}
 --- !u!65 &7482406497995980634
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1018,7 +1020,7 @@ RectTransform:
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 5821898779457240769}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}

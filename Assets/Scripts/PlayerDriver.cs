@@ -73,6 +73,9 @@ public class PlayerDriver : Driver
 
     private void Start()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
         ec = gameObject.GetComponent<EntityController>();
         health = 100;
 
@@ -84,6 +87,17 @@ public class PlayerDriver : Driver
     void Update()
     {
         HudCanvas.instance.SetHealth(health);
+        if (Input.GetMouseButtonDown(0) && Time.timeScale != 0)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     public void SetMouseSensitivity(float sensitivity)
@@ -142,7 +156,7 @@ public class PlayerDriver : Driver
     public override float GetHorizontalLook()
     {
         // Modifying mouse position based on sensitivity and accounting for framerate.
-        mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime * 2;
+        mouseX = Input.GetAxisRaw("Mouse X") * sensitivity * Time.deltaTime * 2;
 
         horizontalLook += mouseX;
         if (horizontalLook > 360)
@@ -154,8 +168,10 @@ public class PlayerDriver : Driver
 
     public override float GetVerticalLook()
     {
+print("killme");
+
         // Modifying mouse position based on sensitivity and accounting for framerate.
-        mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime * 2;
+        mouseY = Input.GetAxisRaw("Mouse Y") * sensitivity * Time.deltaTime * 2;
 
         verticalLook -= mouseY * flippedYmult;
         if (verticalLook > 90)
@@ -239,7 +255,7 @@ public class PlayerDriver : Driver
                 //yield return new WaitForSecondsRealtime(2.17f);
                 yield return new WaitForSecondsRealtime(1.5f);
                 //next scene
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                SceneManager.LoadScene("LoadScene");
             }
         }
     }
