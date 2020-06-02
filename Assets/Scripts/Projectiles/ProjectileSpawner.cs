@@ -64,12 +64,13 @@ public class ProjectileSpawner : MonoBehaviour
         sfxSource = gameObject.AddComponent<AudioSource>();
         masterMixer = Resources.Load<AudioMixer>("Audio/Master") as AudioMixer;
         string SFXMixerGroup = "SFX";
-        sfxSource.outputAudioMixerGroup = this.masterMixer.FindMatchingGroups(SFXMixerGroup)[0];
+        if(this.masterMixer.FindMatchingGroups(SFXMixerGroup)[0] != null)
+            sfxSource.outputAudioMixerGroup = this.masterMixer.FindMatchingGroups(SFXMixerGroup)[0];
     }
 
     void Start()
     {
-        Debug.Log("Spawner Start");
+        //Debug.Log("Spawner Start");
         ammoType = ProjectileInfo.Type.Shotgun;
         playerWeapon = GameObject.FindGameObjectWithTag("PlayerWeapon");
         weaponInfo = gameObject.GetComponent<WeaponInfo>();

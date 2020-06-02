@@ -61,7 +61,7 @@ public class GruntBullet : MonoBehaviour
         }
         else //if (Time.time - startTime > enemyCollisionGracePeriod)
         {
-            print(collision.gameObject.name);
+            //print(collision.gameObject.name);
             Destroy(gameObject);
         }
     }
