@@ -179,7 +179,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Weapons
+  m_Name: SFX
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 5666c77778eeba84aadb4e34ed2e0f42
   m_Children: []
@@ -263,8 +263,8 @@ AudioMixerGroupController:
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 5fbbbb932d120cb4483bc12ecec295dd
   m_Children:
-  - {fileID: -5959133867415027725}
   - {fileID: -870812792361628242}
+  - {fileID: -5959133867415027725}
   - {fileID: 7618439617478101325}
   - {fileID: 724427297833310146}
   - {fileID: -4853751036302901966}
