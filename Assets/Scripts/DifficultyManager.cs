@@ -32,7 +32,6 @@ public class DifficultyManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(enemyCount);
         
     }
     void OnDestroy(){
