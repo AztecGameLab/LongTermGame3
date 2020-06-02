@@ -57,6 +57,9 @@ public class PlayerDriver : Driver
 
     private void Awake()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
         horizontalVelocity = new Vector3();
         verticalVelocity = new Vector3();
         horizontalLook = transform.eulerAngles.y;
