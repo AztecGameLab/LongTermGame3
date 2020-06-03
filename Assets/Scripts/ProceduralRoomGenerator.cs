@@ -303,7 +303,7 @@ public class ProceduralRoomGenerator : MonoBehaviour
         for(int i=0;i<height;i++){
             GameObject Cube=Instantiate(obstaclePrefab);
             Cube.transform.parent=temp.transform;
-            Cube.transform.position+=Vector3.up*i;
+            Cube.transform.position+=Vector3.up*(i+Cube.transform.localScale.y/2);
         }
         return temp;
     }
