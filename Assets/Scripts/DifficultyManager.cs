@@ -24,6 +24,9 @@ public class DifficultyManager : MonoBehaviour
         if(scene.name=="ProceduralMap"){
             enemyCount++;
         }
+        else if(scene.name=="LoadScene"){
+            ;
+        }
         else{
             enemyCount=2;
         }
