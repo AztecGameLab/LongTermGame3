@@ -159,7 +159,7 @@ public class EnemyGruntDriver : Driver
     private void PlayWeaponSFX()
     {
         sfxSource.pitch = Random.Range(pitchMin, pitchMax);
-        sfxSource.volume = 0.8f;
+        sfxSource.volume = 1.0f;
         sfxSource.clip = enemyWeaponClip;
         sfxSource.Play();
     }
