@@ -118,7 +118,7 @@ public class ProjectileInfo : MonoBehaviour
         gameObject.GetComponent<MeshRenderer>().enabled = false;
         gameObject.GetComponent<CapsuleCollider>().enabled = false;
 
-        if (sound != null)
+        if ((sound != null) && gameObject.activeSelf)
         {
             StartCoroutine(DelaySetActive(sound.length));
         }
@@ -130,8 +130,11 @@ public class ProjectileInfo : MonoBehaviour
 
     IEnumerator DelaySetActive(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        if (gameObject.activeSelf)
+        {
+            yield return new WaitForSeconds(delay);
 
-        gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        }
     }
 }
